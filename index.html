@@ -281,7 +281,7 @@ let cart = {};
 function addToCart(id) {
   const p = products.find(x => x.id === id);
   if (p.soldout) return;
-  cart[id] = (cart[id] || 0) + 1;
+  cart[id] = 1;
   renderCart();
   showToast('✅ ' + p.formName.split(' ').slice(0,2).join(' ') + ' をカートに追加🐾');
   const btn = document.getElementById('btn' + id);
@@ -319,12 +319,10 @@ function renderCart() {
       <div class="ci-ico">${p.emoji}</div>
       <div class="ci-info">
         <div class="ci-name">${p.formName}</div>
-        <div class="ci-price">¥${(p.price*qty).toLocaleString()} × ${qty}点</div>
+        <div class="ci-price">¥${p.price.toLocaleString()}</div>
       </div>
       <div class="qty">
-        <button class="qb" onclick="changeQty(${id},-1)">−</button>
-        <span class="qn">${qty}</span>
-        <button class="qb" onclick="changeQty(${id},1)">＋</button>
+        <button class="qb" onclick="changeQty(${id},-1)" title="削除">✕</button>
       </div>
     `;
     el.appendChild(d);
@@ -361,7 +359,7 @@ function goToForm() {
     // チェックボックス：formNameをそのまま渡す（フォームの選択肢と完全一致）
     // Googleフォームのプリフィルは+をスペースとして使う（quote_plus形式）
     params.push(ENTRY_CHECKBOX + '=' + encodeURIComponent(p.formName).replace(/%20/g, '+'));
-    if (qty > 1) qtyNotes.push(p.formName.split(' ').slice(0,2).join('') + '×' + qty + '点');
+    qtyNotes.push(p.formName.split(' ').slice(0,2).join('') + '×1点(¥' + p.price.toLocaleString() + ')');
   });
 
   // その他ご要望欄に数量と小計を自動入力
