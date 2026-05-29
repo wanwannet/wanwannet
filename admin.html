@@ -7,90 +7,67 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f5f0eb;min-height:100vh;}
-
-/* ログイン画面 */
 #loginScreen{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:100vh;padding:20px;}
 .login-box{background:#fff;border-radius:20px;padding:40px 30px;width:100%;max-width:360px;box-shadow:0 8px 30px rgba(0,0,0,.12);text-align:center;}
 .login-box h1{font-size:22px;color:#5d4037;margin-bottom:8px;}
 .login-box p{color:#999;font-size:13px;margin-bottom:28px;}
-.login-box input{width:100%;padding:14px;border:2px solid #e0d5cc;border-radius:12px;font-size:16px;margin-bottom:12px;outline:none;transition:border .2s;}
+.login-box input{width:100%;padding:14px;border:2px solid #e0d5cc;border-radius:12px;font-size:16px;margin-bottom:12px;outline:none;}
 .login-box input:focus{border-color:#e8956d;}
 .login-box button{width:100%;padding:14px;background:linear-gradient(135deg,#e8956d,#d4745a);color:#fff;border:none;border-radius:12px;font-size:16px;font-weight:700;cursor:pointer;}
-.login-box button:active{opacity:.85;}
 .login-error{color:#e53935;font-size:13px;margin-top:8px;display:none;}
-
-/* メイン画面 */
 #mainScreen{display:none;}
 .header{background:linear-gradient(135deg,#e8956d,#d4745a);color:#fff;padding:16px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15);}
 .header h1{font-size:18px;font-weight:800;}
 .header p{font-size:12px;opacity:.85;margin-top:2px;}
 .header-btns{display:flex;gap:8px;margin-top:12px;}
 .btn-save{flex:1;padding:10px;background:#fff;color:#d4745a;border:none;border-radius:10px;font-size:14px;font-weight:700;cursor:pointer;}
-.btn-save:active{opacity:.8;}
 .btn-logout{padding:10px 14px;background:rgba(255,255,255,.2);color:#fff;border:1px solid rgba(255,255,255,.4);border-radius:10px;font-size:13px;cursor:pointer;}
-
-.save-status{text-align:center;padding:8px;font-size:13px;font-weight:600;display:none;}
+.save-status{text-align:center;padding:10px;font-size:13px;font-weight:600;display:none;}
 .save-status.ok{background:#e8f5e9;color:#2e7d32;}
-.save-status.err{background:#ffebee;color:#c62828;}
+.save-status.err{background:#ffebee;color:#c62828;white-space:pre-wrap;font-size:11px;}
 .save-status.ing{background:#fff8e1;color:#f57f17;}
-
 .search-bar{padding:12px 16px;background:#fff;border-bottom:1px solid #ece8e4;}
 .search-bar input{width:100%;padding:10px 14px;border:1px solid #ddd;border-radius:10px;font-size:14px;outline:none;}
-
 .filter-tabs{display:flex;gap:6px;padding:10px 16px;background:#fff;border-bottom:1px solid #ece8e4;overflow-x:auto;}
 .filter-tabs::-webkit-scrollbar{display:none;}
-.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:none;}
+.tab{padding:6px 14px;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;border:none;opacity:.5;}
+.tab.active{opacity:1;box-shadow:0 2px 6px rgba(0,0,0,.15);}
 .tab.all{background:#e8956d;color:#fff;}
 .tab.on-sale{background:#e8f5e9;color:#2e7d32;}
 .tab.soldout{background:#ffebee;color:#c62828;}
-.tab.active{opacity:1;box-shadow:0 2px 6px rgba(0,0,0,.15);}
-.tab:not(.active){opacity:.55;}
-
-.product-list{padding:12px 16px;display:flex;flex-direction:column;gap:10px;padding-bottom:40px;}
-
-.product-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);display:flex;align-items:center;gap:12px;transition:opacity .2s;}
-.product-card.soldout-card{opacity:.6;}
-.product-thumb{width:56px;height:56px;border-radius:10px;object-fit:cover;background:#f5f0eb;flex-shrink:0;font-size:28px;display:flex;align-items:center;justify-content:center;}
-.product-thumb img{width:100%;height:100%;object-fit:cover;border-radius:10px;}
+.tab.changed{background:#fff3e0;color:#e65100;}
+.product-list{padding:12px 16px;display:flex;flex-direction:column;gap:10px;padding-bottom:80px;}
+.product-card{background:#fff;border-radius:14px;padding:14px;box-shadow:0 2px 8px rgba(0,0,0,.07);display:flex;align-items:center;gap:12px;}
+.product-card.soldout-card{opacity:.55;}
+.product-thumb{width:52px;height:52px;border-radius:10px;background:#f5f0eb;flex-shrink:0;font-size:26px;display:flex;align-items:center;justify-content:center;}
 .product-info{flex:1;min-width:0;}
 .product-no{font-size:11px;color:#999;font-weight:600;}
-.product-name{font-size:13px;font-weight:700;color:#3e2723;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.product-name{font-size:13px;font-weight:700;color:#3e2723;line-height:1.3;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}
 .product-price{font-size:12px;color:#e8956d;font-weight:600;margin-top:2px;}
 .product-controls{display:flex;flex-direction:column;gap:6px;flex-shrink:0;}
-
-.toggle-btn{padding:7px 14px;border:none;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;}
+.toggle-btn{padding:8px 12px;border:none;border-radius:20px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;}
 .toggle-btn.on-sale{background:#e8f5e9;color:#2e7d32;}
 .toggle-btn.soldout{background:#ffebee;color:#c62828;}
-.toggle-btn:active{transform:scale(.95);}
-
-.badge-select{padding:5px 8px;border:1px solid #ddd;border-radius:8px;font-size:11px;background:#fafafa;cursor:pointer;max-width:110px;}
-
-.changed-dot{width:8px;height:8px;background:#ff5722;border-radius:50%;display:inline-block;margin-left:4px;vertical-align:middle;}
-
-.empty{text-align:center;padding:40px 20px;color:#bbb;font-size:14px;}
-
-/* 保存ボタン（固定） */
-.float-save{position:fixed;bottom:20px;right:20px;background:linear-gradient(135deg,#e8956d,#d4745a);color:#fff;border:none;border-radius:50px;padding:14px 24px;font-size:15px;font-weight:800;box-shadow:0 4px 16px rgba(232,149,109,.5);cursor:pointer;z-index:200;display:none;}
+.badge-select{padding:5px 6px;border:1px solid #ddd;border-radius:8px;font-size:11px;background:#fafafa;cursor:pointer;max-width:115px;}
+.changed-dot{display:inline-block;width:7px;height:7px;background:#ff5722;border-radius:50%;margin-left:4px;vertical-align:middle;}
+.empty{text-align:center;padding:60px 20px;color:#bbb;font-size:14px;}
+.float-save{position:fixed;bottom:20px;right:16px;left:16px;background:linear-gradient(135deg,#e8956d,#d4745a);color:#fff;border:none;border-radius:14px;padding:16px;font-size:15px;font-weight:800;box-shadow:0 4px 20px rgba(232,149,109,.6);cursor:pointer;z-index:200;display:none;}
 .float-save.visible{display:block;}
-.float-save:active{transform:scale(.96);}
 </style>
 </head>
 <body>
 
-<!-- ログイン画面 -->
 <div id="loginScreen">
   <div class="login-box">
     <h1>🐾 WanWanNet</h1>
-    <p>管理画面にログインしてください</p>
+    <p>管理画面にログイン</p>
     <input type="password" id="passwordInput" placeholder="パスワード" />
-    <input type="text" id="tokenInput" placeholder="GitHub Token" />
+    <input type="text" id="tokenInput" placeholder="GitHub Token (ghp_...)" autocomplete="off" />
     <button onclick="login()">ログイン</button>
     <div class="login-error" id="loginError">パスワードが違います</div>
-    <p style="font-size:11px;color:#ccc;margin-top:16px;">※ 情報はこの端末にのみ保存されます</p>
   </div>
 </div>
 
-<!-- メイン管理画面 -->
 <div id="mainScreen">
   <div class="header">
     <h1>🐾 WanWanNet 管理画面</h1>
@@ -100,180 +77,151 @@ body{font-family:'Hiragino Sans','Meiryo',sans-serif;background:#f5f0eb;min-heig
       <button class="btn-logout" onclick="logout()">ログアウト</button>
     </div>
   </div>
-
   <div class="save-status" id="saveStatus"></div>
-
   <div class="search-bar">
-    <input type="search" id="searchInput" placeholder="🔍 商品名で検索..." oninput="renderList()" />
+    <input type="search" id="searchInput" placeholder="🔍 商品名・番号で検索..." oninput="renderList()" />
   </div>
-
   <div class="filter-tabs">
     <button class="tab all active" onclick="setFilter('all',this)">すべて</button>
     <button class="tab on-sale" onclick="setFilter('on-sale',this)">販売中</button>
     <button class="tab soldout" onclick="setFilter('soldout',this)">SOLD OUT</button>
-    <button class="tab" style="background:#fff3e0;color:#e65100;" onclick="setFilter('changed',this)">変更あり</button>
+    <button class="tab changed" onclick="setFilter('changed',this)">変更あり</button>
   </div>
-
   <div class="product-list" id="productList"></div>
 </div>
 
-<button class="float-save" id="floatSave" onclick="saveChanges()">💾 保存して反映</button>
+<button class="float-save" id="floatSave" onclick="saveChanges()">💾 保存してサイトに反映</button>
 
 <script>
-// ===== 設定 =====
-const ADMIN_PASSWORD = 'wanwan2024';  // ← パスワードをここで変更
+const ADMIN_PASSWORD = 'wanwan2024';
 const GITHUB_OWNER   = 'wanwannet';
 const GITHUB_REPO    = 'wanwannet';
 const GITHUB_FILE    = 'index.html';
 const GITHUB_BRANCH  = 'main';
 
-// ===== バッジ一覧 =====
 const BADGE_OPTIONS = {
-  'null':    'なし',
-  'new':     '✨ NEW',
-  'pop':     '👑 人気商品',
-  're':      '🔄 再入荷',
-  'sale':    '🏷️ 訳あり',
-  'last':    '⚠️ 残り1点',
-  'hot':     '🔥 大人気商品',
-  'one':     '💎 1点もの',
-  'season':  '🌞 季節',
-  'deal':    '🤑 お買い得',
-  'outdoor': '🏕️ レジャー',
-  'few':     '🔔 残り僅か',
-  'wakari':  '💰 訳アリ',
-  'conv':    '👍 お手頃',
-  'sotsu':   '🌸 しあわせの証',
-  'black':   '🖤 ブラックもあり',
-  'white':   '🤍 ホワイトもあり',
+  'null':'なし','new':'✨ NEW','pop':'👑 人気商品','re':'🔄 再入荷',
+  'sale':'🏷️ 訳あり','last':'⚠️ 残り1点','hot':'🔥 大人気',
+  'one':'💎 1点もの','season':'🌞 季節','deal':'🤑 お買い得',
+  'outdoor':'🏕️ レジャー','few':'🔔 残り僅か','wakari':'💰 訳アリ',
+  'conv':'👍 お手頃','sotsu':'🌸 しあわせの証',
+  'black':'🖤 ブラックもあり','white':'🤍 ホワイトもあり',
 };
 
-// ===== 状態 =====
-let products    = [];
-let originalMap = {};  // id → {soldout, badge}
-let changedIds  = new Set();
-let ghToken     = '';
-let fileSha     = '';
-let rawHtml     = '';
-let currentFilter = 'all';
+let products=[], originalMap={}, changedIds=new Set();
+let ghToken='', fileSha='', rawHtml='', currentFilter='all';
 
-// ===== ログイン =====
-function login() {
-  const pw  = document.getElementById('passwordInput').value;
-  const tok = document.getElementById('tokenInput').value.trim();
-  if (pw !== ADMIN_PASSWORD) {
-    document.getElementById('loginError').style.display = 'block';
-    return;
-  }
-  if (!tok) { alert('GitHub Tokenを入力してください'); return; }
-  ghToken = tok;
-  localStorage.setItem('ww_token', tok);
-  document.getElementById('loginScreen').style.display = 'none';
-  document.getElementById('mainScreen').style.display  = 'block';
+window.addEventListener('DOMContentLoaded',()=>{
+  const t=localStorage.getItem('ww_token');
+  if(t) document.getElementById('tokenInput').value=t;
+});
+
+function login(){
+  const pw=document.getElementById('passwordInput').value;
+  const tok=document.getElementById('tokenInput').value.trim();
+  if(pw!==ADMIN_PASSWORD){document.getElementById('loginError').style.display='block';return;}
+  if(!tok){alert('GitHub Tokenを入力してください');return;}
+  ghToken=tok;
+  localStorage.setItem('ww_token',tok);
+  document.getElementById('loginScreen').style.display='none';
+  document.getElementById('mainScreen').style.display='block';
   loadFromGitHub();
 }
 
-function logout() {
-  localStorage.removeItem('ww_token');
-  location.reload();
-}
+function logout(){localStorage.removeItem('ww_token');location.reload();}
 
-// 前回トークン復元
-window.addEventListener('DOMContentLoaded', () => {
-  const saved = localStorage.getItem('ww_token');
-  if (saved) document.getElementById('tokenInput').value = saved;
-});
-
-// ===== GitHub から index.html を取得 =====
-async function loadFromGitHub() {
-  showStatus('ing', '📡 GitHubから読み込み中...');
-  try {
-    const res  = await fetch(
-      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}`,
-      { headers: { Authorization: `token ${ghToken}`, Accept: 'application/vnd.github.v3+json' } }
+async function loadFromGitHub(){
+  showStatus('ing','📡 GitHubから読み込み中...');
+  try{
+    const res=await fetch(
+      `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}?ref=${GITHUB_BRANCH}&t=${Date.now()}`,
+      {headers:{Authorization:`token ${ghToken}`,Accept:'application/vnd.github.v3+json'}}
     );
-    if (!res.ok) throw new Error('GitHub API エラー: ' + res.status);
-    const data = await res.json();
-    fileSha  = data.sha;
-    rawHtml  = atob(data.content.replace(/\n/g,''));
-    document.getElementById('repoInfo').textContent =
-      `${GITHUB_OWNER}/${GITHUB_REPO} — ${GITHUB_FILE}`;
+    if(!res.ok) throw new Error('GitHub APIエラー: '+res.status);
+    const data=await res.json();
+    fileSha=data.sha;
+    rawHtml=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    document.getElementById('repoInfo').textContent=`${GITHUB_OWNER}/${GITHUB_REPO} — ${GITHUB_FILE}`;
     parseProducts();
     renderList();
-    showStatus('ok', '✅ 読み込み完了！');
-    setTimeout(()=>hideStatus(), 2000);
-  } catch(e) {
-    showStatus('err', '❌ 読み込み失敗: ' + e.message);
+    showStatus('ok',`✅ ${products.length}件の商品を読み込みました`);
+    setTimeout(()=>hideStatus(),3000);
+  }catch(e){
+    showStatus('err','❌ 読み込み失敗:\n'+e.message);
   }
 }
 
-// ===== 商品データをHTMLからパース =====
-function parseProducts() {
-  products = [];
-  originalMap = {};
-  const re = /\{id:(\d+),\s*formName:"([^"]+)"[^}]+?price:(\d+)[^}]+?badge:'?([^'",}\s]+)'?[^}]+?soldout:(true|false)\}/g;
+// ===== ポイント：soldout:とbadge:をformNameの位置から直接検索 =====
+function parseProducts(){
+  products=[]; originalMap={};
+
+  // formNameの位置を全部探す
+  const nameRe = /\{id:(\d+),\s*formName:"([^"]+)"/g;
   let m;
-  while ((m = re.exec(rawHtml)) !== null) {
-    const [,id,formName,price,badge,soldout] = m;
-    // img（絵文字フォールバック用）
-    const emojiM = m[0].match(/emoji:"([^"]+)"/);
-    const imgM   = m[0].match(/img:"(data:[^"]{1,80})/);
-    const p = {
-      id:       parseInt(id),
-      formName,
-      price:    parseInt(price),
-      badge:    badge === 'null' ? null : badge,
-      soldout:  soldout === 'true',
-      emoji:    emojiM ? emojiM[1] : '📦',
-      imgPrefix:imgM ? imgM[1] : null,
-    };
+  while((m=nameRe.exec(rawHtml))!==null){
+    const id       = parseInt(m[1]);
+    const formName = m[2];
+    const start    = m.index;
+
+    // この商品ブロックの終端を探す（次の{id: か ]; の直前）
+    const nextId = rawHtml.indexOf('{id:', start+1);
+    const end    = nextId===-1 ? rawHtml.indexOf('];', start) : nextId;
+    const block  = rawHtml.slice(start, end);
+
+    // price
+    const priceM  = block.match(/price:(\d+)/);
+    const price   = priceM ? parseInt(priceM[1]) : 0;
+    // emoji
+    const emojiM  = block.match(/emoji:"([^"]+)"/);
+    const emoji   = emojiM ? emojiM[1] : '📦';
+    // badge
+    const badgeM  = block.match(/badge:'([^']+)'/);
+    const badge   = badgeM ? badgeM[1] : null;
+    // soldout
+    const soldout = /soldout:true/.test(block);
+
+    const p={id,formName,price,emoji,badge,soldout};
     products.push(p);
-    originalMap[p.id] = { soldout: p.soldout, badge: p.badge };
+    originalMap[id]={soldout,badge};
   }
-  products.sort((a,b) => a.id - b.id);
+  products.sort((a,b)=>a.id-b.id);
 }
 
-// ===== 一覧レンダリング =====
-function setFilter(f, el) {
-  currentFilter = f;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+function setFilter(f,el){
+  currentFilter=f;
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
   renderList();
 }
 
-function renderList() {
-  const q    = document.getElementById('searchInput').value.toLowerCase();
-  const list = document.getElementById('productList');
-  let filtered = products.filter(p => {
-    if (q && !p.formName.toLowerCase().includes(q) && !String(p.id).includes(q)) return false;
-    if (currentFilter === 'on-sale')  return !p.soldout;
-    if (currentFilter === 'soldout')  return p.soldout;
-    if (currentFilter === 'changed')  return changedIds.has(p.id);
+function renderList(){
+  const q=document.getElementById('searchInput').value.toLowerCase();
+  const list=document.getElementById('productList');
+  let filtered=products.filter(p=>{
+    if(q && !p.formName.toLowerCase().includes(q) && !String(p.id).includes(q)) return false;
+    if(currentFilter==='on-sale') return !p.soldout;
+    if(currentFilter==='soldout') return p.soldout;
+    if(currentFilter==='changed') return changedIds.has(p.id);
     return true;
   });
-  if (!filtered.length) {
-    list.innerHTML = '<div class="empty">該当する商品がありません</div>';
+  if(!filtered.length){
+    list.innerHTML='<div class="empty">該当する商品がありません</div>';
     return;
   }
-  list.innerHTML = filtered.map(p => `
+  list.innerHTML=filtered.map(p=>`
     <div class="product-card ${p.soldout?'soldout-card':''}" id="card-${p.id}">
-      <div class="product-thumb">
-        ${p.imgPrefix
-          ? `<img src="${p.imgPrefix}..." onerror="this.style.display='none';this.parentNode.textContent='${p.emoji}'">`
-          : p.emoji}
-      </div>
+      <div class="product-thumb">${p.emoji}</div>
       <div class="product-info">
-        <div class="product-no">No.${p.id} ${changedIds.has(p.id)?'<span class="changed-dot"></span>':''}</div>
+        <div class="product-no">No.${p.id}${changedIds.has(p.id)?'<span class="changed-dot"></span>':''}</div>
         <div class="product-name">${p.formName}</div>
         <div class="product-price">¥${p.price.toLocaleString()}</div>
       </div>
       <div class="product-controls">
-        <button class="toggle-btn ${p.soldout?'soldout':'on-sale'}"
-          onclick="toggleSoldout(${p.id})">
-          ${p.soldout ? '🔴 SOLD OUT' : '🟢 販売中'}
+        <button class="toggle-btn ${p.soldout?'soldout':'on-sale'}" onclick="toggleSoldout(${p.id})">
+          ${p.soldout?'🔴 SOLD OUT':'🟢 販売中'}
         </button>
         <select class="badge-select" onchange="changeBadge(${p.id},this.value)">
-          ${Object.entries(BADGE_OPTIONS).map(([v,l]) =>
+          ${Object.entries(BADGE_OPTIONS).map(([v,l])=>
             `<option value="${v}" ${(!p.badge&&v==='null')||(p.badge===v)?'selected':''}>${l}</option>`
           ).join('')}
         </select>
@@ -282,105 +230,84 @@ function renderList() {
   `).join('');
 }
 
-// ===== SOLD OUT トグル =====
-function toggleSoldout(id) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-  p.soldout = !p.soldout;
+function toggleSoldout(id){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+  p.soldout=!p.soldout;
   markChanged(id);
   renderList();
 }
 
-// ===== バッジ変更 =====
-function changeBadge(id, val) {
-  const p = products.find(x => x.id === id);
-  if (!p) return;
-  p.badge = val === 'null' ? null : val;
+function changeBadge(id,val){
+  const p=products.find(x=>x.id===id);
+  if(!p) return;
+  p.badge=val==='null'?null:val;
   markChanged(id);
 }
 
-function markChanged(id) {
-  const p   = products.find(x => x.id === id);
-  const org = originalMap[id];
-  if (p.soldout === org.soldout && p.badge === org.badge) {
-    changedIds.delete(id);
-  } else {
-    changedIds.add(id);
-  }
-  document.getElementById('floatSave').classList.toggle('visible', changedIds.size > 0);
+function markChanged(id){
+  const p=products.find(x=>x.id===id);
+  const org=originalMap[id];
+  if(p.soldout===org.soldout && p.badge===org.badge) changedIds.delete(id);
+  else changedIds.add(id);
+  document.getElementById('floatSave').classList.toggle('visible',changedIds.size>0);
 }
 
-// ===== GitHub に保存 =====
-async function saveChanges() {
-  if (!changedIds.size) { alert('変更がありません'); return; }
-  showStatus('ing', `⏳ ${changedIds.size}件の変更を保存中...`);
-  let updated = rawHtml;
+async function saveChanges(){
+  if(!changedIds.size){alert('変更がありません');return;}
+  showStatus('ing',`⏳ ${changedIds.size}件を保存中...`);
+  let updated=rawHtml;
 
-  for (const id of changedIds) {
-    const p = products.find(x => x.id === id);
-
-    // soldout の差し替え
-    updated = updated.replace(
-      new RegExp(`(\\{id:${id}, formName:"[^"]*"[^}]*soldout:)(true|false)(\\})`),
-      (_, pre, __, suf) => `${pre}${p.soldout}${suf}`
-    );
-
-    // badge の差し替え
-    const badgeVal = p.badge ? `'${p.badge}'` : 'null';
-    updated = updated.replace(
-      new RegExp(`(\\{id:${id}, formName:"[^"]*"[^}]*badge:)(?:'[^']*'|null)([^}]*soldout)`),
-      (_, pre, suf) => `${pre}${badgeVal}${suf}`
-    );
+  for(const id of changedIds){
+    const p=products.find(x=>x.id===id);
+    // soldout置換（formNameを使ってピンポイントで置換）
+    const soldoutRe=new RegExp(`(\\{id:${id},\\s*formName:"[^"]*"[\\s\\S]*?soldout:)(true|false)(\\})`);
+    updated=updated.replace(soldoutRe,(_,pre,__,suf)=>`${pre}${p.soldout}${suf}`);
+    // badge置換
+    const badgeVal=p.badge?`'${p.badge}'`:'null';
+    const badgeRe=new RegExp(`(\\{id:${id},\\s*formName:"[^"]*"[\\s\\S]*?badge:)(?:'[^']*'|null)`);
+    updated=updated.replace(badgeRe,(_,pre)=>`${pre}${badgeVal}`);
   }
 
-  try {
-    const res = await fetch(
+  try{
+    const encoded=btoa(unescape(encodeURIComponent(updated)));
+    const res=await fetch(
       `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_FILE}`,
       {
-        method: 'PUT',
-        headers: {
-          Authorization: `token ${ghToken}`,
-          Accept: 'application/vnd.github.v3+json',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          message: `🛒 商品管理更新 (${[...changedIds].map(id=>'No.'+id).join(', ')})`,
-          content: btoa(unescape(encodeURIComponent(updated))),
-          sha:     fileSha,
-          branch:  GITHUB_BRANCH,
+        method:'PUT',
+        headers:{Authorization:`token ${ghToken}`,Accept:'application/vnd.github.v3+json','Content-Type':'application/json'},
+        body:JSON.stringify({
+          message:`🛒 商品管理更新 (${[...changedIds].map(id=>'No.'+id).join(', ')})`,
+          content:encoded,
+          sha:fileSha,
+          branch:GITHUB_BRANCH,
         }),
       }
     );
-    if (!res.ok) {
-      const err = await res.json();
-      throw new Error(err.message || res.status);
-    }
-    const data = await res.json();
-    fileSha  = data.content.sha;
-    rawHtml  = updated;
-    // originalMapを更新
-    for (const id of changedIds) {
-      const p = products.find(x => x.id === id);
-      originalMap[id] = { soldout: p.soldout, badge: p.badge };
+    if(!res.ok){const e=await res.json();throw new Error(e.message||res.status);}
+    const data=await res.json();
+    fileSha=data.content.sha;
+    rawHtml=updated;
+    for(const id of changedIds){
+      const p=products.find(x=>x.id===id);
+      originalMap[id]={soldout:p.soldout,badge:p.badge};
     }
     changedIds.clear();
     document.getElementById('floatSave').classList.remove('visible');
-    showStatus('ok', `✅ 保存完了！GitHubに反映されました 🎉`);
-    setTimeout(()=>hideStatus(), 4000);
-  } catch(e) {
-    showStatus('err', '❌ 保存失敗: ' + e.message);
+    showStatus('ok','✅ 保存完了！サイトに反映されました 🎉');
+    setTimeout(()=>hideStatus(),5000);
+  }catch(e){
+    showStatus('err','❌ 保存失敗:\n'+e.message);
   }
 }
 
-function showStatus(type, msg) {
-  const el = document.getElementById('saveStatus');
-  el.className = 'save-status ' + type;
-  el.textContent = msg;
-  el.style.display = 'block';
+function showStatus(type,msg){
+  const el=document.getElementById('saveStatus');
+  el.className='save-status '+type;
+  el.textContent=msg;
+  el.style.display='block';
 }
-function hideStatus() {
-  document.getElementById('saveStatus').style.display = 'none';
-}
+function hideStatus(){document.getElementById('saveStatus').style.display='none';}
 </script>
 </body>
 </html>
