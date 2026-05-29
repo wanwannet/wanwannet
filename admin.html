@@ -140,7 +140,12 @@ async function loadFromGitHub(){
     if(!res.ok) throw new Error('GitHub APIエラー: '+res.status);
     const data=await res.json();
     fileSha=data.sha;
-    rawHtml=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
+    // base64デコード（TextDecoder方式で日本語対応）
+    const b64 = data.content.replace(/\n/g,'');
+    const bin = atob(b64);
+    const bytes = new Uint8Array(bin.length);
+    for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+    rawHtml = new TextDecoder('utf-8').decode(bytes);
     document.getElementById('repoInfo').textContent=`${GITHUB_OWNER}/${GITHUB_REPO} — ${GITHUB_FILE}`;
     parseProducts();
     if(products.length===0){
