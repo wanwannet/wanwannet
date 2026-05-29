@@ -139,19 +139,21 @@ async function loadFromGitHub(){
     );
     if(!res.ok) throw new Error('GitHub APIエラー: '+res.status);
     const data=await res.json();
-    // レスポンス内容をデバッグ表示
-    const keys = Object.keys(data);
-    const hasContent = 'content' in data;
-    const contentLen = hasContent ? data.content.length : 0;
-    showStatus('ing','API応答キー:'+keys.join(',')+'\ncontentあり:'+hasContent+'\ncontent長:'+contentLen);
-    await new Promise(r=>setTimeout(r,3000));
-    if(!hasContent || !data.content) throw new Error('contentフィールドがありません。キー:'+keys.join(','));
-    fileSha=data.sha;
-    const b64 = data.content.replace(/\n/g,'');
-    const bin = atob(b64);
-    const bytes = new Uint8Array(bin.length);
-    for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
-    rawHtml = new TextDecoder('utf-8').decode(bytes);
+    fileSha = data.sha;
+    // ファイルが大きい場合はdownload_urlから直接取得
+    if(data.content && data.content.length > 0){
+      const b64 = data.content.replace(/\n/g,'');
+      const bin = atob(b64);
+      const bytes = new Uint8Array(bin.length);
+      for(let i=0;i<bin.length;i++) bytes[i]=bin.charCodeAt(i);
+      rawHtml = new TextDecoder('utf-8').decode(bytes);
+    } else {
+      // download_urlから直接取得
+      showStatus('ing','📡 ファイルを直接ダウンロード中...');
+      const dlRes = await fetch(data.download_url);
+      if(!dlRes.ok) throw new Error('ダウンロード失敗: '+dlRes.status);
+      rawHtml = await dlRes.text();
+    }
     document.getElementById('repoInfo').textContent=`${GITHUB_OWNER}/${GITHUB_REPO} — ${GITHUB_FILE}`;
     parseProducts();
     if(products.length===0){
