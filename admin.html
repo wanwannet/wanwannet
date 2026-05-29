@@ -143,11 +143,15 @@ async function loadFromGitHub(){
     rawHtml=decodeURIComponent(escape(atob(data.content.replace(/\n/g,''))));
     document.getElementById('repoInfo').textContent=`${GITHUB_OWNER}/${GITHUB_REPO} — ${GITHUB_FILE}`;
     parseProducts();
+    if(products.length===0){
+      showStatus('err','⚠️ 商品0件 rawHtml長:'+rawHtml.length+'\n最初のid位置:'+rawHtml.indexOf('{id:1,'));
+      return;
+    }
     renderList();
     showStatus('ok',`✅ ${products.length}件の商品を読み込みました`);
     setTimeout(()=>hideStatus(),3000);
   }catch(e){
-    showStatus('err','❌ 読み込み失敗:\n'+e.message);
+    showStatus('err','❌ エラー: '+e.message);
   }
 }
 
