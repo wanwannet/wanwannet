@@ -162,7 +162,11 @@ input[readonly]{background:#eee;color:#888;}
           <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="a-toggle" onclick="tglA()"></div><span id="a-slbl">在庫あり</span></div></div>
         </div>
         <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:8px;">バッジ</label><div class="badge-grid" id="a-badge-grid"></div></div>
-        <div class="form-row full" style="margin-top:12px;"><label>商品説明文（任意）</label><textarea id="a-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 詳細説明&#10;🐾 サイズ・カラー"></textarea></div>
+        <div class="form-row full" style="margin-top:12px;">
+          <label>商品説明文（任意）</label>
+          <button type="button" onclick="insertTemplateAdd()" style="margin-bottom:6px;padding:6px 14px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);border:none;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">📋 テンプレートを挿入</button>
+          <textarea id="a-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 詳細説明&#10;🐾 サイズ・カラー" style="min-height:160px;"></textarea>
+        </div>
 
         <div class="btn-row"><button class="btn btn-primary" onclick="addProd()">✅ 追加</button><button class="btn btn-ghost" onclick="clrAdd()">🔄 クリア</button></div>
         <div id="add-notice"></div>
@@ -234,7 +238,8 @@ input[readonly]{background:#eee;color:#888;}
     <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:8px;">バッジ</label><div class="badge-grid" id="e-badge-grid"></div></div>
     <div class="form-row full" style="margin-top:12px;">
       <label>商品説明文（HTMLタグ &lt;br&gt; も使用可）</label>
-      <textarea id="e-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 素材・サイズ・カラーなど詳細"></textarea>
+      <button type="button" onclick="insertTemplate()" style="margin-bottom:6px;padding:6px 14px;background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);border:none;border-radius:20px;font-size:12px;font-weight:800;cursor:pointer;font-family:inherit;">📋 テンプレートを挿入</button>
+      <textarea id="e-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 素材・サイズ・カラーなど詳細" style="min-height:160px;"></textarea>
     </div>
 
     <div class="modal-btn-row">
@@ -560,6 +565,38 @@ function setProgress(pct,text){
 function hideProgress(){
   document.getElementById("gh-progress").style.display="none";
   document.getElementById("gh-bar").style.width="0%";
+}
+function insertTemplate(){
+  var name = document.getElementById("e-name").value.trim();
+  var productName = name || "商品名";
+  var tmpl = "🐶 "+productName+"🐾<br>"
+    +"🐾 <br>"
+    +"🐾 <br>"
+    +"🐾 <br>"
+    +"🐾 サイズ<br>"
+    +"・縦：約　cm<br>"
+    +"・横：約　cm<br>"
+    +"・マチ：約　cm<br>"
+    +"🐾 カラー<br>"
+    +"・";
+  document.getElementById("e-desc").value = tmpl;
+  document.getElementById("e-desc").focus();
+}
+function insertTemplateAdd(){
+  var name = document.getElementById("a-name").value.trim();
+  var productName = name || "商品名";
+  var tmpl = "🐶 "+productName+"🐾<br>"
+    +"🐾 <br>"
+    +"🐾 <br>"
+    +"🐾 <br>"
+    +"🐾 サイズ<br>"
+    +"・縦：約　cm<br>"
+    +"・横：約　cm<br>"
+    +"・マチ：約　cm<br>"
+    +"🐾 カラー<br>"
+    +"・";
+  document.getElementById("a-desc").value = tmpl;
+  document.getElementById("a-desc").focus();
 }
 function showN(id,type,msg){
   var el=document.getElementById(id);if(!el)return;
