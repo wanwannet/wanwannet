@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>WanWanNet 商品管理ツール v2</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#6a9e6a;--green-d:#4a7a4a;--green-l:#9dc89d;--green-bg:#eef5ee;
+  --brown:#7a4f2a;--gold:#e8a830;--gold-l:#f5cc70;
+  --text:#3a2c1a;--text-s:#7a6a58;
+  --white:#fff;--bg:#fdf9f3;--cream:#fff8ee;--beige:#f0e8d8;
+  --radius:14px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:"M PLUS Rounded 1c",sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,var(--green-d),var(--green));padding:14px 24px;display:flex;align-items:center;gap:12px;box-shadow:0 3px 16px rgba(50,100,50,.25);}
+header h1{color:#fff;font-size:18px;font-weight:800;}
+header .sub{color:rgba(255,255,255,.75);font-size:12px;margin-left:auto;}
+#import-screen{display:flex;align-items:center;justify-content:center;min-height:calc(100vh - 55px);padding:24px;}
+.import-box{background:var(--white);border-radius:20px;padding:40px;max-width:480px;width:100%;text-align:center;box-shadow:0 8px 32px rgba(80,50,20,.12);}
+.import-box h2{font-size:20px;color:var(--green-d);margin-bottom:8px;}
+.import-box p{font-size:13px;color:var(--text-s);margin-bottom:24px;line-height:1.7;}
+.drop-zone{border:3px dashed var(--green-l);border-radius:16px;padding:40px 20px;cursor:pointer;transition:all .25s;background:var(--green-bg);margin-bottom:16px;}
+.drop-zone:hover,.drop-zone.drag{border-color:var(--green-d);background:#dff0df;}
+.drop-zone .ico{font-size:48px;margin-bottom:10px;}
+.drop-zone p{font-size:14px;color:var(--green-d);font-weight:700;}
+.drop-zone small{font-size:11px;color:var(--text-s);}
+#file-input{display:none;}
+#app{display:none;}
+.tabs{display:flex;background:var(--cream);border-bottom:2px solid var(--green-l);}
+.tab-btn{padding:11px 20px;border:none;background:none;font-family:inherit;font-size:13px;font-weight:700;color:var(--text-s);cursor:pointer;border-bottom:3px solid transparent;margin-bottom:-2px;transition:all .2s;}
+.tab-btn.active{color:var(--green-d);border-bottom-color:var(--green-d);background:var(--white);}
+.tab-btn:hover:not(.active){background:var(--green-bg);}
+.main{max-width:1100px;margin:0 auto;padding:20px 14px 60px;}
+.section{display:none;}.section.active{display:block;}
+.card-box{background:var(--white);border-radius:var(--radius);box-shadow:0 4px 16px rgba(80,50,20,.10);padding:20px;margin-bottom:18px;}
+.card-box h2{font-size:15px;color:var(--green-d);margin-bottom:14px;font-weight:800;}
+.list-controls{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
+.list-controls input{flex:1;min-width:160px;}
+.prod-list{display:flex;flex-direction:column;gap:8px;}
+.prod-item{background:var(--cream);border-radius:10px;padding:10px 14px;display:flex;align-items:center;gap:10px;border:1.5px solid var(--beige);transition:border-color .2s;cursor:pointer;}
+.prod-item:hover{border-color:var(--green-l);background:#f5faef;}
+.prod-item.soldout{opacity:.58;}
+.prod-emoji{font-size:26px;flex-shrink:0;}
+.prod-info{flex:1;min-width:0;}
+.prod-name{font-size:13px;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.prod-meta{font-size:10px;color:var(--text-s);margin-top:2px;}
+.tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;white-space:nowrap;}
+.tag-sold{color:#e05555;background:#ffeaea;}
+.tag-desc{color:var(--green-d);background:var(--green-bg);}
+.tag-img{color:#2979ff;background:#e8f0fe;}
+.tag-new{color:#7a4f2a;background:var(--gold-l);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.form-row{display:flex;flex-direction:column;gap:4px;}
+.form-row.full{grid-column:1/-1;}
+label{font-size:11px;font-weight:700;color:var(--text-s);}
+input,select,textarea{border:1.5px solid #d8cfc4;border-radius:8px;padding:8px 11px;font-family:inherit;font-size:13px;color:var(--text);background:var(--bg);transition:border-color .2s;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--green);}
+textarea{resize:vertical;min-height:100px;line-height:1.6;}
+input[readonly]{background:#eee;color:#888;}
+.btn{border:none;border-radius:50px;padding:9px 20px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:inline-flex;align-items:center;gap:5px;}
+.btn-primary{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;}
+.btn-primary:hover{filter:brightness(1.1);transform:scale(1.02);}
+.btn-gold{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);}
+.btn-sm{padding:5px 12px;font-size:11px;}
+.btn-ghost{background:#eee;color:var(--text);}
+.btn-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.badge-grid{display:flex;flex-wrap:wrap;gap:6px;}
+.badge-opt{padding:4px 10px;border-radius:20px;font-size:11px;font-weight:800;cursor:pointer;border:2px solid transparent;transition:all .2s;user-select:none;}
+.badge-opt.sel{border-color:#222;transform:scale(1.06);box-shadow:0 2px 8px rgba(0,0,0,.2);}
+.toggle-wrap{display:flex;align-items:center;gap:8px;margin-top:4px;}
+.toggle{width:42px;height:22px;background:#ccc;border-radius:11px;cursor:pointer;position:relative;transition:background .2s;flex-shrink:0;}
+.toggle.on{background:var(--green);}
+.toggle::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;background:#fff;border-radius:50%;transition:left .2s;box-shadow:0 1px 4px rgba(0,0,0,.2);}
+.toggle.on::after{left:23px;}
+.img-area{display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;}
+.img-thumb{width:90px;height:90px;object-fit:cover;border-radius:10px;border:1.5px solid var(--green-l);flex-shrink:0;}
+.img-placeholder{width:90px;height:90px;border-radius:10px;border:2px dashed var(--green-l);display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--green-bg);flex-shrink:0;}
+.modal-overlay{position:fixed;inset:0;background:rgba(50,80,50,.45);z-index:500;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s;}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal{background:var(--white);border-radius:var(--radius);padding:22px;max-width:580px;width:95%;max-height:92vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.2);}
+.modal-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.modal-hd h3{font-size:15px;color:var(--green-d);font-weight:800;}
+.modal-close-btn{background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-s);}
+.modal-btn-row{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;}
+.notice{padding:9px 14px;border-radius:8px;font-size:12px;font-weight:700;margin-top:10px;}
+.success{background:#d4f5d4;color:var(--green-d);}
+.error{background:#ffeaea;color:#c0392b;}
+.output-box{background:#1a1a1a;color:#7fff7f;border-radius:10px;padding:14px;font-family:monospace;font-size:11px;white-space:pre-wrap;max-height:300px;overflow-y:auto;border:1.5px solid #333;line-height:1.5;}
+.step-hint{background:var(--green-bg);border-radius:8px;padding:10px 14px;font-size:12px;color:var(--green-d);margin-bottom:14px;line-height:1.7;}
+.stats{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px;}
+.stat{background:var(--cream);border-radius:10px;padding:9px 14px;font-size:11px;font-weight:700;color:var(--text-s);border:1.5px solid var(--beige);}
+.stat strong{font-size:17px;color:var(--green-d);display:block;}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr;}.prod-item{flex-wrap:wrap;}}
+</style>
+</head>
+<body>
+<header>
+  <span style="font-size:22px;">🐾</span>
+  <h1>WanWanNet 商品管理ツール</h1>
+  <span class="sub" id="file-name-disp"></span>
+</header>
+
+<div id="import-screen">
+  <div class="import-box">
+    <h2>📂 index.html を読み込む</h2>
+    <p>現在のショップページ（index.html）をここにドラッグ＆ドロップするか、クリックして選択してください。<br>既存の全商品データが自動で読み込まれます。</p>
+    <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
+      <div class="ico">📄</div>
+      <p>index.html をドロップ</p>
+      <small>またはクリックして選択</small>
+    </div>
+    <input type="file" id="file-input" accept=".html">
+    <div id="import-notice"></div>
+  </div>
+</div>
+
+<div id="app">
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('list',this)">📋 商品一覧・編集</button>
+    <button class="tab-btn" onclick="switchTab('add',this)">➕ 新規追加</button>
+    <button class="tab-btn" onclick="switchTab('github',this)">🚀 GitHubに反映</button>
+  </div>
+  <div class="main">
+    <div id="tab-list" class="section active">
+      <div class="card-box">
+        <h2>📋 商品一覧 <span style="font-size:11px;font-weight:400;color:var(--text-s);">クリックで編集</span></h2>
+        <div class="stats" id="stats-row"></div>
+        <div class="list-controls">
+          <input type="text" id="search-q" placeholder="🔍 商品名・IDで検索..." oninput="renderList()">
+          <select id="filter-status" onchange="renderList()">
+            <option value="">全て</option>
+            <option value="instock">在庫あり</option>
+            <option value="soldout">在庫切れ</option>
+          </select>
+          <select id="filter-badge" onchange="renderList()">
+            <option value="">バッジ: 全て</option>
+            <option value="none">バッジなし</option>
+            <option value="pop">人気</option><option value="new">NEW</option>
+            <option value="sale">SALE</option><option value="re">再入荷</option>
+            <option value="last">残りわずか</option><option value="hot">HOT</option>
+            <option value="wakari">訳あり</option><option value="sotsu">卒業犬</option>
+          </select>
+        </div>
+        <div class="prod-list" id="prod-list"></div>
+      </div>
+    </div>
+
+    <div id="tab-add" class="section">
+      <div class="card-box">
+        <h2>➕ 新しい商品を追加</h2>
+        <div class="step-hint">💡 フォームを入力 → 「追加」→ 「コード出力」タブでコードをコピー → index.htmlに貼り付け</div>
+        <div class="form-grid">
+          <div class="form-row"><label>商品ID（既存と重複不可）</label><input type="number" id="a-id" placeholder="例: 70"></div>
+          <div class="form-row"><label>価格（円・税込）</label><input type="number" id="a-price" placeholder="例: 1500"></div>
+          <div class="form-row"><label>定価（セール時のみ）</label><input type="number" id="a-orig" placeholder="任意"></div>
+          <div class="form-row"><label>絵文字アイコン</label><input type="text" id="a-emoji" placeholder="例: 👜" maxlength="4"></div>
+          <div class="form-row full"><label>商品名（formName）</label><input type="text" id="a-name" placeholder="例: No.70 オリジナルトートバッグ（白） 1500円"></div>
+          <div class="form-row"><label>サイズ・仕様</label><input type="text" id="a-size" placeholder="例: 縦30cm×横40cm"></div>
+          <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="a-toggle" onclick="tglA()"></div><span id="a-slbl">在庫あり</span></div></div>
+        </div>
+        <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:8px;">バッジ</label><div class="badge-grid" id="a-badge-grid"></div></div>
+        <div class="form-row full" style="margin-top:12px;"><label>商品説明文（任意）</label><textarea id="a-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 詳細説明&#10;🐾 サイズ・カラー"></textarea></div>
+
+        <div class="btn-row"><button class="btn btn-primary" onclick="addProd()">✅ 追加</button><button class="btn btn-ghost" onclick="clrAdd()">🔄 クリア</button></div>
+        <div id="add-notice"></div>
+      </div>
+    </div>
+
+    <div id="tab-github" class="section">
+      <div class="card-box">
+        <h2>🔑 GitHub設定（初回だけ）</h2>
+        <div class="step-hint">
+          <strong>トークンの取得方法：</strong><br>
+          GitHubにログイン → 右上のアイコン → Settings → 一番下の「Developer settings」→「Personal access tokens」→「Tokens (classic)」→「Generate new token」<br>
+          ✅ <strong>repo</strong> にチェックを入れて生成 → 表示されたトークンをコピーしてここに貼り付け
+        </div>
+        <div class="form-grid">
+          <div class="form-row full"><label>GitHubトークン（repo権限）</label><input type="password" id="gh-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx"></div>
+          <div class="form-row"><label>リポジトリオーナー名</label><input type="text" id="gh-owner" placeholder="wanwannet" value="wanwannet"></div>
+          <div class="form-row"><label>リポジトリ名</label><input type="text" id="gh-repo" placeholder="wanwannet" value="wanwannet"></div>
+          <div class="form-row full"><label>ファイルパス（通常はそのまま）</label><input type="text" id="gh-path" placeholder="index.html" value="index.html"></div>
+        </div>
+        <div class="btn-row">
+          <button class="btn btn-ghost" onclick="saveGhSettings()">💾 設定を保存</button>
+          <button class="btn btn-sm" style="background:#e8f0fe;color:#2979ff;" onclick="testGhConnection()">🔗 接続テスト</button>
+        </div>
+        <div id="gh-settings-notice"></div>
+      </div>
+
+      <div class="card-box">
+        <h2>🚀 GitHubに反映する</h2>
+        <div class="step-hint">
+          ボタンを押すだけで、編集内容が自動でGitHubにアップロードされ、数分でサイトに反映されます。
+        </div>
+        <div style="background:var(--cream);border-radius:10px;padding:14px;margin-bottom:14px;font-size:13px;line-height:1.8;border:1.5px solid var(--beige);">
+          <div>📋 <strong>反映される内容：</strong></div>
+          <div>・商品データ（在庫状態・価格・バッジ・画像など）</div>
+          <div>・商品説明文</div>
+          <div>・新規追加した商品</div>
+        </div>
+        <button class="btn btn-primary" style="width:100%;justify-content:center;padding:14px;font-size:15px;" onclick="pushToGitHub()">
+          🚀 GitHubに反映する
+        </button>
+        <div id="gh-push-notice" style="margin-top:12px;"></div>
+        <div id="gh-progress" style="display:none;margin-top:12px;">
+          <div style="background:#eee;border-radius:10px;overflow:hidden;height:8px;">
+            <div id="gh-bar" style="background:linear-gradient(90deg,var(--green-d),var(--green));height:100%;width:0%;transition:width .5s;border-radius:10px;"></div>
+          </div>
+          <div id="gh-progress-text" style="font-size:12px;color:var(--text-s);margin-top:6px;text-align:center;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="edit-modal">
+  <div class="modal">
+    <div class="modal-hd">
+      <h3 id="modal-ttl">✏️ 商品を編集</h3>
+      <button class="modal-close-btn" onclick="closeModal()">✕</button>
+    </div>
+    <div class="form-grid">
+      <div class="form-row"><label>商品ID</label><input type="number" id="e-id" readonly></div>
+      <div class="form-row"><label>価格（円）</label><input type="number" id="e-price"></div>
+      <div class="form-row"><label>定価（セール時のみ）</label><input type="number" id="e-orig" placeholder="任意"></div>
+      <div class="form-row"><label>絵文字</label><input type="text" id="e-emoji" maxlength="4"></div>
+      <div class="form-row full"><label>商品名</label><input type="text" id="e-name"></div>
+      <div class="form-row"><label>サイズ</label><input type="text" id="e-size"></div>
+      <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="e-toggle" onclick="tglE()"></div><span id="e-slbl">在庫あり</span></div></div>
+    </div>
+    <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:8px;">バッジ</label><div class="badge-grid" id="e-badge-grid"></div></div>
+    <div class="form-row full" style="margin-top:12px;">
+      <label>商品説明文（HTMLタグ &lt;br&gt; も使用可）</label>
+      <textarea id="e-desc" placeholder="例:&#10;🐶 商品名🐾&#10;🐾 素材・サイズ・カラーなど詳細"></textarea>
+    </div>
+
+    <div class="modal-btn-row">
+      <button class="btn btn-ghost" onclick="closeModal()">キャンセル</button>
+      <button class="btn btn-primary" onclick="saveEdit()">💾 保存</button>
+    </div>
+    <div id="edit-notice"></div>
+  </div>
+</div>
+
+<script>
+var prods=[],editIdx=null,eStock=true,aStock=true,eBadge="",aBadge="";
+var BADGES=[
+  {v:"",l:"なし",s:"background:#eee;color:#666;"},
+  {v:"pop",l:"🔥 人気",s:"background:linear-gradient(135deg,#ff0080,#ff6600);color:#fff;"},
+  {v:"new",l:"✨ NEW",s:"background:linear-gradient(135deg,#aa00ff,#ff4081);color:#fff;"},
+  {v:"sale",l:"💰 SALE",s:"background:linear-gradient(135deg,#ff6d00,#ffe000);color:#333;"},
+  {v:"re",l:"🔄 再入荷",s:"background:linear-gradient(135deg,#00e676,#00b0ff);color:#fff;"},
+  {v:"last",l:"⚠️ 残りわずか",s:"background:linear-gradient(135deg,#ff1744,#ff6d00);color:#fff;"},
+  {v:"hot",l:"🌶️ HOT",s:"background:linear-gradient(135deg,#ff3d00,#ff9100);color:#fff;"},
+  {v:"one",l:"1️⃣ 1点限り",s:"background:linear-gradient(135deg,#6200ea,#d500f9);color:#fff;"},
+  {v:"season",l:"🌿 季節",s:"background:linear-gradient(135deg,#00bfa5,#64dd17);color:#fff;"},
+  {v:"deal",l:"💥 お得",s:"background:linear-gradient(135deg,#dd2c00,#ff6d00);color:#fff;"},
+  {v:"wakari",l:"🏷️ 訳あり",s:"background:linear-gradient(135deg,#f50057,#d500f9);color:#fff;"},
+  {v:"conv",l:"🎁 便利",s:"background:linear-gradient(135deg,#2979ff,#00e5ff);color:#fff;"},
+  {v:"sotsu",l:"🎓 卒業犬",s:"background:linear-gradient(135deg,#ffd600,#ff6d00);color:#fff;"},
+  {v:"outdoor",l:"🏕️ アウトドア",s:"background:linear-gradient(135deg,#00c853,#1de9b6);color:#fff;"},
+  {v:"few",l:"📦 少量",s:"background:linear-gradient(135deg,#ff6d00,#ffea00);color:#333;"},
+  {v:"black",l:"⚫ ブラック",s:"background:linear-gradient(135deg,#37474f,#000);color:#fff;"},
+  {v:"white",l:"⚪ ホワイト",s:"background:linear-gradient(135deg,#fff,#e8eaf6);color:#333;border:1px solid #9fa8da;"}
+];
+function mkBadgeGrid(cid,cur,fn){
+  document.getElementById(cid).innerHTML=BADGES.map(function(b){
+    return "<div class='badge-opt"+(b.v===cur?" sel":"")+"' style='"+b.s+"' data-v='"+b.v+"' onclick='"+fn+"(this)'>"+b.l+"</div>";
+  }).join("");
+}
+var dz=document.getElementById("drop-zone");
+dz.addEventListener("dragover",function(e){e.preventDefault();dz.classList.add("drag");});
+dz.addEventListener("dragleave",function(){dz.classList.remove("drag");});
+dz.addEventListener("drop",function(e){e.preventDefault();dz.classList.remove("drag");ldFile(e.dataTransfer.files[0]);});
+document.getElementById("file-input").addEventListener("change",function(e){ldFile(e.target.files[0]);});
+function ldFile(f){
+  if(!f||!f.name.endsWith(".html")){showN("import-notice","error","⚠️ .htmlファイルを選択してください");return;}
+  var r=new FileReader();
+  r.onload=function(e){try{parseHTML(e.target.result,f.name);}catch(err){showN("import-notice","error","⚠️ 読み込みエラー: "+err.message);}};
+  r.readAsText(f);
+}
+function parseHTML(html,fname){
+  var ps="const products = [";
+  var si=html.indexOf(ps);
+  if(si<0)throw new Error("products配列が見つかりません");
+  var bmi=html.indexOf("const badgeMap",si);
+  if(bmi<0)throw new Error("badgeMapが見つかりません");
+  var prodEnd=html.lastIndexOf("]",bmi);
+  var prodRaw=html.slice(si+ps.length,prodEnd);
+  var fn=new Function("return ["+prodRaw+"]");
+  prods=fn();
+  // 各商品の元の画像フィールド形式を保持
+  prods.forEach(function(p){
+    p._origImgField = p.imgs ? "imgs" : "img";
+    p._origImgs = p.imgs ? p.imgs.slice() : (p.img ? [p.img] : []);
+  });
+  // productDescs
+  var descs={};
+  var dsi=html.indexOf("const productDescs = {");
+  if(dsi>=0){
+    var dstart=html.indexOf("{",dsi);
+    var escIdx=html.indexOf("// Escキー",dsi);
+    var dei=html.lastIndexOf("}",escIdx);
+    if(dstart>=0&&dei>dstart){
+      try{var fn2=new Function("return "+html.slice(dstart,dei+1));descs=fn2();}catch(e){console.warn("descs error",e);}
+    }
+  }
+  prods.forEach(function(p){if(descs[p.id])p._desc=descs[p.id];});
+  document.getElementById("file-name-disp").textContent="📄 "+fname;
+  document.getElementById("import-screen").style.display="none";
+  document.getElementById("app").style.display="block";
+  mkBadgeGrid("a-badge-grid","",selABadge);
+  renderList();updStats();
+}
+function switchTab(n,btn){
+  document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
+  document.querySelectorAll(".tab-btn").forEach(function(b){b.classList.remove("active");});
+  document.getElementById("tab-"+n).classList.add("active");
+  btn.classList.add("active");
+  if(n==="github")loadGhSettings();
+}
+function updStats(){
+  var inS=prods.filter(function(p){return !p.soldout;}).length;
+  var sOut=prods.filter(function(p){return p.soldout;}).length;
+  var wDesc=prods.filter(function(p){return p._desc;}).length;
+  document.getElementById("stats-row").innerHTML=
+    "<div class='stat'><strong>"+prods.length+"</strong>総商品数</div>"+
+    "<div class='stat'><strong style='color:var(--green-d)'>"+inS+"</strong>在庫あり</div>"+
+    "<div class='stat'><strong style='color:#e05555'>"+sOut+"</strong>在庫切れ</div>"+
+    "<div class='stat'><strong style='color:#7a4f2a'>"+wDesc+"</strong>説明文あり</div>";
+}
+function renderList(){
+  var q=document.getElementById("search-q").value.toLowerCase();
+  var sf=document.getElementById("filter-status").value;
+  var bf=document.getElementById("filter-badge").value;
+  var filtered=prods.filter(function(p){
+    if(q&&!(p.formName||"").toLowerCase().includes(q)&&!String(p.id).includes(q))return false;
+    if(sf==="instock"&&p.soldout)return false;
+    if(sf==="soldout"&&!p.soldout)return false;
+    if(bf==="none"&&p.badge)return false;
+    if(bf&&bf!=="none"&&p.badge!==bf)return false;
+    return true;
+  });
+  var el=document.getElementById("prod-list");
+  if(!filtered.length){el.innerHTML="<p style='text-align:center;color:var(--text-s);padding:24px;'>該当商品なし</p>";return;}
+  el.innerHTML=filtered.map(function(p){
+    var idx=prods.indexOf(p);
+    return "<div class='prod-item"+(p.soldout?" soldout":"")+"' onclick='openEdit("+idx+")'>"
+      +"<div class='prod-emoji'>"+(p.emoji||"🛍️")+"</div>"
+      +"<div class='prod-info'><div class='prod-name'>"+escH(p.formName||"（名前なし）")+"</div>"
+      +"<div class='prod-meta'>ID:"+p.id+(p.size?" / "+escH(p.size):"")+(p.badge?" / "+p.badge:"")+"</div></div>"
+      +"<div style='display:flex;gap:4px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;'>"
+      +(p._desc?"<span class='tag tag-desc'>説明✓</span>":"")
+      +(p.soldout?"<span class='tag tag-sold'>在庫切れ</span>":"")
+      +"<span style='font-size:14px;font-weight:800;color:var(--brown);margin-left:4px;'>¥"+(p.price||0).toLocaleString()+"</span>"
+      +"</div></div>";
+  }).join("");
+}
+function escH(s){return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+function openEdit(idx){
+  var p=prods[idx];editIdx=idx;
+  document.getElementById("modal-ttl").textContent="✏️ 商品を編集 (ID:"+p.id+")";
+  document.getElementById("e-id").value=p.id;
+  document.getElementById("e-price").value=p.price||"";
+  document.getElementById("e-orig").value=p.origPrice||"";
+  document.getElementById("e-emoji").value=p.emoji||"";
+  document.getElementById("e-name").value=p.formName||"";
+  document.getElementById("e-size").value=p.size||"";
+  document.getElementById("e-desc").value=p._desc||"";
+  eStock=!p.soldout;eBadge=p.badge||"";
+  document.getElementById("e-toggle").className="toggle"+(eStock?" on":"");
+  document.getElementById("e-slbl").textContent=eStock?"在庫あり":"在庫切れ";
+  mkBadgeGrid("e-badge-grid",eBadge,"selEBadge");
+  document.getElementById("edit-notice").innerHTML="";
+  document.getElementById("edit-modal").classList.add("open");
+}
+function closeModal(){document.getElementById("edit-modal").classList.remove("open");}
+document.getElementById("edit-modal").addEventListener("click",function(e){if(e.target===this)closeModal();});
+function tglE(){eStock=!eStock;document.getElementById("e-toggle").className="toggle"+(eStock?" on":"");document.getElementById("e-slbl").textContent=eStock?"在庫あり":"在庫切れ";}
+function selEBadge(el){document.querySelectorAll("#e-badge-grid .badge-opt").forEach(function(b){b.classList.remove("sel");});el.classList.add("sel");eBadge=el.dataset.v;}
+function saveEdit(){
+  var p=prods[editIdx];
+  var price=parseInt(document.getElementById("e-price").value);
+  var name=document.getElementById("e-name").value.trim();
+  if(!price||!name){showN("edit-notice","error","⚠️ 価格・商品名は必須");return;}
+  p.price=price;p.formName=name;
+  var orig=parseInt(document.getElementById("e-orig").value);
+  if(orig)p.origPrice=orig;else delete p.origPrice;
+  p.emoji=document.getElementById("e-emoji").value.trim()||p.emoji;
+  p.size=document.getElementById("e-size").value.trim()||null;
+  var desc=document.getElementById("e-desc").value.trim();
+  if(desc)p._desc=desc;else delete p._desc;
+  p.badge=eBadge||null;p.soldout=!eStock;
+  closeModal();renderList();updStats();
+}
+function clrAdd(){
+  ["a-id","a-price","a-orig","a-emoji","a-name","a-size","a-desc"].forEach(function(id){document.getElementById(id).value="";});
+  aStock=true;aBadge="";
+  document.getElementById("a-toggle").className="toggle on";document.getElementById("a-slbl").textContent="在庫あり";
+  document.querySelectorAll("#a-badge-grid .badge-opt").forEach(function(b){b.classList.remove("sel");});
+  var f=document.querySelector("#a-badge-grid .badge-opt");if(f)f.classList.add("sel");
+}
+function tglA(){aStock=!aStock;document.getElementById("a-toggle").className="toggle"+(aStock?" on":"");document.getElementById("a-slbl").textContent=aStock?"在庫あり":"在庫切れ";}
+function selABadge(el){document.querySelectorAll("#a-badge-grid .badge-opt").forEach(function(b){b.classList.remove("sel");});el.classList.add("sel");aBadge=el.dataset.v;}
+function addProd(){
+  var id=parseInt(document.getElementById("a-id").value);
+  var price=parseInt(document.getElementById("a-price").value);
+  var name=document.getElementById("a-name").value.trim();
+  var emoji=document.getElementById("a-emoji").value.trim()||"🛍️";
+  var size=document.getElementById("a-size").value.trim();
+  var orig=parseInt(document.getElementById("a-orig").value)||null;
+  var desc=document.getElementById("a-desc").value.trim();
+  if(!id||!price||!name){showN("add-notice","error","⚠️ ID・価格・商品名は必須");return;}
+  if(prods.find(function(p){return p.id===id;})){showN("add-notice","error","⚠️ このIDは既に使用中");return;}
+  var p={id:id,formName:name,img:'""',size:size||null,price:price,emoji:emoji,badge:aBadge||null,soldout:!aStock,_origImgField:"img",_origImgs:[]};
+  if(orig)p.origPrice=orig;if(desc)p._desc=desc;
+  prods.push(p);showN("add-notice","success","✅ 「"+name+"」を追加しました！");clrAdd();updStats();
+}
+// ===== コード生成（画像は元の形式をそのまま維持） =====
+function buildProdsInner(){
+  var NL="\n";
+  var lines=prods.map(function(p){
+    var f=["id:"+p.id,"formName:"+JSON.stringify(p.formName)];
+    // 画像は元の形式をそのまま維持（絶対に変換しない）
+    if(p._origImgField==="imgs"){
+      f.push("imgs:"+JSON.stringify(p._origImgs));
+    } else {
+      var imgVal=p._origImgs&&p._origImgs.length>0?JSON.stringify(p._origImgs[0]):'""';
+      f.push("img:"+imgVal);
+    }
+    if(p.size)f.push("size:"+JSON.stringify(p.size));
+    f.push("price:"+p.price,"emoji:"+JSON.stringify(p.emoji||"🛍️"),"badge:"+(p.badge?JSON.stringify(p.badge):"null"),"soldout:"+p.soldout);
+    if(p.origPrice)f.push("origPrice:"+p.origPrice);
+    return "  {"+f.join(", ")+"}";
+  });
+  return NL+lines.join(","+NL)+NL;
+}
+function buildDescsInner(){
+  var NL="\n";
+  var wd=prods.filter(function(p){return p._desc;});
+  if(!wd.length)return NL;
+  return NL+wd.map(function(p){return "  "+p.id+": "+JSON.stringify(p._desc);}).join(","+NL)+NL;
+}
+function buildNewHtml(src){
+  var prodStart="const products = [";
+  var si=src.indexOf(prodStart);
+  if(si<0){alert("products配列が見つかりません");return null;}
+  var contentStart=si+prodStart.length;
+  var badgeIdx=src.indexOf("const badgeMap",si);
+  if(badgeIdx<0){alert("badgeMapが見つかりません");return null;}
+  var prodEnd=src.lastIndexOf("]",badgeIdx);
+  var result=src.slice(0,contentStart)+buildProdsInner()+src.slice(prodEnd);
+  var descStart="const productDescs = {";
+  var dsi=result.indexOf(descStart);
+  if(dsi>=0){
+    var dcontentStart=dsi+descStart.length;
+    var escIdx=result.indexOf("// Escキー",dsi);
+    if(escIdx>=0){
+      var dEnd=result.lastIndexOf("}",escIdx);
+      result=result.slice(0,dcontentStart)+buildDescsInner()+result.slice(dEnd);
+    }
+  }
+  return result;
+}
+function encodeB64Unicode(str){
+  var bytes=new TextEncoder().encode(str);
+  var chunkSize=8192;var binary="";
+  for(var i=0;i<bytes.length;i+=chunkSize){
+    binary+=String.fromCharCode.apply(null,bytes.subarray(i,i+chunkSize));
+  }
+  return btoa(binary);
+}
+function saveGhSettings(){
+  var token=document.getElementById("gh-token").value.trim();
+  var owner=document.getElementById("gh-owner").value.trim();
+  var repo=document.getElementById("gh-repo").value.trim();
+  var path=document.getElementById("gh-path").value.trim();
+  if(!token||!owner||!repo||!path){showN("gh-settings-notice","error","⚠️ 全項目を入力してください");return;}
+  localStorage.setItem("gh_token",token);localStorage.setItem("gh_owner",owner);
+  localStorage.setItem("gh_repo",repo);localStorage.setItem("gh_path",path);
+  showN("gh-settings-notice","success","✅ 設定を保存しました！");
+}
+function loadGhSettings(){
+  var fields=["gh-token","gh-owner","gh-repo","gh-path"];
+  var keys=["gh_token","gh_owner","gh_repo","gh_path"];
+  var defaults=["","wanwannet","wanwannet","index.html"];
+  fields.forEach(function(id,i){var el=document.getElementById(id);if(el)el.value=localStorage.getItem(keys[i])||defaults[i];});
+}
+function testGhConnection(){
+  var token=document.getElementById("gh-token").value.trim();
+  var owner=document.getElementById("gh-owner").value.trim();
+  var repo=document.getElementById("gh-repo").value.trim();
+  if(!token||!owner||!repo){showN("gh-settings-notice","error","⚠️ 入力してください");return;}
+  showN("gh-settings-notice","info","🔄 確認中...");
+  fetch("https://api.github.com/repos/"+owner+"/"+repo,{
+    headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3+json"}
+  }).then(function(r){
+    if(r.ok)showN("gh-settings-notice","success","✅ 接続成功！");
+    else if(r.status===401)showN("gh-settings-notice","error","⚠️ トークンが無効");
+    else if(r.status===404)showN("gh-settings-notice","error","⚠️ リポジトリが見つからない");
+    else showN("gh-settings-notice","error","⚠️ エラー: "+r.status);
+  }).catch(function(){showN("gh-settings-notice","error","⚠️ 通信エラー");});
+}
+function pushToGitHub(){
+  var token=localStorage.getItem("gh_token")||"";
+  var owner=localStorage.getItem("gh_owner")||"";
+  var repo=localStorage.getItem("gh_repo")||"";
+  var path=localStorage.getItem("gh_path")||"index.html";
+  if(!token||!owner||!repo){showN("gh-push-notice","error","⚠️ まず設定を保存してください");return;}
+  setProgress(10,"📥 ファイル情報を取得中...");
+  fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path,{
+    headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3+json"}
+  })
+  .then(function(r){if(!r.ok)throw new Error("取得失敗("+r.status+")");return r.json();})
+  .then(function(data){
+    var fileSha=data.sha;
+    setProgress(25,"📥 HTMLを取得中...");
+    return fetch("https://api.github.com/repos/"+owner+"/"+repo+"/git/blobs/"+data.sha,{
+      headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3.raw"}
+    }).then(function(r2){
+      if(!r2.ok)throw new Error("取得失敗("+r2.status+")");
+      return r2.text().then(function(html){return {sha:fileSha,html:html};});
+    });
+  })
+  .then(function(obj){
+    if(obj.html.length===0)throw new Error("HTMLが空です");
+    setProgress(50,"🔧 データを更新中...");
+    var newHtml=buildNewHtml(obj.html);
+    if(!newHtml)throw new Error("更新に失敗しました");
+    setProgress(70,"☁️ アップロード中...");
+    return fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path,{
+      method:"PUT",
+      headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3+json","Content-Type":"application/json"},
+      body:JSON.stringify({message:"商品データを更新",content:encodeB64Unicode(newHtml),sha:obj.sha})
+    });
+  })
+  .then(function(r){
+    if(!r.ok)return r.json().then(function(e){throw new Error("アップロード失敗: "+(e.message||r.status));});
+    return r.json();
+  })
+  .then(function(){
+    setProgress(100,"✅ 完了！");
+    setTimeout(function(){hideProgress();},1500);
+    showN("gh-push-notice","success","🎉 反映完了！数分でサイトに反映されます。");
+  })
+  .catch(function(err){
+    hideProgress();
+    showN("gh-push-notice","error","⚠️ エラー: "+err.message);
+    console.error(err);
+  });
+}
+function setProgress(pct,text){
+  document.getElementById("gh-progress").style.display="block";
+  document.getElementById("gh-bar").style.width=pct+"%";
+  document.getElementById("gh-progress-text").textContent=text;
+}
+function hideProgress(){
+  document.getElementById("gh-progress").style.display="none";
+  document.getElementById("gh-bar").style.width="0%";
+}
+function showN(id,type,msg){
+  var el=document.getElementById(id);if(!el)return;
+  el.className="notice "+type;el.textContent=msg;
+  setTimeout(function(){if(el)el.textContent="";},4000);
+}
+</script>
+</body>
+</html>
