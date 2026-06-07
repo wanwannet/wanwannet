@@ -566,36 +566,60 @@ function hideProgress(){
   document.getElementById("gh-progress").style.display="none";
   document.getElementById("gh-bar").style.width="0%";
 }
-function insertTemplate(){
-  var name = document.getElementById("e-name").value.trim();
-  var productName = name || "商品名";
-  var tmpl = "🐶 "+productName+"🐾<br>"
+function buildTemplate(name, size, formName){
+  // 商品名からカラーを推測
+  var colorHints = {
+    "ブラック":"ブラック","黒":"ブラック","black":"ブラック",
+    "ホワイト":"ホワイト","白":"ホワイト","white":"ホワイト",
+    "ネイビー":"ネイビー","紺":"ネイビー",
+    "ベージュ":"ベージュ","グレー":"グレー","ピンク":"ピンク",
+    "レッド":"レッド","赤":"レッド","ブルー":"ブルー","青":"ブルー",
+    "グリーン":"グリーン","緑":"グリーン","イエロー":"イエロー","黄":"イエロー",
+    "パープル":"パープル","紫":"パープル","ブラウン":"ブラウン","茶":"ブラウン"
+  };
+  var detectedColor = "";
+  var searchStr = (formName||"")+(name||"");
+  Object.keys(colorHints).forEach(function(key){
+    if(searchStr.indexOf(key)>=0 && !detectedColor){
+      detectedColor = colorHints[key];
+    }
+  });
+
+  // サイズを整形
+  var sizeLines = "";
+  if(size && size.trim()){
+    // × や x で分割を試みる
+    var s = size.trim();
+    if(s.indexOf("×")>=0 || s.indexOf("x")>=0 || s.indexOf("X")>=0){
+      sizeLines = "🐾 サイズ<br>・"+s+"<br>";
+    } else {
+      sizeLines = "🐾 サイズ<br>・"+s+"<br>";
+    }
+  } else {
+    sizeLines = "🐾 サイズ<br>・縦：約　cm<br>・横：約　cm<br>・マチ：約　cm<br>";
+  }
+
+  var tmpl = "🐶 "+name+"🐾<br>"
     +"🐾 <br>"
     +"🐾 <br>"
     +"🐾 <br>"
-    +"🐾 サイズ<br>"
-    +"・縦：約　cm<br>"
-    +"・横：約　cm<br>"
-    +"・マチ：約　cm<br>"
+    +sizeLines
     +"🐾 カラー<br>"
-    +"・";
-  document.getElementById("e-desc").value = tmpl;
+    +"・"+(detectedColor||"");
+  return tmpl;
+}
+function insertTemplate(){
+  var name = document.getElementById("e-name").value.trim() || "商品名";
+  var size = document.getElementById("e-size").value.trim();
+  var p = prods[editIdx];
+  var formName = p ? (p.formName||"") : "";
+  document.getElementById("e-desc").value = buildTemplate(name, size, formName);
   document.getElementById("e-desc").focus();
 }
 function insertTemplateAdd(){
-  var name = document.getElementById("a-name").value.trim();
-  var productName = name || "商品名";
-  var tmpl = "🐶 "+productName+"🐾<br>"
-    +"🐾 <br>"
-    +"🐾 <br>"
-    +"🐾 <br>"
-    +"🐾 サイズ<br>"
-    +"・縦：約　cm<br>"
-    +"・横：約　cm<br>"
-    +"・マチ：約　cm<br>"
-    +"🐾 カラー<br>"
-    +"・";
-  document.getElementById("a-desc").value = tmpl;
+  var name = document.getElementById("a-name").value.trim() || "商品名";
+  var size = document.getElementById("a-size").value.trim();
+  document.getElementById("a-desc").value = buildTemplate(name, size, name);
   document.getElementById("a-desc").focus();
 }
 function showN(id,type,msg){
