@@ -312,9 +312,16 @@ function parseHTML(html,fname){
   var fn=new Function("return ["+prodRaw+"]");
   prods=fn();
   prods.forEach(function(p){
-    if(p.imgs&&Array.isArray(p.imgs)){p._imgs=p.imgs;}
-    else if(p.img){p._imgs=[p.img];}
-    else{p._imgs=[];}
+    if(p.imgs&&Array.isArray(p.imgs)){
+      p._imgs=p.imgs;
+      p._wasImgs=true; // 元々imgsだった商品にフラグ
+    } else if(p.img){
+      p._imgs=[p.img];
+      p._wasImgs=false;
+    } else {
+      p._imgs=[];
+      p._wasImgs=false;
+    }
   });
   // productDescs
   var descs={};
@@ -446,7 +453,11 @@ function saveEdit(){
   var desc=document.getElementById("e-desc").value.trim();
   if(desc)p._desc=desc;else delete p._desc;
   p.badge=eBadge||null;p.soldout=!eStock;
-  if(eImgChg){p._imgs=eImgs.slice();}
+  if(eImgChg){
+    p._imgs=eImgs.slice();
+    // 複数画像になった場合はimgsフラグを立てる
+    p._wasImgs=(p._imgs.length>1)||p._wasImgs;
+  }
   closeModal();renderList();updStats();
 }
 var aImgs=[];
@@ -500,14 +511,19 @@ function addProd(){
 }
 // ===== コード生成（products配列の内容のみ） =====
 function buildProdsInner(){
-  // products = [ の中身だけ生成（brackets除く）
   var NL="\n";
   var lines=prods.map(function(p){
     var f=["id:"+p.id,"formName:"+JSON.stringify(p.formName)];
     var imgs=p._imgs||[];
-    if(imgs.length===0){f.push('img:""');}
-    else if(imgs.length===1){f.push("img:"+JSON.stringify(imgs[0]));}
-    else{f.push("imgs:"+JSON.stringify(imgs));}
+    // 元がimgsだった場合はimgsで出力、それ以外はimgで出力
+    if(p._wasImgs){
+      // 複数画像はimgsで出力
+      f.push("imgs:"+JSON.stringify(imgs));
+    } else if(imgs.length===0){
+      f.push('img:""');
+    } else {
+      f.push("img:"+JSON.stringify(imgs[0]));
+    }
     if(p.size)f.push("size:"+JSON.stringify(p.size));
     f.push("price:"+p.price,"emoji:"+JSON.stringify(p.emoji||"🛍️"),"badge:"+(p.badge?JSON.stringify(p.badge):"null"),"soldout:"+p.soldout);
     if(p.origPrice)f.push("origPrice:"+p.origPrice);
