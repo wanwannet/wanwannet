@@ -105,8 +105,18 @@ input[readonly]{background:#eee;color:#888;}
 
 <div id="import-screen">
   <div class="import-box">
-    <h2>📂 index.html を読み込む</h2>
-    <p>GitHubからダウンロードしたindex.htmlをドロップするか、クリックして選択してください。</p>
+    <h2>📂 データを読み込む</h2>
+    <p>GitHubから自動で最新データを取得できます。<br>初回はトークンを入力してください。</p>
+    <div style="margin-bottom:16px;">
+      <label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:6px;">GitHubトークン</label>
+      <input type="password" id="import-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" style="width:100%;margin-bottom:8px;">
+      <button onclick="loadFromGitHub()" class="btn btn-primary" style="width:100%;justify-content:center;padding:12px;font-size:14px;">🚀 GitHubから最新データを取得</button>
+    </div>
+    <div style="display:flex;align-items:center;gap:10px;margin:16px 0;">
+      <div style="flex:1;height:1px;background:#ddd;"></div>
+      <span style="font-size:11px;color:var(--text-s);">または</span>
+      <div style="flex:1;height:1px;background:#ddd;"></div>
+    </div>
     <div class="drop-zone" id="drop-zone" onclick="document.getElementById('file-input').click()">
       <div class="ico">📄</div>
       <p>index.html をドロップ</p>
@@ -261,6 +271,47 @@ function mkBadgeGrid(cid,cur,fn){
   }).join("");
 }
 
+function loadFromGitHub(){
+  var token=document.getElementById("import-token").value.trim();
+  if(!token){
+    // localStorageから取得を試みる
+    token=localStorage.getItem("gh_token")||"";
+  }
+  if(!token){showN("import-notice","error","⚠️ トークンを入力してください");return;}
+  var owner=localStorage.getItem("gh_owner")||"wanwannet";
+  var repo=localStorage.getItem("gh_repo")||"wanwannet";
+  var path=localStorage.getItem("gh_path")||"index.html";
+  // トークンを保存
+  localStorage.setItem("gh_token",token);
+  showN("import-notice","info","📥 GitHubから取得中...");
+  fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path,{
+    headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3+json"}
+  })
+  .then(function(r){
+    if(r.status===401)throw new Error("トークンが無効です");
+    if(r.status===404)throw new Error("リポジトリが見つかりません");
+    if(!r.ok)throw new Error("取得失敗("+r.status+")");
+    return r.json();
+  })
+  .then(function(data){
+    showN("import-notice","info","📥 HTMLを取得中（大きいファイル）...");
+    return fetch("https://api.github.com/repos/"+owner+"/"+repo+"/git/blobs/"+data.sha,{
+      headers:{"Authorization":"token "+token,"Accept":"application/vnd.github.v3.raw"}
+    });
+  })
+  .then(function(r){
+    if(!r.ok)throw new Error("取得失敗("+r.status+")");
+    return r.text();
+  })
+  .then(function(html){
+    if(html.length===0)throw new Error("HTMLが空です");
+    parseHTML(html,"GitHub最新版");
+  })
+  .catch(function(err){
+    showN("import-notice","error","⚠️ エラー: "+err.message);
+  });
+}
+
 var dz=document.getElementById("drop-zone");
 dz.addEventListener("dragover",function(e){e.preventDefault();dz.classList.add("drag");});
 dz.addEventListener("dragleave",function(){dz.classList.remove("drag");});
@@ -368,6 +419,13 @@ function parseHTML(html,fname){
   mkBadgeGrid("a-badge-grid","",selABadge);
   renderList();updStats();
 }
+
+// ページ読み込み時にトークンを自動セット
+window.addEventListener("load",function(){
+  var saved=localStorage.getItem("gh_token")||"";
+  var el=document.getElementById("import-token");
+  if(el&&saved)el.value=saved;
+});
 
 function switchTab(n,btn){
   document.querySelectorAll(".section").forEach(function(s){s.classList.remove("active");});
