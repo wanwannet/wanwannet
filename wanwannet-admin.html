@@ -261,7 +261,6 @@ function mkBadgeGrid(cid,cur,fn){
   }).join("");
 }
 
-// ===== ファイル読み込み =====
 var dz=document.getElementById("drop-zone");
 dz.addEventListener("dragover",function(e){e.preventDefault();dz.classList.add("drag");});
 dz.addEventListener("dragleave",function(){dz.classList.remove("drag");});
@@ -272,8 +271,8 @@ function ldFile(f){
   if(!f||!f.name.endsWith(".html")){showN("import-notice","error","⚠️ .htmlファイルを選択してください");return;}
   showN("import-notice","info","📖 読み込み中...");
   var r=new FileReader();
-  r.onload=function(e){
-    try{parseHTML(e.target.result,f.name);}
+  r.onload=function(ev){
+    try{parseHTML(ev.target.result,f.name);}
     catch(err){showN("import-notice","error","⚠️ 読み込みエラー: "+err.message);}
   };
   r.readAsText(f);
@@ -281,48 +280,73 @@ function ldFile(f){
 
 function parseHTML(html,fname){
   rawHtml=html;
-  // products配列をパース（imgデータは除外して軽量化）
-  var ps="const products = [";
-  var si=html.indexOf(ps);
-  if(si<0)throw new Error("products配列が見つかりません");
-  var bmi=html.indexOf("const badgeMap",si);
-  if(bmi<0)throw new Error("badgeMapが見つかりません");
-  var prodEnd=html.lastIndexOf("]",bmi);
-  var prodRaw=html.slice(si+ps.length,prodEnd);
-
-  // 画像データを除いて軽量なオブジェクトとして読み込む
-  // Function使用を避け、正規表現で必要フィールドだけ抽出
   prods=[];
-  var blockRe=/\{id:(\d+),\s*formName:"([^"]*)"/g;
-  var m;
-  while((m=blockRe.exec(prodRaw))!==null){
-    var id=parseInt(m[1]);
-    var formName=m[2];
-    var pos=m.index;
-    // 次の{id:を探してブロックを切り出す
-    var nextPos=prodRaw.indexOf("{id:",pos+1);
-    var block=prodRaw.slice(pos,nextPos>0?nextPos:prodRaw.length);
+  // 商品データを正規表現で軽量抽出（画像データは除く）
+  var pos=0;
+  while(true){
+    var idIdx=html.indexOf("{id:",pos);
+    if(idIdx<0)break;
+    var nameIdx=html.indexOf(", formName:",idIdx);
+    if(nameIdx<0)break;
+    // IDを取得
+    var idStr=html.slice(idIdx+4,nameIdx);
+    var pid=parseInt(idStr);
+    if(isNaN(pid)){pos=idIdx+1;continue;}
+    // 次の商品の開始位置（ブロック終端）
+    var nextId=html.indexOf("{id:",idIdx+1);
+    var blockEnd=nextId>0?nextId:html.indexOf("];",idIdx);
+    var block=html.slice(idIdx,blockEnd);
+    // formName
+    var fnStart=nameIdx+11; // ', formName:"' の長さ
+    var fnEnd=html.indexOf('"',fnStart+1);
+    var formName=html.slice(fnStart+1,fnEnd);
     // soldout
-    var sm=block.match(/soldout:(true|false)/);
-    var soldout=sm?sm[1]==="true":false;
+    var soIdx=block.indexOf(", soldout:");
+    var soldout=false;
+    if(soIdx>=0){soldout=block.slice(soIdx+10,soIdx+14)==="true";}
     // badge
-    var bm2=block.match(/badge:'([^']*)'/);
-    var badge=bm2?bm2[1]:null;
+    var bIdx=block.indexOf(", badge:");
+    var badge=null;
+    if(bIdx>=0){
+      var bAfter=block.slice(bIdx+8);
+      if(bAfter.indexOf("null")===0){badge=null;}
+      else if(bAfter[0]==="'"){
+        var bEnd=bAfter.indexOf("'",1);
+        badge=bAfter.slice(1,bEnd);
+      }
+    }
     // price
-    var pm2=block.match(/price:(\d+)/);
-    var price=pm2?parseInt(pm2[1]):0;
+    var prIdx=block.indexOf(", price:");
+    var price=0;
+    if(prIdx>=0){
+      var prAfter=block.slice(prIdx+8);
+      price=parseInt(prAfter);
+    }
     // emoji
-    var em=block.match(/emoji:"([^"]*)"/);
-    var emoji=em?em[1]:"🛍️";
+    var emIdx=block.indexOf(', emoji:"');
+    var emoji="🛍️";
+    if(emIdx>=0){
+      var emAfter=block.slice(emIdx+9);
+      var emEnd=emAfter.indexOf('"');
+      emoji=emAfter.slice(0,emEnd);
+    }
     // size
-    var szm=block.match(/size:"([^"]*)"/);
-    var size=szm?szm[1]:null;
+    var szIdx=block.indexOf(', size:"');
+    var size=null;
+    if(szIdx>=0){
+      var szAfter=block.slice(szIdx+8);
+      var szEnd=szAfter.indexOf('"');
+      size=szAfter.slice(0,szEnd);
+    }
     // origPrice
-    var om=block.match(/origPrice:(\d+)/);
-    var origPrice=om?parseInt(om[1]):null;
+    var opIdx=block.indexOf(", origPrice:");
+    var origPrice=null;
+    if(opIdx>=0){origPrice=parseInt(block.slice(opIdx+12));}
 
-    prods.push({id:id,formName:formName,soldout:soldout,badge:badge,price:price,emoji:emoji,size:size,origPrice:origPrice});
+    prods.push({id:pid,formName:formName,soldout:soldout,badge:badge,price:price,emoji:emoji,size:size,origPrice:origPrice});
+    pos=idIdx+1;
   }
+  prods.sort(function(a,b){return a.id-b.id;});
 
   // productDescsをパース
   var descs={};
@@ -332,10 +356,8 @@ function parseHTML(html,fname){
     var escIdx=html.indexOf("// Escキー",dsi);
     var dei=html.lastIndexOf("}",escIdx);
     if(dstart>=0&&dei>dstart){
-      try{
-        var fn2=new Function("return "+html.slice(dstart,dei+1));
-        descs=fn2();
-      }catch(e){console.warn("descs parse error",e);}
+      try{var fn2=new Function("return "+html.slice(dstart,dei+1));descs=fn2();}
+      catch(e){console.warn("descs error",e);}
     }
   }
   prods.forEach(function(p){if(descs[p.id])p._desc=descs[p.id];});
@@ -431,34 +453,23 @@ function saveEdit(){
   closeModal();renderList();updStats();
 }
 
-// ===== テンプレート =====
 var COLOR_MAP={
-  "ブラック":"ブラック","黒":"ブラック","black":"ブラック",
-  "ホワイト":"ホワイト","白":"ホワイト","white":"ホワイト",
-  "ネイビー":"ネイビー","紺":"ネイビー","ベージュ":"ベージュ",
-  "グレー":"グレー","ピンク":"ピンク","レッド":"レッド","赤":"レッド",
-  "ブルー":"ブルー","青":"ブルー","グリーン":"グリーン","緑":"グリーン",
-  "イエロー":"イエロー","黄":"イエロー","パープル":"パープル","紫":"パープル",
-  "ブラウン":"ブラウン","茶":"ブラウン","カーキ":"カーキ","オレンジ":"オレンジ"
+  "ブラック":"ブラック","黒":"ブラック","ホワイト":"ホワイト","白":"ホワイト",
+  "ネイビー":"ネイビー","紺":"ネイビー","ベージュ":"ベージュ","グレー":"グレー",
+  "ピンク":"ピンク","レッド":"レッド","赤":"レッド","ブルー":"ブルー","青":"ブルー",
+  "グリーン":"グリーン","緑":"グリーン","イエロー":"イエロー","黄":"イエロー",
+  "パープル":"パープル","紫":"パープル","ブラウン":"ブラウン","茶":"ブラウン",
+  "カーキ":"カーキ","オレンジ":"オレンジ"
 };
 function detectColor(str){
   var keys=Object.keys(COLOR_MAP);
-  for(var i=0;i<keys.length;i++){
-    if(str.indexOf(keys[i])>=0)return COLOR_MAP[keys[i]];
-  }
+  for(var i=0;i<keys.length;i++){if(str.indexOf(keys[i])>=0)return COLOR_MAP[keys[i]];}
   return "";
 }
 function buildTemplate(name,size,ref){
   var color=detectColor(ref||"");
   var sizeStr=size&&size.trim()?size.trim():"縦：約　cm × 横：約　cm";
-  return "🐶 "+name+"🐾<br>"
-    +"🐾 <br>"
-    +"🐾 <br>"
-    +"🐾 <br>"
-    +"🐾 サイズ<br>"
-    +"・"+sizeStr+"<br>"
-    +"🐾 カラー<br>"
-    +"・"+(color||"");
+  return "🐶 "+name+"🐾<br>🐾 <br>🐾 <br>🐾 <br>🐾 サイズ<br>・"+sizeStr+"<br>🐾 カラー<br>・"+(color||"");
 }
 function insertTemplate(){
   var name=document.getElementById("e-name").value.trim()||"商品名";
@@ -474,7 +485,6 @@ function insertTemplateAdd(){
   document.getElementById("a-desc").focus();
 }
 
-// ===== 新規追加 =====
 function tglA(){aStock=!aStock;document.getElementById("a-toggle").className="toggle"+(aStock?" on":"");document.getElementById("a-slbl").textContent=aStock?"在庫あり":"在庫切れ";}
 function selABadge(el){document.querySelectorAll("#a-badge-grid .badge-opt").forEach(function(b){b.classList.remove("sel");});el.classList.add("sel");aBadge=el.dataset.v;}
 function clrAdd(){
@@ -503,32 +513,39 @@ function addProd(){
   clrAdd();updStats();renderList();
 }
 
-// ===== GitHub反映（ピンポイント書き換え） =====
-// 画像データには一切触れず、テキストフィールドだけを書き換える
+// ===== ピンポイント書き換え（正規表現不使用・画像データ不変） =====
+function replaceProductField(html, pid, field, newVal){
+  var marker="id:"+pid+", formName:";
+  var start=html.indexOf(marker);
+  if(start<0)return html;
+  var nextStart=html.indexOf("{id:",start+1);
+  var blockEnd=nextStart>0?nextStart:html.indexOf("];",start);
+  var block=html.slice(start,blockEnd);
+  var fMarker=", "+field+":";
+  var fIdx=block.indexOf(fMarker);
+  if(fIdx<0)return html;
+  var valStart=fIdx+fMarker.length;
+  var valEnd=valStart;
+  while(valEnd<block.length){
+    var c=block[valEnd];
+    if(c==="}"||(c===","&&valEnd+1<block.length&&block[valEnd+1]===" "))break;
+    valEnd++;
+  }
+  var newBlock=block.slice(0,valStart)+newVal+block.slice(valEnd);
+  return html.slice(0,start)+newBlock+html.slice(blockEnd);
+}
+
 function buildNewHtml(src){
   var result=src;
 
-  // 1. 既存商品のsoldout・badge・formName・price・emoji・sizeをピンポイントで書き換え
+  // 1. 各商品のsoldout・badgeをピンポイントで書き換え
   prods.filter(function(p){return !p._isNew;}).forEach(function(p){
-    // 商品ブロックの開始位置を特定（formNameで特定）
-    var blockStart=result.indexOf("id:"+p.id+",");
-    if(blockStart<0)return;
-
-    // soldoutを書き換え
-    var soldoutRe=new RegExp("(id:"+p.id+",(?:(?!id:\\d).)*?soldout:)(true|false)");
-    result=result.replace(soldoutRe,function(match,pre){
-      return pre+(p.soldout?"true":"false");
-    });
-
-    // badgeを書き換え
+    result=replaceProductField(result,p.id,"soldout",p.soldout?"true":"false");
     var badgeVal=p.badge?"'"+p.badge+"'":"null";
-    var badgeRe=new RegExp("(id:"+p.id+",(?:(?!id:\\d).)*?badge:)(?:'[^']*'|null)");
-    result=result.replace(badgeRe,function(match,pre){
-      return pre+badgeVal;
-    });
+    result=replaceProductField(result,p.id,"badge",badgeVal);
   });
 
-  // 2. productDescsを丸ごと書き換え（画像データなし・安全）
+  // 2. productDescsを書き換え（画像なし・安全）
   var descStart="const productDescs = {";
   var dsi=result.indexOf(descStart);
   if(dsi>=0){
@@ -538,20 +555,17 @@ function buildNewHtml(src){
       var dEnd=result.lastIndexOf("}",escIdx);
       var NL="\n";
       var allDescs=prods.filter(function(p){return p._desc;});
-      var descLines=allDescs.map(function(p){
-        return "  "+p.id+": "+JSON.stringify(p._desc);
-      });
+      var descLines=allDescs.map(function(p){return "  "+p.id+": "+JSON.stringify(p._desc);});
       var newDescContent=NL+descLines.join(","+NL)+NL;
       result=result.slice(0,dcontentStart)+newDescContent+result.slice(dEnd);
     }
   }
 
-  // 3. 新規商品を追加（products配列の末尾に追加）
+  // 3. 新規商品を追加
   var newProds=prods.filter(function(p){return p._isNew;});
   if(newProds.length>0){
     var badgeMapIdx=result.indexOf("const badgeMap");
     var lastBracket=result.lastIndexOf("]",badgeMapIdx);
-    // lastBracketの直前（最後の}の後）に新商品を追加
     var newLines=newProds.map(function(p){
       var f=["id:"+p.id,"formName:"+JSON.stringify(p.formName),'img:""'];
       if(p.size)f.push("size:"+JSON.stringify(p.size));
@@ -560,6 +574,12 @@ function buildNewHtml(src){
       return ",\n  {"+f.join(", ")+"}";
     }).join("");
     result=result.slice(0,lastBracket)+newLines+"\n"+result.slice(lastBracket);
+  }
+
+  // 安全チェック：サイズが90%以上あることを確認
+  if(result.length < src.length * 0.9){
+    alert("サイズチェック失敗：元"+src.length+"→新"+result.length+"。中止しました。");
+    return null;
   }
 
   return result;
@@ -631,12 +651,7 @@ function pushToGitHub(){
     if(obj.html.length===0)throw new Error("HTMLが空です");
     setProgress(50,"🔧 データを書き換え中...");
     var newHtml=buildNewHtml(obj.html);
-    // 検証：サイズがほぼ同じか確認（画像データが消えていないか）
-    var sizeDiff=Math.abs(newHtml.length-obj.html.length);
-    var sizeRatio=newHtml.length/obj.html.length;
-    if(sizeRatio<0.9){
-      throw new Error("データサイズが大幅に減少しました("+obj.html.length+"→"+newHtml.length+")。安全のため中止しました。");
-    }
+    if(!newHtml)throw new Error("更新に失敗しました");
     setProgress(70,"☁️ アップロード中...");
     return fetch("https://api.github.com/repos/"+owner+"/"+repo+"/contents/"+path,{
       method:"PUT",
