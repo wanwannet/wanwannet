@@ -420,11 +420,15 @@ function parseHTML(html,fname){
   renderList();updStats();
 }
 
-// ページ読み込み時にトークンを自動セット
+// ページ読み込み時：保存済みトークンがあれば自動でGitHubから読み込む（毎回の入力・クリック不要に）
 window.addEventListener("load",function(){
   var saved=localStorage.getItem("gh_token")||"";
   var el=document.getElementById("import-token");
-  if(el&&saved)el.value=saved;
+  if(el&&saved){
+    el.value=saved;
+    showN("import-notice","info","🔄 保存済みのトークンで自動読み込み中...");
+    loadFromGitHub();
+  }
 });
 
 function switchTab(n,btn){
