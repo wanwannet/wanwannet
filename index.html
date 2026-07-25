@@ -524,7 +524,7 @@ const products = [
   {id:88, formName:"NO.88 ハートチャーム付きバック（パープル）1800円", img:"images/p88-main.jpg", imgs:["images/p88-main.jpg","images/p88-slide2.jpg","images/p88-slide3.jpg"], size:"縦22cm 横22cm 幅10cm", price:1800, emoji:"💜", badge:'new', soldout:true},
   {id:89, formName:"NO.89 ハートチャーム付きバック（ブラック）1800円", img:"images/p89-main.jpg", imgs:["images/p89-main.jpg","images/p89-slide2.jpg","images/p89-slide3.jpg"], size:"縦22cm 横22cm 幅10cm", price:1800, emoji:"🖤", badge:'new', soldout:true},
   {id:90, formName:"NO.90 長袖Tシャツ（白）1600円", img:"images/p90-main.jpg", imgs:["images/p90-main.jpg","images/p90-slide2.jpg"], size:"Sサイズ（大きめ）", price:1600, emoji:"👕", badge:'new', soldout:false},
-  {id:91, formName:"NO.91 バックプリント フード付きトレーナー（グレー)  2500円", img:"images/p91-main.jpg", imgs:["images/p91-main.jpg","images/p91-slide2.jpg","images/p91-slide3.jpg"], size:"Sサイズ", price:2500, emoji:"🧥", badge:'new', soldout:false},
+  {id:91, formName:"NO.91 バックプリント フード付きトレーナー（グレー)  2500円", img:"images/p91-main.jpg", imgs:["images/p91-main.jpg","images/p91-slide2.jpg","images/p91-slide3.jpg","images/p91-slide4.jpg"], size:"Sサイズ", price:2500, emoji:"🧥", badge:'new', soldout:false, colors:[{label:"グレー",status:"ok"},{label:"ブラック",status:"soon"}]},
   {id:92, formName:"NO.92 トラベルバック（白）卒業犬バージョン 3000円", img:"images/p92-main.jpg", imgs:["images/p92-main.jpg","images/p92-slide2.jpg","images/p92-slide3.jpg"], size:"縦27cm 横46cm 幅22cm", price:3000, emoji:"🧳", badge:'soon', soldout:true},
   {id:93, formName:"NO.93 サプリメントケース 卒業犬バージョン 800円", img:"images/p93-main.jpg", imgs:["images/p93-main.jpg","images/p93-slide2.jpg"], size:"直径5cm", price:800, emoji:"💊", badge:'soon', soldout:true},
   {id:94, formName:"NO.94 サプリメントケース 長方形 800円", img:"images/p94-main.jpg", imgs:["images/p94-main.jpg","images/p94-slide2.jpg"], size:"縦4cm 横5.5cm 幅1.5cm", price:800, emoji:"💊", badge:'soon', soldout:true},
@@ -573,6 +573,16 @@ products.forEach(p => {
 });
 
 let cart = {};
+let cartVariants = {};   // カート内商品のカラー選択を記録 {id: 'グレー'}
+let selectedColor = {};  // 詳細ページでの現在選択中カラー {id: 'グレー'}
+
+function selectColor(id, label, status) {
+  if (status !== 'ok') return; // 在庫あり・売り切れ以外は選択不可
+  selectedColor[id] = label;
+  document.querySelectorAll('#detailColorsRow .color-chip').forEach(el => {
+    el.classList.toggle('selected', el.dataset.label === label);
+  });
+}
 
 function addToCart(id) {
   const p = products.find(x => x.id === id);
@@ -595,6 +605,7 @@ function addToCart(id) {
 
 function removeItem(id) {
   delete cart[id];
+  delete cartVariants[id];
   renderCart();
   showToast('🗑️ 削除しました');
 }
@@ -630,6 +641,7 @@ function renderCart() {
       <div class="ci-ico" style="width:56px;height:56px;flex-shrink:0;background:#f0e8d8;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;">${p.img ? '<img src="'+p.img+'" style="width:56px;height:56px;object-fit:cover;border-radius:10px;">' : '<span style="font-size:32px;">'+p.emoji+'</span>'}</div>
       <div class="ci-info">
         <div class="ci-name">${dispName(p.formName)}</div>
+        ${cartVariants[id] ? `<div style="font-size:11px;color:#4a7a4a;font-weight:700;">🎨 ${cartVariants[id]}</div>` : ''}
         <div class="ci-price" style="color:#7a4f2a;font-weight:800;">¥${p.price.toLocaleString()}</div>
       </div>
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
@@ -673,7 +685,8 @@ function goToForm() {
     // チェックボックス：formNameをそのまま渡す（フォームの選択肢と完全一致）
     // Googleフォームのプリフィルは+をスペースとして使う（quote_plus形式）
     params.push(ENTRY_CHECKBOX + '=' + encodeURIComponent(p.formName).replace(/%20/g, '+'));
-    qtyNotes.push(p.formName.split(' ').slice(0,2).join(' ') + ' × ' + qty + '点');
+    const colorNote = cartVariants[id] ? '（カラー:' + cartVariants[id] + '）' : '';
+    qtyNotes.push(p.formName.split(' ').slice(0,2).join(' ') + ' × ' + qty + '点' + colorNote);
   });
 
   // その他ご要望欄に数量と小計を自動入力
@@ -805,6 +818,40 @@ function openDetail(p) {
     sizeEl.style.display = 'flex';
   } else {
     sizeEl.style.display = 'none';
+  }
+
+  // カラーバリエーション
+  const colorsEl = document.getElementById('detailColors');
+  const colorsRow = document.getElementById('detailColorsRow');
+  if (p.colors && p.colors.length) {
+    colorsRow.innerHTML = '';
+    // 初期選択：在庫ありの最初の色（未選択なら）
+    if (!selectedColor[p.id]) {
+      const firstOk = p.colors.find(c => c.status === 'ok');
+      if (firstOk) selectedColor[p.id] = firstOk.label;
+    }
+    p.colors.forEach(c => {
+      const chip = document.createElement('button');
+      chip.className = 'color-chip' + (selectedColor[p.id] === c.label ? ' selected' : '');
+      chip.dataset.label = c.label;
+      chip.onclick = () => selectColor(p.id, c.label, c.status);
+      if (c.status === 'ok') {
+        chip.innerHTML = c.label;
+        chip.style.cssText = 'padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:#3a2c1a;border:1.5px solid ' + (selectedColor[p.id]===c.label ? '#4a7a4a' : '#cfe3cf') + ';' + (selectedColor[p.id]===c.label ? 'background:#eef5ee;' : '');
+      } else if (c.status === 'soon') {
+        chip.innerHTML = c.label + '<br><span style="font-size:9px;">🔜 近日入荷</span>';
+        chip.style.cssText = 'padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:default;background:#fdf6e6;color:#b0834a;border:1.5px dashed #e8a830;text-align:center;';
+        chip.disabled = true;
+      } else {
+        chip.innerHTML = c.label + '<br><span style="font-size:9px;">❌ 売り切れ</span>';
+        chip.style.cssText = 'padding:6px 14px;border-radius:10px;font-size:12px;cursor:default;background:#f5f3ee;color:#b8b3a8;border:1.5px solid #e0ddd4;text-align:center;';
+        chip.disabled = true;
+      }
+      colorsRow.appendChild(chip);
+    });
+    colorsEl.style.display = 'block';
+  } else {
+    colorsEl.style.display = 'none';
   }
   
   // 説明文（商品ごとに設定）
@@ -939,6 +986,7 @@ function addToCartFromDetail() {
     return;
   }
   cart[p.id] = 1;
+  if (p.colors && selectedColor[p.id]) cartVariants[p.id] = selectedColor[p.id];
   renderCart();
   showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + ' をカートに追加🐾');
   
@@ -1076,6 +1124,10 @@ document.addEventListener('keydown', function(e) {
       </div>
       <div class="detail-size" id="detailSize" style="display:none;">
         📐 <span id="detailSizeText"></span>
+      </div>
+      <div class="detail-colors" id="detailColors" style="display:none;">
+        <div style="font-size:12px;color:#7a6a58;font-weight:700;margin-bottom:6px;">🎨 カラー</div>
+        <div id="detailColorsRow" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
       </div>
       <div class="detail-desc" id="detailDesc" style="display:none;"></div>
       <div class="detail-shipping">
