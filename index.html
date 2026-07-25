@@ -434,7 +434,7 @@ footer a:hover{color:#fff;}
 const CHARA = "images/header-logo.webp";
 
 const products = [
-  {id:1, formName:"No.1ミラー（黒）オリジナルバージョン 350円", img:"images/p1-main.webp", size:"7cm×2.75inch / 6.3cm×2.48inch", price:350, emoji:"🪞", badge:null, soldout:false},
+  {id:1, formName:"No.1ミラー オリジナルバージョン★ 350円", img:"images/p1-main.jpg", imgs:["images/p1-main.jpg","images/p1-main.webp","images/p1-slide3.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"🪞", badge:null, soldout:false, colors:[{label:"ブラック",status:"ok"},{label:"ホワイト",status:"ok"}]},
   {id:2, formName:"No.2 巾着 250円", img:"images/p2-main.webp", size:"9cm / 3.54in", price:250, emoji:"👜", badge:null, soldout:false},
   {id:3, formName:"No.3 ボールペン 350円", img:"images/p3-main.webp", size:"", price:350, emoji:"🖊️", badge:null, soldout:false},
   {id:4, formName:"No.4 収納ポーチ（中） 650円", img:"images/p4-main.webp", size:"21.5cm×12.5cm", price:650, emoji:"💼", badge:null, soldout:false},
@@ -485,7 +485,7 @@ const products = [
   {id:49, formName:"№49ミニお散歩バック（白）卒業犬 1300円", img:"images/p49-main.jpg", imgs:["images/p49-main.jpg","images/p49-slide2.jpg"], size:"縦:約22cm 横:約26cm マチ:約5cm", price:1300, emoji:"👜", badge:null, soldout:true},
   {id:50, formName:"№50小物入れ（小）ブラック 卒業犬 450円", img:"images/p50-main.jpg", imgs:["images/p50-main.jpg","images/p50-slide2.jpg","images/p50-slide3.jpg","images/p50-slide4.jpg"], size:"縦:約11.5cm 横:約10.5cm", price:450, emoji:"🎒", badge:'re', soldout:false},
   {id:51, formName:"№51ミラー（白）卒業犬 350円", img:"images/p51-main.jpg", imgs:["images/p51-main.jpg","images/p51-slide2.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"✨", badge:'sotsu', soldout:false},
-  {id:52, formName:"№52ミラー（白）オリジナルバージョン 350円", img:"images/p52-main.jpg", imgs:["images/p52-main.jpg","images/p51-slide2.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"✨", badge:'white', soldout:false},
+  {id:52, formName:"№52トレーナー★2000円", img:"", size:"", price:2000, emoji:"🧥", badge:'soon', soldout:true},
   {id:53, formName:"NO.53アクキー&クローバー 2点セット 卒業犬バージョン 450円", img:"images/p53-main.jpg", imgs:["images/p53-main.jpg","images/p53-slide2.jpg"], size:"セット販売", price:450, emoji:"🔑", badge:'sotsu', soldout:true},
   {id:54, formName:"NO.54オリジナルサンダル（ホワイト）1200円", img:"images/p54-main.jpg", imgs:["images/p54-main.jpg"], size:"24.0〜24.5cm", price:1200, emoji:"👡", badge:'re', soldout:false},
   {id:55, formName:"NO.55多機能トーﾄバック（白）トイプードル 2000円", img:"images/p55-main.jpg", imgs:["images/p55-main.jpg","images/p55-slide2.jpg","images/p55-slide3.jpg","images/p55-slide4.jpg","images/p55-slide5.jpg"], size:"縦:約30cm 横:約41cm マチ:約10cm", price:2000, emoji:"👜", badge:'one', soldout:true},
@@ -1010,7 +1010,7 @@ function addToCartFromDetail() {
 
 // 商品説明文（後から追加可能）
 const productDescs = {
-  1: "🐶 ミラー（黒）オリジナルバージョン 🐾<br>コンパクトサイズで邪魔にならない🐾 <br>ホワイトもあります🐾 <br>🐾  サイズ<br>・7cm× 6.3cm<br>🐾 カラー<br>・ブラック",
+  1: "🐶ミラー オリジナルバージョン🐾<br>🐾 机に置いて自立するタイプ◎<br>🐾 コンパクトサイズで邪魔にならない<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ブラック<br>・ホワイト",
   2: "🐶  巾着 🐾<br>🐾リップを入れたりオリジナルミラー入れるのに丁度よい大きさ <br>🐾 サイズ<br>・9cm<br>🐾 カラー<br>・ホワイト",
   3: "🐶ボールペン🐾<br>🐾とても書きやすくボランティア活動で使用してます(^^♪",
   6: "🐶 斜め掛けポーチ🐾<br>🐾 外ポケット2つ&内ポケット1つ付きで収納力◎<br>🐾 肩紐調整可能&取外しもできるので好みのショルダーに変えて自分好みのアレンジもOK♪<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい<br>🐾 とっても軽量♡<br>🐾 サイズ<br>・縦:約20cm<br>・横:約14cm<br>・マチ:約5cm<br>🐾 カラー<br>・ブラック",
@@ -1038,7 +1038,7 @@ const productDescs = {
   49: "🐶ミニお散歩バック（白）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたバックです<br>🐾 ちょっとした買物やお散歩に最適◎<br>🐾 シンプルなホワイトでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・縦：約22cm<br>・横：約26cm<br>・マチ：約5cm<br>🐾 カラー<br>・ホワイト",
   50: "🐶小物入れ（小）ブラック　卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにした小物入れです<br>🐾 鞄の中を整理するのに大活躍◎<br>🐾 サイズ<br>・縦：約11.5cm<br>・横：約10.5cm<br>🐾 カラー<br>・ブラック",
   51: "🐶ミラー（白）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたミラーです<br>🐾 机に置いて自立するタイプ◎<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ホワイト",
-  52: "🐶ミラー（白）🐾<br>🐾 机に置いて自立するタイプ◎<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ホワイト",
+  52: "🐶トレーナー🐾<br>🔜 近日入荷予定です♪",
   53: "🐶卒業犬アクキー6匹バージョン&クローバー2点セット🐾<br>🐾 卒業犬をモチーフにしたアクリルキーホルダーと🍀の2点セット<br>🐾 6匹の卒業犬たちが幸せそうに並んだキュートなデザイン◎<br>🐾 カラビナ付きでバッグやキーリングにつけてね♬.*ﾟ<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・クローバーチャーム × 1",
   54: "🐶オリジナルサンダル（ホワイト）🐾<br>🐾 かわいいオリジナルデザインがワンポイントでおしゃれ♪<br>🐾 シンプルなホワイトカラーでどんな場所にも合わせやすい◎<br>🐾 ソールの凹凸デザインで快適な履き心地♬.*ﾟ<br>🐾 通気性がよく乾きやすい設計◎<br>🐾 ベランダや玄関、庭先用として大活躍♪<br>🐾 軽量でサッと履けるので毎日の使用に便利！<br>🐾 サイズ<br>・24.0〜24.5cm<br>🐾 カラー<br>・ホワイト<br>🐾 ベランダ履きはもちろん洗濯物干しやガーデニング、ちょっとした外出にもおすすめ☆",
   55: "🐶多機能トートバッグ（白）トイプードル🐾<br>🐾 シンプルで使いやすい卒業犬トイプードルバージョンのトートバッグ<br>🐾 外ポケット3つ＆内ポケット1つ付きで収納力◎<br>🐾 肩掛けしやすく普段使いにぴったり♪<br>🐾 丈夫な素材感で長く使えそうです♡<br>🐾 サイズ<br>・縦：約30cm<br>・横：約41cm<br>・マチ：約10cm<br>🐾 カラー<br>・ホワイト",
