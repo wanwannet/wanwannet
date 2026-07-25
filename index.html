@@ -752,10 +752,16 @@ function openDetail(p) {
   currentDetailProduct = p;
   // 現在のスクロール位置を保存
   window._savedScrollY = window.scrollY;
-  
+
+  // スマホ・ブラウザの「戻る」ボタンで詳細ページを閉じられるように履歴を1つ積む
+  // （すでに詳細ページが開いている状態で別商品を開いた場合は積み直さない）
+  if (!(history.state && history.state.wanwannetDetail)) {
+    history.pushState({ wanwannetDetail: true }, '');
+  }
+
   // ヘッダータイトル
   document.getElementById('detailHeaderTitle').textContent = dispName(p.formName);
-  
+
   // 画像エリア（スライドショー対応）
   const imgArea = document.getElementById('detailImgArea');
   const extraImgs = productExtraImgs[p.id] || [];
@@ -980,7 +986,8 @@ function openImgModal(src, name) {
     }
   }, {passive:true});
 })();
-function closeDetail() {
+// 実際に詳細ページを閉じる処理（内部用：popstate経由でもボタン経由でも最終的にここを通る）
+function closeDetailUI() {
   document.getElementById('detailPage').classList.remove('open');
   document.body.style.overflow = '';
   // スクロール位置を復元
@@ -988,6 +995,23 @@ function closeDetail() {
     window.scrollTo({ top: window._savedScrollY, behavior: 'instant' });
   }
 }
+
+// 「←」ボタン用：ブラウザの履歴を1つ戻すことで、スマホの戻るボタンと同じ挙動に統一する
+function closeDetail() {
+  if (history.state && history.state.wanwannetDetail) {
+    history.back();
+  } else {
+    closeDetailUI();
+  }
+}
+
+// スマホ・ブラウザの「戻る」操作で詳細ページが開いていれば閉じる（ショップの外に出てしまうのを防ぐ）
+window.addEventListener('popstate', function () {
+  const detailEl = document.getElementById('detailPage');
+  if (detailEl && detailEl.classList.contains('open')) {
+    closeDetailUI();
+  }
+});
 
 function addToCartFromDetail() {
   if (!currentDetailProduct) return;
