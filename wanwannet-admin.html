@@ -50,6 +50,13 @@ header h1{color:#fff;font-size:18px;font-weight:800;}
 .tag{font-size:10px;font-weight:800;padding:2px 7px;border-radius:20px;white-space:nowrap;}
 .tag-sold{color:#e05555;background:#ffeaea;}
 .tag-desc{color:var(--green-d);background:var(--green-bg);}
+.color-row{display:flex;align-items:center;justify-content:space-between;background:var(--cream);border:1px solid var(--beige);border-radius:10px;padding:8px 10px;}
+.color-row-label{font-size:13px;font-weight:700;color:var(--text);}
+.color-status-btn{display:flex;gap:4px;}
+.cs-opt{padding:5px 9px;border-radius:8px;font-size:11px;font-weight:700;cursor:pointer;border:1.5px solid transparent;background:#fff;color:var(--text-s);}
+.cs-opt.sel-ok{border-color:var(--green-d);background:var(--green-bg);color:var(--green-d);}
+.cs-opt.sel-soon{border-color:var(--gold);background:#fdf6e6;color:#b0834a;}
+.cs-opt.sel-soldout{border-color:#e05555;background:#ffeaea;color:#e05555;}
 .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 .form-row{display:flex;flex-direction:column;gap:4px;}
 .form-row.full{grid-column:1/-1;}
@@ -227,6 +234,10 @@ input[readonly]{background:#eee;color:#888;}
       <div class="form-row"><label>サイズ</label><input type="text" id="e-size"></div>
       <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="e-toggle" onclick="tglE()"></div><span id="e-slbl">在庫あり</span></div></div>
     </div>
+    <div id="e-colors-wrap" style="margin-top:12px;display:none;">
+      <label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:6px;">🎨 カラーバリエーション（タップで在庫状態を切替）</label>
+      <div id="e-colors-list" style="display:flex;flex-direction:column;gap:6px;"></div>
+    </div>
     <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:6px;">バッジ</label><div class="badge-grid" id="e-badge-grid"></div></div>
     <div class="form-row full" style="margin-top:12px;">
       <label>商品説明文</label>
@@ -394,7 +405,24 @@ function parseHTML(html,fname){
     var origPrice=null;
     if(opIdx>=0){origPrice=parseInt(block.slice(opIdx+12));}
 
-    prods.push({id:pid,formName:formName,soldout:soldout,badge:badge,price:price,emoji:emoji,size:size,origPrice:origPrice});
+    // colors（角括弧の深さを数えて安全に抽出）
+    var colors=null;
+    var clIdx=block.indexOf(", colors:[");
+    if(clIdx>=0){
+      var clStart=clIdx+", colors:".length;
+      var depth=0,clEnd=clStart;
+      for(var ci=clStart;ci<block.length;ci++){
+        if(block[ci]==="[")depth++;
+        else if(block[ci]==="]"){depth--;if(depth===0){clEnd=ci+1;break;}}
+      }
+      var colorsStr=block.slice(clStart,clEnd);
+      colors=[];
+      var creg=/label:"([^"]*)",status:"([^"]*)"/g;
+      var cm;
+      while((cm=creg.exec(colorsStr))!==null){colors.push({label:cm[1],status:cm[2]});}
+    }
+
+    prods.push({id:pid,formName:formName,soldout:soldout,badge:badge,price:price,emoji:emoji,size:size,origPrice:origPrice,colors:colors});
     pos=idIdx+1;
   }
   prods.sort(function(a,b){return a.id-b.id;});
@@ -469,6 +497,7 @@ function renderList(){
       +"<div class='prod-meta'>ID:"+p.id+(p.size?" / "+escH(p.size):"")+(p.badge?" / "+p.badge:"")+"</div></div>"
       +"<div style='display:flex;gap:4px;align-items:center;flex-shrink:0;flex-wrap:wrap;justify-content:flex-end;'>"
       +(p._desc?"<span class='tag tag-desc'>説明✓</span>":"")
+      +(p.colors&&p.colors.length?"<span class='tag' style='color:var(--green-d);background:var(--green-bg);'>🎨"+p.colors.length+"色</span>":"")
       +(p.soldout?"<span class='tag tag-sold'>在庫切れ</span>":"")
       +"<span style='font-size:14px;font-weight:800;color:var(--brown);margin-left:4px;'>¥"+(p.price||0).toLocaleString()+"</span>"
       +"</div></div>";
@@ -490,8 +519,27 @@ function openEdit(idx){
   document.getElementById("e-toggle").className="toggle"+(eStock?" on":"");
   document.getElementById("e-slbl").textContent=eStock?"在庫あり":"在庫切れ";
   mkBadgeGrid("e-badge-grid",eBadge,"selEBadge");
+  renderColorEdit(p);
   document.getElementById("edit-notice").innerHTML="";
   document.getElementById("edit-modal").classList.add("open");
+}
+function renderColorEdit(p){
+  var wrap=document.getElementById("e-colors-wrap");
+  var list=document.getElementById("e-colors-list");
+  if(!p.colors||!p.colors.length){wrap.style.display="none";list.innerHTML="";return;}
+  wrap.style.display="block";
+  var STATUSES=[["ok","在庫あり"],["soon","近日入荷"],["soldout","売り切れ"]];
+  list.innerHTML=p.colors.map(function(c,ci){
+    return "<div class='color-row'><span class='color-row-label'>"+escH(c.label)+"</span>"
+      +"<div class='color-status-btn'>"+STATUSES.map(function(s){
+        return "<span class='cs-opt"+(c.status===s[0]?" sel-"+s[0]:"")+"' onclick='setColorStatus("+ci+",\""+s[0]+"\")'>"+s[1]+"</span>";
+      }).join("")+"</div></div>";
+  }).join("");
+}
+function setColorStatus(ci,status){
+  var p=prods[editIdx];
+  p.colors[ci].status=status;
+  renderColorEdit(p);
 }
 function closeModal(){document.getElementById("edit-modal").classList.remove("open");}
 document.getElementById("edit-modal").addEventListener("click",function(e){if(e.target===this)closeModal();});
@@ -597,6 +645,28 @@ function replaceProductField(html, pid, field, newVal){
   return html.slice(0,start)+newBlock+html.slice(blockEnd);
 }
 
+// colors:[...] は内部に { } , を含む配列なので、角括弧の深さを数えて安全に置換する
+function replaceColorsField(html, pid, colors){
+  var marker="id:"+pid+", formName:";
+  var start=html.indexOf(marker);
+  if(start<0)return html;
+  var nextStart=html.indexOf("{id:",start+1);
+  var blockEnd=nextStart>0?nextStart:html.indexOf("];",start);
+  var block=html.slice(start,blockEnd);
+  var fMarker=", colors:";
+  var fIdx=block.indexOf(fMarker);
+  if(fIdx<0)return html;
+  var valStart=fIdx+fMarker.length;
+  var depth=0,valEnd=valStart;
+  for(var ci=valStart;ci<block.length;ci++){
+    if(block[ci]==="[")depth++;
+    else if(block[ci]==="]"){depth--;if(depth===0){valEnd=ci+1;break;}}
+  }
+  var newVal="["+colors.map(function(c){return '{label:"'+c.label+'",status:"'+c.status+'"}';}).join(",")+"]";
+  var newBlock=block.slice(0,valStart)+newVal+block.slice(valEnd);
+  return html.slice(0,start)+newBlock+html.slice(blockEnd);
+}
+
 function buildNewHtml(src){
   var result=src;
 
@@ -605,6 +675,9 @@ function buildNewHtml(src){
     result=replaceProductField(result,p.id,"soldout",p.soldout?"true":"false");
     var badgeVal=p.badge?"'"+p.badge+"'":"null";
     result=replaceProductField(result,p.id,"badge",badgeVal);
+    if(p.colors&&p.colors.length){
+      result=replaceColorsField(result,p.id,p.colors);
+    }
   });
 
   // 2. productDescsを書き換え（画像なし・安全）
