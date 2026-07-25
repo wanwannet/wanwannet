@@ -580,6 +580,12 @@ let selectedColor = {};  // 詳細ページでの現在選択中カラー {id: '
 function selectColor(id, label, status) {
   if (status !== 'ok') return; // 在庫あり・売り切れ以外は選択不可
   selectedColor[id] = label;
+  // すでにカートに入っている商品は、選び直した色をその場でカートにも反映する
+  if (cart[id]) {
+    cartVariants[id] = label;
+    renderCart();
+    showToast('🎨 カラーを「' + label + '」に変更しました');
+  }
   document.querySelectorAll('#detailColorsRow .color-chip').forEach(el => {
     if (el.dataset.status !== 'ok') return; // 選択不可チップの見た目は触らない
     const isSel = el.dataset.label === label;
