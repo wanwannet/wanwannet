@@ -581,7 +581,11 @@ function selectColor(id, label, status) {
   if (status !== 'ok') return; // 在庫あり・売り切れ以外は選択不可
   selectedColor[id] = label;
   document.querySelectorAll('#detailColorsRow .color-chip').forEach(el => {
-    el.classList.toggle('selected', el.dataset.label === label);
+    if (el.dataset.status !== 'ok') return; // 選択不可チップの見た目は触らない
+    const isSel = el.dataset.label === label;
+    el.classList.toggle('selected', isSel);
+    el.style.border = isSel ? '1.5px solid #4a7a4a' : '1.5px solid #cfe3cf';
+    el.style.background = isSel ? '#eef5ee' : '#fff';
   });
 }
 
@@ -835,6 +839,7 @@ function openDetail(p) {
       const chip = document.createElement('button');
       chip.className = 'color-chip' + (selectedColor[p.id] === c.label ? ' selected' : '');
       chip.dataset.label = c.label;
+      chip.dataset.status = c.status;
       chip.onclick = () => selectColor(p.id, c.label, c.status);
       if (c.status === 'ok') {
         chip.innerHTML = c.label;
