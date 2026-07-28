@@ -1131,6 +1131,17 @@ document.addEventListener('keydown', function(e) {
     closeImgModal();
   }
 });
+
+// QRコード・直リンク対応：URLに #p番号 (例: #p91) が付いていたら、その商品の詳細ページを自動で開く
+function openFromHash() {
+  const m = location.hash.match(/^#p(\d+)$/);
+  if (!m) return;
+  const targetId = parseInt(m[1], 10);
+  const p = products.find(x => x.id === targetId);
+  if (p) openDetail(p);
+}
+window.addEventListener('load', openFromHash);
+window.addEventListener('hashchange', openFromHash);
 </script>
 
 <!-- IMAGE MODAL -->
