@@ -486,7 +486,7 @@ const products = [
   {id:39, formName:"No.39スマホショルダー（茶）2200円", img:"images/p39-main.webp", size:"20.5cm×11cm×3cm", price:2200, emoji:"📱", badge:null, soldout:true},
   {id:40, formName:"№40アクキー&クローバー 2点セット トイプードル", img:"images/p40-main.webp", size:"2点セット", price:550, emoji:"🔑", badge:null, soldout:false},
   {id:41, formName:"№41アクキー&クローバー 2点セット チワワ", img:"images/p41-main.jpg", imgs:["images/p41-main.jpg","images/p41-slide2.jpg","images/p41-slide3.jpg","images/p22-slide2.jpg"], size:"2点セット", price:550, emoji:"🔑", badge:null, soldout:false},
-  {id:42, formName:"№42アクキー&クローバー 2点セット ヨークシャーテリア", img:"images/p42-main.jpg", size:"2点セット", price:550, emoji:"🔑", badge:null, soldout:true},
+  {id:42, formName:"№42アクキー&クローバー3点セット ヨークシャーテリア 550円", img:"images/p42-main.jpg", imgs:["images/p42-main.jpg","images/p42-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:null, soldout:false},
   {id:43, formName:"№43アクキー&クローバー 2点セット マルチーズ", img:"images/p43-main.jpg", size:"2点セット", price:550, emoji:"🔑", badge:null, soldout:false},
   {id:44, formName:"№44アクキー&クローバー 2点セット ポメラニアン 550円", img:"images/p44-main.jpg", size:"2点セット", price:550, emoji:"🔑", badge:null, soldout:false},
   {id:45, formName:"№45半袖Ｔシャツ Sサイ ズ(白）チワワ 1300円", img:"images/p45-main.jpg", imgs:["images/p45-main.jpg","images/p45-slide2.jpg"], size:"Sサイズ（S-M）", price:1300, emoji:"👕", badge:'last', soldout:false},
@@ -497,7 +497,7 @@ const products = [
   {id:50, formName:"№50小物入れ（小）ブラック 卒業犬 450円", img:"images/p50-main.jpg", imgs:["images/p50-main.jpg","images/p50-slide2.jpg","images/p50-slide3.jpg","images/p50-slide4.jpg"], size:"縦:約11.5cm 横:約10.5cm", price:450, emoji:"🎒", badge:'re', soldout:false},
   {id:51, formName:"№51ミラー（白）卒業犬 350円", img:"images/p51-main.jpg", imgs:["images/p51-main.jpg","images/p51-slide2.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"✨", badge:'sotsu', soldout:false},
   {id:52, formName:"№52トレーナー★2000円", img:"images/p52-main.jpg", imgs:["images/p52-main.jpg","images/p52-slide2.jpg","images/p52-slide3.jpg","images/p52-slide4.jpg"], size:"S-Mサイズ", price:2000, emoji:"🧥", badge:'soon', soldout:true, colors:[{label:"グレー",status:"soon"},{label:"ブラック",status:"soon"}]},
-  {id:53, formName:"NO.53アクキー&クローバー 2点セット 卒業犬バージョン 450円", img:"images/p53-main.jpg", imgs:["images/p53-main.jpg","images/p53-slide2.jpg"], size:"セット販売", price:450, emoji:"🔑", badge:'sotsu', soldout:true},
+  {id:53, formName:"NO.53アクキー&クローバー 3点セット 卒業犬バージョン 550円", img:"images/p53-main.jpg", imgs:["images/p53-main.jpg","images/p53-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:'sotsu', soldout:false},
   {id:54, formName:"NO.54オリジナルサンダル（ホワイト）1200円", img:"images/p54-main.jpg", imgs:["images/p54-main.jpg"], size:"24.0〜24.5cm", price:1200, emoji:"👡", badge:'re', soldout:true},
   {id:55, formName:"NO.55多機能トーﾄバック（白）トイプードル 2000円", img:"images/p55-main.jpg", imgs:["images/p55-main.jpg","images/p55-slide2.jpg","images/p55-slide3.jpg","images/p55-slide4.jpg","images/p55-slide5.jpg"], size:"縦:約30cm 横:約41cm マチ:約10cm", price:2000, emoji:"👜", badge:'one', soldout:false},
   {id:56, formName:"NO.56ショルダーバッグ（白）ヨークシャーテリア 1850円", img:"images/p56-main.jpg", imgs:["images/p56-main.jpg","images/p56-slide2.jpg","images/p56-slide3.jpg","images/p56-slide4.jpg"], size:"横:約35cm 高:約30cm マチ:約5cm", price:1850, emoji:"👝", badge:null, soldout:true},
@@ -1085,7 +1085,7 @@ const productDescs = {
   50: "🐶小物入れ（小）ブラック　卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにした小物入れです<br>🐾 鞄の中を整理するのに大活躍◎<br>🐾 サイズ<br>・縦：約11.5cm<br>・横：約10.5cm<br>🐾 カラー<br>・ブラック",
   51: "🐶ミラー（白）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたミラーです<br>🐾 机に置いて自立するタイプ◎<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ホワイト",
   52: "🐶トレーナー🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄♪<br>🐾 クルーネック×プルオーバーでカジュアルコーデにぴったり◎<br>🐾 わずかな伸縮性のあるニット生地♬.*ﾟ<br>🐾 洗濯機洗いOK（ドライクリーニング不可）<br>🐾 サイズ：S-M<br>🐾 カラー<br>・グレー<br>・ブラック<br>🐾 素材<br>・ポリエステル100%<br>🔜 近日入荷予定です♪",
-  53: "🐶卒業犬アクキー6匹バージョン&クローバー2点セット🐾<br>🐾 卒業犬をモチーフにしたアクリルキーホルダーと🍀の2点セット<br>🐾 6匹の卒業犬たちが幸せそうに並んだキュートなデザイン◎<br>🐾 カラビナ付きでバッグやキーリングにつけてね♬.*ﾟ<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・クローバーチャーム × 1",
+  53: "🐶卒業犬アクキー6匹バージョン&クローバー 3点セット🐾<br>🐾 6匹の卒業犬たちが幸せそうに並んだキュートなアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
   54: "🐶オリジナルサンダル（ホワイト）🐾<br>🐾 かわいいオリジナルデザインがワンポイントでおしゃれ♪<br>🐾 シンプルなホワイトカラーでどんな場所にも合わせやすい◎<br>🐾 ソールの凹凸デザインで快適な履き心地♬.*ﾟ<br>🐾 通気性がよく乾きやすい設計◎<br>🐾 ベランダや玄関、庭先用として大活躍♪<br>🐾 軽量でサッと履けるので毎日の使用に便利！<br>🐾 サイズ<br>・24.0〜24.5cm<br>🐾 カラー<br>・ホワイト<br>🐾 ベランダ履きはもちろん洗濯物干しやガーデニング、ちょっとした外出にもおすすめ☆",
   55: "🐶多機能トートバッグ（白）トイプードル🐾<br>🐾 シンプルで使いやすい卒業犬トイプードルバージョンのトートバッグ<br>🐾 外ポケット3つ＆内ポケット1つ付きで収納力◎<br>🐾 肩掛けしやすく普段使いにぴったり♪<br>🐾 丈夫な素材感で長く使えそうです♡<br>🐾 サイズ<br>・縦：約30cm<br>・横：約41cm<br>・マチ：約10cm<br>🐾 カラー<br>・ホワイト",
   56: "🐶ショルダーバッグ（白）ヨークシャテリア🐾<br>🐾 ころんとしたフォルムが可愛いコンパクトサイズのミニショルダーバッグ♪<br>🐾 四つ葉のクローバーを持った可愛いヨークシャーテリアのイラスト入り🍀<br>🐾 ちょっとしたお出かけやお散歩、お買い物にぴったり◎<br>🐾 ファスナー付きで中身が飛び出しにくく安心☆<br>🐾 ショルダーベルトは長さ調節可能◎<br>🐾 軽量設計なので長時間のお出かけでも負担になりにくい◎<br>🐾 サイズ（約）<br>・横幅：約35cm<br>・高さ：約30cm<br>・マチ：約5cm<br>🐾 カラー<br>・ホワイト",
@@ -1132,7 +1132,8 @@ const productDescs = {
   97: "🐶トートバッグ（黒）オリジナルバージョン🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄♪<br>🐾 軽量でとっても丈夫◎<br>🐾 どんなスタイルでもどんなシーンでも活躍できます♬.*ﾟ<br>🐾 サイズ<br>・縦40cm × 横35cm<br>🐾 カラー<br>・ブラック<br>🔜 近日入荷予定です♪",
   98: "🐶多機能横型ショルダーバッグ（黒）🐾<br>🐾 ジッパー付きの収納が6つあり、荷物をきれいに分けて収納できる◎<br>🐾 丈夫なオックスフォード生地で毎日の通勤にも活躍♬.*ﾟ<br>🐾 ストラップは長さ調整可能で斜め掛け・肩掛け両方OK<br>🐾 サイズ<br>・縦20cm × 横25cm × 幅7cm<br>🐾 カラー<br>・ブラック<br>🐾 素材<br>・オックスフォード生地<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング",
   99: "🐶麻トートバッグ🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄♪<br>🐾 ナチュラルな風合いの麻素材でビンテージ感のあるデザイン◎<br>🐾 固定ショルダーストラップでしっかり持ち運べる♬.*ﾟ<br>🐾 サイズ<br>・高さ26.5cm × 横37cm × 幅18cm<br>🐾 カラー<br>・ベージュ<br>🐾 素材<br>・麻<br>🐾 お手入れ方法：手洗い（ドライクリーニング不可）",
-  100: "🐶ハンドバッグ（白）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 ストラップは調節可能で肩掛けしやすい♬.*ﾟ<br>🐾 サイズ<br>・縦28cm × 横22cm × 幅8cm<br>🐾 カラー<br>・ホワイト<br>🐾 素材<br>・ポリエステル<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング"
+  100: "🐶ハンドバッグ（白）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 ストラップは調節可能で肩掛けしやすい♬.*ﾟ<br>🐾 サイズ<br>・縦28cm × 横22cm × 幅8cm<br>🐾 カラー<br>・ホワイト<br>🐾 素材<br>・ポリエステル<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング",
+  42: "🐶ヨークシャーテリア アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなヨークシャーテリア柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1"
 };
 
 // Escキーで詳細を閉じる
