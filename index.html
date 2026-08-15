@@ -529,7 +529,7 @@ const products = [
   {id:82, formName:"NO.82ミニお散歩バック（黒）卒業犬1300円", img:"images/p82-main.jpg", imgs:["images/p82-main.jpg","images/p82-slide2.jpg","images/p82-slide3.jpg"], size:"縦22cm 横26cm マチ5cm", price:1300, emoji:"🐾", badge:'new', soldout:true},
   {id:83, formName:"NO.83サプリメントケース（ほのぼのバージョン）800円", img:"images/p83-main.jpg", imgs:["images/p83-main.jpg","images/p83-slide2.jpg","images/p83-slide3.jpg","images/p83-slide4.jpg"], size:"縦5cm 横5cm マチ5cm", price:800, emoji:"💊", badge:'re', soldout:false},
   {id:84, formName:"NO.84卒業犬バージョン 大容量エコバック（黒）1100円", img:"images/p84-main.jpg", imgs:["images/p84-main.jpg","images/p84-slide2.jpg","images/p84-slide3.jpg"], size:"縦38cm 横53cm マチ10cm", price:1100, emoji:"🛍️", badge:'re', soldout:true},
-  {id:85, formName:"NO.85携帯用ペット給水ボトル&折り畳み皿 2点セット★ 1550円", img:"images/p85-main.jpg", imgs:["images/p85-main.jpg","images/p85-slide2.jpg","images/p85-slide3.jpg"], size:"給水ボトル18.5cm×14.5cm 折りたたみボウル13cm×5.5cm", price:1550, emoji:"🟡", badge:'re', soldout:true},
+  {id:85, formName:"NO.85携帯用ペット給水ボトル&折り畳み皿 2点セット★ 1550円", img:"images/p85-main.jpg", imgs:["images/p85-main.jpg","images/p85-slide2.jpg","images/p85-slide3.jpg","images/p85-slide4.jpg"], size:"給水ボトル18.5cm×14.5cm 折りたたみボウル13cm×5.5cm", price:1550, emoji:"💚", badge:'green', soldout:false, colors:[{label:"イエロー",status:"soldout"},{label:"グリーン",status:"ok"}]},
   {id:86, formName:"NO.86 筒形ミニボストンバック（ブラック）2100円", img:"images/p86-main.jpg", imgs:["images/p86-main.jpg","images/p86-slide2.jpg","images/p86-slide3.jpg","images/p86-slide4.jpg"], size:"縦22cm 横40cm 幅22cm", price:2100, emoji:"👜", badge:'new', soldout:false},
   {id:87, formName:"NO.87 メイクバッグ（ブラック）1100円", img:"images/p87-main.jpg", imgs:["images/p87-main.jpg","images/p87-slide2.jpg"], size:"縦12.5cm 横19cm 幅8cm", price:1100, emoji:"💄", badge:'new', soldout:false},
   {id:88, formName:"NO.88 ハートチャーム付きバック（パープル）1800円", img:"images/p88-main.jpg", imgs:["images/p88-main.jpg","images/p88-slide2.jpg","images/p88-slide3.jpg"], size:"縦22cm 横22cm 幅10cm", price:1800, emoji:"💜", badge:'re', soldout:false},
@@ -548,7 +548,7 @@ const products = [
   {id:101, formName:"No.101デニムミニトート★ 1300円", img:"images/p101-main.jpg", imgs:["images/p101-main.jpg","images/p101-slide2.jpg","images/p101-slide3.jpg","images/p101-slide4.jpg"], size:"縦:約20cm 横:約30cm", price:1300, emoji:"👖", badge:'soon', soldout:true, colors:[{label:"ヨークシャーテリア",status:"soon"},{label:"ポメラニアン",status:"soon"}]}
 ]
 
-const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ 残り1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON'};
+const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ 残り1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷'};
 // 表示用：商品名から末尾の価格表記（例:1500円）を除去（Googleフォーム送信用のformNameは変更しない）
 function dispName(n){ return n.replace(/[\d,]+円/g, '').trim(); }
 const grid = document.getElementById('productGrid');
@@ -708,8 +708,10 @@ function goToForm() {
     // チェックボックス：formNameをそのまま渡す（フォームの選択肢と完全一致）
     // Googleフォームのプリフィルは+をスペースとして使う（quote_plus形式）
     params.push(ENTRY_CHECKBOX + '=' + encodeURIComponent(p.formName).replace(/%20/g, '+'));
-    const colorNote = cartVariants[id] ? '（カラー:' + cartVariants[id] + '）' : '';
-    qtyNotes.push(p.formName.split(' ').slice(0,2).join(' ') + ' × ' + qty + '点' + colorNote);
+    // 備考欄には「色・サイズ等を選んでカートに入れた商品」のみ記載する
+    if (p.colors && cartVariants[id]) {
+      qtyNotes.push(p.formName.split(' ').slice(0,2).join(' ') + ' × ' + qty + '点（カラー:' + cartVariants[id] + '）');
+    }
   });
 
   // その他ご要望欄に数量と小計を自動入力
@@ -1127,7 +1129,7 @@ const productDescs = {
   82: "🐶ミニお散歩バック（黒）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたバックです<br>🐾 ちょっとした買物やお散歩に最適◎<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・縦：約22cm × 横：約26cm × マチ：約5cm<br>🐾 カラー<br>・ブラック",
   83: "🐶サプリメントケース（ほのぼのバージョン）🐾<br>🐾 WanWanNet🐾ほのぼのバージョン<br>🐾 薬をいれて持ち運ぶのに◎<br>🐾コンパクトなので邪魔にならない♬.*ﾟ<br>🐾 サイズ<br>・縦：約5cm × 横：約5cm × マチ：約5cm<br>🐾 カラー<br>・シルバー",
   84: "🐶 卒業犬バージョン 大容量エコバック（黒）🐾<br>🐾 たっぷり入る大容量サイズ◎<br>🐾 使わない時はコンパクトに折り畳めて持ち運び便利♪<br>🐾 軽量素材でお買い物・お散歩時にも活躍♬.*゚<br>🐾 かわいい卒業犬プリント入り🐶<br>🐾 サイズ（展開時）<br>・縦38cm × 横53cm × マチ10cm<br>🐾 サイズ（収納時）<br>・縦12.5cm × 横12.5cm<br>🐾 カラー<br>・ブラック",
-  85: "🐶携帯用ペット給水ボトル&折り畳み皿 2点セット🐾<br>🐾 お散歩やお出かけに便利な給水ボトル＆折りたたみボウルの2点セット♪<br>🐾 ボウルはコンパクトに折りたためるので、バッグやリードに取り付けて持ち運びラクラク◎<br>🐾 軽量設計で、お散歩・旅行・ドライブ・アウトドアにもぴったり！<br>🐾 給水ボトルは専用ケース付きで持ち運びしやすく、外出先でもサッと水分補給♪<br>🐾 カラビナ付きだからバッグやリュックに簡単に取り付け可能◎<br>🐾 サイズ<br>・給水ボトル：約18.5cm × 約14.5cm<br>・折りたたみボウル：約13cm × 約5.5cm（使用時）<br>🐾 カラー<br>・グリーン<br>🐾 毎日のお散歩はもちろん、旅行・キャンプ・ドッグラン・防災用としても大活躍！",
+  85: "🐶携帯用ペット給水ボトル&折り畳み皿 2点セット🐾<br>🐾 お散歩やお出かけに便利な給水ボトル＆折りたたみボウルの2点セット♪<br>🐾 ボウルはコンパクトに折りたためるので、バッグやリードに取り付けて持ち運びラクラク◎<br>🐾 軽量設計で、お散歩・旅行・ドライブ・アウトドアにもぴったり！<br>🐾 給水ボトルは専用ケース付きで持ち運びしやすく、外出先でもサッと水分補給♪<br>🐾 カラビナ付きだからバッグやリュックに簡単に取り付け可能◎<br>🐾 サイズ<br>・給水ボトル：約18.5cm × 約14.5cm<br>・折りたたみボウル：約13cm × 約5.5cm（使用時）<br>🐾 カラー<br>・イエロー（❌売り切れ）<br>・グリーン（💚新色入荷）<br>🐾 毎日のお散歩はもちろん、旅行・キャンプ・ドッグラン・防災用としても大活躍！",
   86: "🐶筒形ミニボストンバック（ブラック）👜<br>👜 シンプルでスタイリッシュな筒形デザインがおしゃれなボストンバッグ♪<br>👜 手提げ・ショルダーの2WAY仕様で、シーンに合わせて使い分け可能◎<br>👜 軽量なのに収納力抜群！衣類やタオル、シューズなどもすっきり収納♪<br>👜 普段使いはもちろん、ジム・スポーツ・旅行・通勤・通学など幅広いシーンで活躍！<br>👜 サイズ<br>・約40cm × 22cm × 22cm<br>👜 カラー<br>・ブラック<br>👜 ジムバッグ・スポーツバッグ・旅行バッグ・機内持ち込み用バッグとしてもおすすめの万能アイテムです♪",
   87: "🐶メイクバッグ（ブラック）💄<br>💄 コスメやスキンケア用品をすっきり収納できる大容量メイクポーチ♪<br>💄 大きく開くファスナー仕様で、中身が見やすく取り出しもスムーズ◎<br>💄 ブラシ・化粧品・小物類をまとめて収納できる便利なサイズ！<br>💄 軽量で持ち運びしやすく、旅行や出張、ジムなどのお出かけにもぴったり♪<br>💄 シンプルなブラックカラーで、年齢や性別を問わず使いやすいデザイン◎<br>💄 サイズ<br>・約19cm × 12.5cm × 8cm<br>💄 カラー<br>・ブラック<br>💄 毎日のメイク用品の整理から旅行用ポーチまで、幅広いシーンで活躍する便利な収納ポーチです♪",
   88: "🐶ハートチャーム付きバック（パープル）🐾<br>🐾 キュートなハートチャーム付きでおしゃれ感アップ♪<br>🐾 軽量ナイロン素材で毎日使いやすい◎<br>🐾 たっぷり入る大容量で、コスメ・財布・スマホもすっきり収納♪<br>🐾 シンプルなデザインで、どんなコーデにも合わせやすい◎<br>🐾 サイズ<br>・縦22cm × 横22cm × 幅10cm<br>🐾 カラー<br>・パープル<br>🐾 お買い物・お散歩・お出かけなど様々なシーンで大活躍！",
