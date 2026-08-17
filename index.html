@@ -552,7 +552,13 @@ const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', s
 // 表示用：商品名から末尾の価格表記（例:1500円）を除去（Googleフォーム送信用のformNameは変更しない）
 function dispName(n){ return n.replace(/[\d,]+円/g, '').trim(); }
 const grid = document.getElementById('productGrid');
-products.forEach(p => {
+// 表示順のみ並べ替え（データ本体・No.・QR・管理表には影響しない）：在庫あり→COMING SOON→売り切れ、各グループ内はNo.昇順
+const displayOrder = products.slice().sort((a, b) => {
+  const rank = x => (x.badge === 'soon' ? 1 : (x.soldout ? 2 : 0));
+  const d = rank(a) - rank(b);
+  return d !== 0 ? d : a.id - b.id;
+});
+displayOrder.forEach(p => {
   const c = document.createElement('div');
   c.className = 'card' + (p.soldout ? ' soldout' : '');
   c.style.cursor = 'pointer';
