@@ -345,8 +345,25 @@ footer a:hover{color:#fff;}
 
 <section class="catalog">
   <div class="sec-ttl">🐶 商品一覧 🐶</div>
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab active" data-cat="all" onclick="selectCat(this)">🐾 すべて</button>
+    <button class="cat-tab" data-cat="tote" onclick="selectCat(this)">🛍️ トート・エコ</button>
+    <button class="cat-tab" data-cat="shoulder" onclick="selectCat(this)">🎒 ショルダー・斜め掛け</button>
+    <button class="cat-tab" data-cat="ruck" onclick="selectCat(this)">🧳 リュック・トラベル</button>
+    <button class="cat-tab" data-cat="pouch" onclick="selectCat(this)">👝 ポーチ・ケース</button>
+    <button class="cat-tab" data-cat="wear" onclick="selectCat(this)">👕 ウェア・帽子</button>
+    <button class="cat-tab" data-cat="bottle" onclick="selectCat(this)">🍶 ボトル・給水</button>
+    <button class="cat-tab" data-cat="zakka" onclick="selectCat(this)">🔑 アクキー・雑貨</button>
+  </div>
   <div class="grid" id="productGrid"></div>
 </section>
+
+<style>
+.cat-tabs{display:flex;gap:8px;overflow-x:auto;padding:6px 2px 12px;-webkit-overflow-scrolling:touch;}
+.cat-tab{flex:0 0 auto;border:2px solid #9dc89d;background:#fff;color:#4a7a4a;font-weight:800;font-size:13px;padding:8px 14px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:all .15s;}
+.cat-tab:hover{background:#eef5ee;}
+.cat-tab.active{background:linear-gradient(135deg,#7bb87b,#5a9a5a);color:#fff;border-color:#5a9a5a;box-shadow:0 2px 8px rgba(90,154,90,.35);}
+</style>
 
 <footer>
   <div class="fl">🐾 WanWan Net</div>
@@ -551,6 +568,9 @@ const products = [
 const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ 残り1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷'};
 // 表示用：商品名から末尾の価格表記（例:1500円）を除去（Googleフォーム送信用のformNameは変更しない）
 function dispName(n){ return n.replace(/[\d,]+円/g, '').trim(); }
+// カテゴリー対応表（id→カテゴリー）：商品データ本体・No.・QR・管理表には一切影響しない
+const productCategory = {1:'zakka', 2:'pouch', 3:'zakka', 4:'pouch', 5:'shoulder', 6:'shoulder', 7:'shoulder', 8:'wear', 9:'shoulder', 10:'tote', 11:'shoulder', 12:'tote', 13:'pouch', 14:'pouch', 15:'shoulder', 16:'tote', 17:'pouch', 18:'pouch', 19:'shoulder', 20:'shoulder', 21:'wear', 22:'tote', 23:'bottle', 24:'bottle', 25:'wear', 26:'tote', 27:'ruck', 28:'pouch', 29:'pouch', 30:'zakka', 31:'pouch', 32:'wear', 33:'bottle', 34:'bottle', 35:'bottle', 36:'pouch', 37:'wear', 38:'tote', 39:'shoulder', 40:'zakka', 41:'zakka', 42:'zakka', 43:'zakka', 44:'zakka', 45:'wear', 46:'wear', 47:'tote', 48:'wear', 49:'ruck', 50:'pouch', 51:'zakka', 52:'wear', 53:'zakka', 54:'wear', 55:'tote', 56:'shoulder', 57:'tote', 58:'ruck', 59:'tote', 60:'wear', 61:'wear', 62:'wear', 63:'wear', 64:'ruck', 65:'bottle', 66:'bottle', 67:'ruck', 68:'ruck', 69:'ruck', 70:'bottle', 71:'pouch', 72:'ruck', 73:'bottle', 74:'bottle', 75:'bottle', 76:'shoulder', 77:'tote', 78:'ruck', 79:'ruck', 80:'tote', 81:'tote', 82:'ruck', 83:'pouch', 84:'tote', 85:'bottle', 86:'ruck', 87:'pouch', 88:'shoulder', 89:'shoulder', 90:'wear', 91:'wear', 92:'ruck', 93:'pouch', 94:'pouch', 95:'shoulder', 96:'ruck', 97:'tote', 98:'shoulder', 99:'tote', 100:'shoulder', 101:'tote'};
+
 const grid = document.getElementById('productGrid');
 // 表示順のみ並べ替え（データ本体・No.・QR・管理表には影響しない）：在庫あり→COMING SOON→売り切れ、各グループ内はNo.昇順
 const displayOrder = products.slice().sort((a, b) => {
@@ -558,7 +578,7 @@ const displayOrder = products.slice().sort((a, b) => {
   const d = rank(a) - rank(b);
   return d !== 0 ? d : a.id - b.id;
 });
-displayOrder.forEach(p => {
+function buildCard(p) {
   const c = document.createElement('div');
   c.className = 'card' + (p.soldout ? ' soldout' : '');
   c.style.cursor = 'pointer';
@@ -588,8 +608,22 @@ displayOrder.forEach(p => {
       </button>
     </div>
   `;
-  grid.appendChild(c);
-});
+  return c;
+}
+let currentCat = 'all';
+function renderGrid(cat) {
+  grid.innerHTML = '';
+  displayOrder.forEach(p => {
+    if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
+    grid.appendChild(buildCard(p));
+  });
+}
+function selectCat(btn) {
+  currentCat = btn.dataset.cat;
+  document.querySelectorAll('#catTabs .cat-tab').forEach(t => t.classList.toggle('active', t === btn));
+  renderGrid(currentCat);
+}
+renderGrid('all');
 
 let cart = {};
 let cartVariants = {};   // カート内商品のカラー選択を記録 {id: 'グレー'}
