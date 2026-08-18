@@ -171,6 +171,7 @@ input[readonly]{background:#eee;color:#888;}
           <div class="form-row"><label>絵文字アイコン</label><input type="text" id="a-emoji" placeholder="例: 👜" maxlength="4"></div>
           <div class="form-row full"><label>商品名</label><input type="text" id="a-name" placeholder="例: No.70 オリジナルトートバッグ（白） 1500円"></div>
           <div class="form-row"><label>サイズ・仕様</label><input type="text" id="a-size" placeholder="例: 縦30cm×横40cm"></div>
+          <div class="form-row full"><label>カテゴリー</label><select id="a-cat"><option value="">▼ カテゴリー未選択</option><option value="tote">🛍️ トート・エコ</option><option value="shoulder">🎒 ショルダー・斜め掛け</option><option value="ruck">🧳 リュック・トラベル</option><option value="pouch">👝 ポーチ・ケース</option><option value="wear">👕 ウェア・帽子</option><option value="bottle">🍶 ボトル・給水</option><option value="zakka">🔑 アクキー・雑貨</option></select></div>
           <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="a-toggle" onclick="tglA()"></div><span id="a-slbl">在庫あり</span></div></div>
         </div>
         <div style="margin-top:12px;"><label style="font-size:11px;font-weight:700;color:var(--text-s);display:block;margin-bottom:6px;">バッジ</label><div class="badge-grid" id="a-badge-grid"></div></div>
@@ -232,6 +233,7 @@ input[readonly]{background:#eee;color:#888;}
       <div class="form-row"><label>絵文字</label><input type="text" id="e-emoji" maxlength="4"></div>
       <div class="form-row full"><label>商品名</label><input type="text" id="e-name"></div>
       <div class="form-row"><label>サイズ</label><input type="text" id="e-size"></div>
+      <div class="form-row full"><label>カテゴリー</label><select id="e-cat"><option value="">▼ カテゴリー未選択</option><option value="tote">🛍️ トート・エコ</option><option value="shoulder">🎒 ショルダー・斜め掛け</option><option value="ruck">🧳 リュック・トラベル</option><option value="pouch">👝 ポーチ・ケース</option><option value="wear">👕 ウェア・帽子</option><option value="bottle">🍶 ボトル・給水</option><option value="zakka">🔑 アクキー・雑貨</option></select></div>
       <div class="form-row"><label>在庫状態</label><div class="toggle-wrap"><div class="toggle on" id="e-toggle" onclick="tglE()"></div><span id="e-slbl">在庫あり</span></div></div>
     </div>
     <div id="e-colors-wrap" style="margin-top:12px;display:none;">
@@ -441,6 +443,18 @@ function parseHTML(html,fname){
   }
   prods.forEach(function(p){if(descs[p.id])p._desc=descs[p.id];});
 
+  // productCategory（id→カテゴリー）をパースして各商品に付与
+  var catMap={};
+  var pci=html.indexOf("const productCategory");
+  if(pci>=0){
+    var pcs=html.indexOf("{",pci);
+    var pce=html.indexOf("}",pcs);
+    if(pcs>=0&&pce>pcs){
+      try{var fnc=new Function("return "+html.slice(pcs,pce+1));catMap=fnc();}catch(e){console.warn("cat parse",e);}
+    }
+  }
+  prods.forEach(function(p){p._cat=catMap[p.id]||"";});
+
   document.getElementById("file-name-disp").textContent="📄 "+fname;
   document.getElementById("import-screen").style.display="none";
   document.getElementById("app").style.display="block";
@@ -514,6 +528,7 @@ function openEdit(idx){
   document.getElementById("e-emoji").value=p.emoji||"";
   document.getElementById("e-name").value=p.formName||"";
   document.getElementById("e-size").value=p.size||"";
+  document.getElementById("e-cat").value=p._cat||"";
   document.getElementById("e-desc").value=p._desc||"";
   eStock=!p.soldout;eBadge=p.badge||"";
   document.getElementById("e-toggle").className="toggle"+(eStock?" on":"");
@@ -560,6 +575,7 @@ function saveEdit(){
   if(desc)p._desc=desc;else delete p._desc;
   p.badge=eBadge||null;
   p.soldout=!eStock;
+  p._cat=document.getElementById("e-cat").value||"";
   closeModal();renderList();updStats();
 }
 
@@ -600,6 +616,7 @@ function selABadge(el){document.querySelectorAll("#a-badge-grid .badge-opt").for
 function clrAdd(){
   ["a-id","a-price","a-orig","a-emoji","a-name","a-size","a-desc"].forEach(function(id){document.getElementById(id).value="";});
   aStock=true;aBadge="";
+  var acEl=document.getElementById("a-cat");if(acEl)acEl.value="";
   document.getElementById("a-toggle").className="toggle on";
   document.getElementById("a-slbl").textContent="在庫あり";
   document.querySelectorAll("#a-badge-grid .badge-opt").forEach(function(b){b.classList.remove("sel");});
@@ -616,6 +633,7 @@ function addProd(){
   if(!id||!price||!name){showN("add-notice","error","⚠️ ID・価格・商品名は必須");return;}
   if(prods.find(function(p){return p.id===id;})){showN("add-notice","error","⚠️ このIDは既に使用中");return;}
   var p={id:id,formName:name,price:price,emoji:emoji,size:size||null,badge:aBadge||null,soldout:!aStock,_isNew:true};
+  p._cat=document.getElementById("a-cat").value||"";
   if(orig)p.origPrice=orig;
   if(desc)p._desc=desc;
   prods.push(p);
@@ -675,6 +693,9 @@ function buildNewHtml(src){
     result=replaceProductField(result,p.id,"soldout",p.soldout?"true":"false");
     var badgeVal=p.badge?"'"+p.badge+"'":"null";
     result=replaceProductField(result,p.id,"badge",badgeVal);
+    result=replaceProductField(result,p.id,"price",String(p.price));
+    result=replaceProductField(result,p.id,"formName",JSON.stringify(p.formName));
+    if(p.size){result=replaceProductField(result,p.id,"size",JSON.stringify(p.size));}
     if(p.colors&&p.colors.length){
       result=replaceColorsField(result,p.id,p.colors);
     }
@@ -709,6 +730,20 @@ function buildNewHtml(src){
       return ",\n  {"+f.join(", ")+"}";
     }).join("");
     result=result.slice(0,lastBracket)+newLines+"\n"+result.slice(lastBracket);
+  }
+
+  // 4. productCategory を全商品から再構築（新商品の分類も反映／未分類は除外）
+  var pcIdx=result.indexOf("const productCategory");
+  if(pcIdx>=0){
+    var pcOpen=result.indexOf("{",pcIdx);
+    var pcClose=result.indexOf("}",pcOpen);
+    if(pcOpen>=0&&pcClose>pcOpen){
+      var catEntries=prods.filter(function(p){return p._cat;})
+        .sort(function(a,b){return a.id-b.id;})
+        .map(function(p){return p.id+":'"+p._cat+"'";});
+      var newCatObj="{"+catEntries.join(", ")+"}";
+      result=result.slice(0,pcOpen)+newCatObj+result.slice(pcClose+1);
+    }
   }
 
   // 安全チェック：サイズが90%以上あることを確認
