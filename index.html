@@ -616,6 +616,7 @@ function renderGrid(cat) {
   grid.innerHTML = '';
   displayOrder.forEach(p => {
     if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
+    if (p.soldout && p.badge !== 'soon') return; // 売り切れ商品は一覧から非表示（COMING SOONは表示を維持）
     grid.appendChild(buildCard(p));
   });
 }
