@@ -354,6 +354,7 @@ footer a:hover{color:#fff;}
     <button class="cat-tab" data-cat="wear" onclick="selectCat(this)">👕 ウェア・帽子</button>
     <button class="cat-tab" data-cat="bottle" onclick="selectCat(this)">🍶 ボトル・給水</button>
     <button class="cat-tab" data-cat="zakka" onclick="selectCat(this)">🔑 アクキー・雑貨</button>
+    <button class="cat-tab" data-cat="soldout" onclick="selectCat(this)" style="border-color:#c98a8a;color:#b05a5a;">📦 売り切れ商品</button>
   </div>
   <div class="grid" id="productGrid"></div>
 </section>
@@ -615,8 +616,13 @@ let currentCat = 'all';
 function renderGrid(cat) {
   grid.innerHTML = '';
   displayOrder.forEach(p => {
-    if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
-    if (p.soldout && p.badge !== 'soon') return; // 売り切れ商品は一覧から非表示（COMING SOONは表示を維持）
+    const isTrueSoldOut = p.soldout && p.badge !== 'soon'; // COMING SOONは「売り切れ」扱いにしない
+    if (cat === 'soldout') {
+      if (!isTrueSoldOut) return; // 売り切れタブ：売り切れ商品のみ表示（カテゴリー横断）
+    } else {
+      if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
+      if (isTrueSoldOut) return; // 通常タブ：売り切れ商品は非表示
+    }
     grid.appendChild(buildCard(p));
   });
 }
