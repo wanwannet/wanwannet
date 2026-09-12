@@ -567,7 +567,7 @@ const products = [
   {id:103, formName:"No.103ソックス3点セット★ 1200円", img:"images/p103-main.jpg", imgs:["images/p103-main.jpg","images/p103-slide2.jpg"], size:"KIDS 18cm", price:1200, emoji:"🧦", badge:'new', soldout:false, colors:[{label:"トイプードル",status:"ok"}]}
 ]
 
-const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ 残り1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷'};
+const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ ラスト1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷'};
 // 表示用：商品名から末尾の価格表記（例:1500円）を除去（Googleフォーム送信用のformNameは変更しない）
 function dispName(n){ return n.replace(/[\d,]+円/g, '').trim(); }
 // カテゴリー対応表（id→カテゴリー）：商品データ本体・No.・QR・管理表には一切影響しない
