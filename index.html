@@ -354,7 +354,7 @@ footer a:hover{color:#fff;}
     <button class="cat-tab" data-cat="wear" onclick="selectCat(this)">👕 ウェア・帽子</button>
     <button class="cat-tab" data-cat="bottle" onclick="selectCat(this)">🍶 ボトル・給水</button>
     <button class="cat-tab" data-cat="zakka" onclick="selectCat(this)">🔑 アクキー・雑貨</button>
-    <button class="cat-tab" data-cat="soldout" onclick="selectCat(this)" style="border-color:#c98a8a;color:#b05a5a;">📦 売り切れ商品</button>
+    <button class="cat-tab" data-cat="soldout" onclick="selectCat(this)" style="border-color:#c98a8a;color:#b05a5a;">📦 売り切れ・COMING SOON</button>
   </div>
   <div class="grid" id="productGrid"></div>
 </section>
@@ -569,9 +569,9 @@ const products = [
   {id:102, formName:"No.102アンブレラマーカー★ 600円", img:"images/p102-main.jpg", imgs:["images/p102-main.jpg","images/p102-slide2.jpg"], size:"リング直径:約2cm", price:550, emoji:"☂️", badge:'new', soldout:false, colors:[{label:"卒業犬バージョン",status:"ok"},{label:"チワワ",status:"ok"},{label:"マルチーズ",status:"ok"}]},
   {id:104, formName:"No.104フェルトトートバック★ヨークシャテリア1900円", img:"images/p104-main.jpg", imgs:["images/p104-main.jpg","images/p104-slide2.jpg","images/p104-slide3.jpg","images/p104-slide4.jpg","images/p104-slide5.jpg"], size:"縦:約30cm 横:約40cm マチ:約15cm", price:1900, emoji:"👜", badge:'new', soldout:false, colors:[{label:"グレー",status:"ok"},{label:"ベージュ",status:"soon"}]},
   {id:105, formName:"No.105折りたたみ式スマホスタンド★300円", img:"images/p105-main.jpg", imgs:["images/p105-main.jpg","images/p105-slide2.jpg"], size:"コンパクトサイズ（角度調整可能・本体カラーはランダム発送）", price:250, emoji:"📱", badge:'new', soldout:false, colors:[{label:"チワワ",status:"ok"},{label:"マルチーズ",status:"soon"},{label:"ヨークシャーテリア",status:"soon"},{label:"ポメラニアン",status:"soon"},{label:"トイプードル",status:"soon"}]},
-  {id:107, formName:"No.107ペットフード＆水ボトル ★", img:"images/p107-main.jpg", size:"高さ:約11.5cm 幅:約82.6cm", price:0, emoji:"🍼", badge:'soon', soldout:true, colors:[{label:"オリジナルキャラバージョン",status:"soon"},{label:"卒業犬バージョン",status:"soon"}]},
-  {id:108, formName:"No.108ランドリーバスケット★", img:"images/p108-main.jpg", size:"縦:約47cm 横:約30cm 奥行:約30cm", price:0, emoji:"🧺", badge:'soon', soldout:true},
-  {id:109, formName:"No.109カラビナ付きメガネケース★", img:"images/p109-main.jpg", size:"幅:約17cm 高さ:約8cm", price:0, emoji:"👓", badge:'soon', soldout:true}
+  {id:107, formName:"No.107ペットフード＆水ボトル ★1200", img:"images/p107-main.jpg", size:"高さ:約11.5cm 幅:約82.6cm", price:1200, emoji:"🍼", badge:'soon', soldout:true, colors:[{label:"オリジナルキャラバージョン",status:"soon"},{label:"卒業犬バージョン",status:"soon"}]},
+  {id:108, formName:"No.108ランドリーバスケット★1200", img:"images/p108-main.jpg", size:"縦:約47cm 横:約30cm 奥行:約30cm", price:1200, emoji:"🧺", badge:'soon', soldout:true},
+  {id:109, formName:"No.109カラビナ付きメガネケース★1100", img:"images/p109-main.jpg", size:"幅:約17cm 高さ:約8cm", price:1100, emoji:"👓", badge:'soon', soldout:true}
 ]
 
 const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ ラスト1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷'};
@@ -623,14 +623,14 @@ let currentCat = 'all';
 function renderGrid(cat) {
   grid.innerHTML = '';
   displayOrder.forEach(p => {
-    const isTrueSoldOut = p.soldout && p.badge !== 'soon'; // COMING SOONは「売り切れ」扱いにしない
+    const isTrueSoldOut = p.soldout && p.badge !== 'soon'; // 通常の売り切れ
     const isComingSoon = p.badge === 'soon'; // 商品全体がCOMING SOON（まだ何も購入できない）
+    const isUnavailable = isTrueSoldOut || isComingSoon; // 今すぐ買えないもの
     if (cat === 'soldout') {
-      if (!isTrueSoldOut) return; // 売り切れタブ：売り切れ商品のみ表示（カテゴリー横断）
+      if (!isUnavailable) return; // 売り切れタブ：売り切れ＋COMING SOONをまとめて表示（カテゴリー横断）
     } else {
       if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
-      if (isTrueSoldOut) return; // 通常タブ：売り切れ商品は非表示
-      if (isComingSoon) return; // 通常タブ：COMING SOON商品（未入荷）も非表示
+      if (isUnavailable) return; // 通常タブ：売り切れ・COMING SOONは非表示
     }
     grid.appendChild(buildCard(p));
   });
