@@ -274,20 +274,28 @@ footer a:hover{color:#fff;}
 .slide-dot.active{background:var(--green);transform:scale(1.3);}
 </style>
 <style id="variant-ui-style">
-/* 選べる商品：一覧カード上の選択ボタン（年配の方にも押しやすい大きさ） */
+/* 選べる商品：一覧カード上の「選択肢ごとのカートボタン」（年配の方にも押しやすい大きさ） */
 .vsel{margin:6px 0 4px;padding:8px;border:2px dashed #9dc89d;border-radius:12px;background:#f5f9f5;}
 .vsel-ttl{font-size:12px;font-weight:800;color:#3d6b3d;margin-bottom:6px;line-height:1.4;}
 .vsel-row{display:flex;flex-direction:column;gap:6px;}
-.vchip{width:100%;min-height:42px;padding:8px 10px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;line-height:1.3;cursor:pointer;background:#fff;color:#3a2c1a;border:2px solid #b7d6b7;text-align:center;}
-.vchip.sel{background:#4a7a4a;color:#fff;border-color:#4a7a4a;box-shadow:0 2px 6px rgba(74,122,74,.35);}
-.vchip.sel::before{content:'✓ ';}
-.vchip.off{background:#f5f3ee;color:#a8a396;border:1.5px dashed #d8d4c8;cursor:default;font-size:11px;font-weight:700;min-height:36px;}
-.vchip.off span{font-size:10px;font-weight:700;}
-.add-btn.vbtn{font-size:13px;padding:11px 10px;}
-.add-btn.need-select{background:#fff8e6;color:#b36a00;border:2px solid #e8a830;}
+.vopt{width:100%;min-height:52px;padding:8px 10px;border-radius:12px;font-family:inherit;line-height:1.3;cursor:pointer;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;box-shadow:0 2px 6px rgba(74,122,74,.3);}
+.vopt .vlab{font-size:13px;font-weight:800;}
+.vopt .vact{font-size:12px;font-weight:700;opacity:.95;}
+.vopt.in{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);box-shadow:none;}
+.vopt.alt{background:#fff;color:#3d6b3d;border-color:#4a7a4a;box-shadow:none;}
+.vopt.off{background:#f5f3ee;color:#a8a396;border:1.5px dashed #d8d4c8;cursor:default;box-shadow:none;min-height:40px;}
+.vopt.off .vlab{font-size:11.5px;font-weight:700;}
+.vopt.off .vact{font-size:10.5px;}
+.vhint{margin-top:6px;font-size:11px;line-height:1.5;color:#7a6a58;}
 .shake{animation:vshake .45s;}
 @keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.4;}
+.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.5;bottom:92px;z-index:500;}
+/* 画面の下に常に出る「ご注文はこちら」 */
+.order-bar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:linear-gradient(135deg,#ff7043,#e53935);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;box-shadow:0 -4px 16px rgba(0,0,0,.22);text-align:center;}
+.ob-main{font-size:18px;font-weight:800;letter-spacing:.04em;}
+.ob-sub{font-size:12.5px;font-weight:700;opacity:.95;}
+body.has-bar{padding-bottom:84px;}
+body.cart-open .order-bar{display:none !important;}
 /* ご注文のしかた */
 .howto{max-width:760px;margin:0 auto 18px;background:#fffdf5;border:2px solid #9dc89d;border-radius:14px;padding:10px 14px 12px;}
 .howto summary{cursor:pointer;font-size:15px;font-weight:800;color:#3d6b3d;display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;}
@@ -299,7 +307,8 @@ footer a:hover{color:#fff;}
 .htxt b{font-weight:800;color:#2f5a2f;}
 .htxt small{display:block;font-size:12.5px;color:#6b5b48;margin-top:2px;line-height:1.6;}
 .hstep.hsel{background:#eef6ee;border:2px solid #4a7a4a;border-radius:12px;padding:8px 10px;margin-left:-4px;margin-right:-4px;}
-.hmini{display:inline-block;background:#4a7a4a;color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:800;}
+.hmini{display:inline-block;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:800;}
+.hmini.red{background:linear-gradient(135deg,#ff7043,#e53935);}
 </style>
 </head>
 <body>
@@ -375,10 +384,10 @@ footer a:hover{color:#fff;}
   <div class="sec-ttl">🐶 商品一覧 🐶</div>
   <details class="howto" open>
     <summary>📖 ご注文のしかた（はじめての方へ）<span class="hchip">開く／閉じる</span></summary>
-    <div class="hstep"><div class="hnum">1</div><div class="htxt"><b>ほしい商品を見つけて、ボタンをタップ</b><small>商品の写真をタップすると、くわしい説明と写真が見られます。</small></div></div>
-    <div class="hstep hsel"><div class="hnum">2</div><div class="htxt"><b>🎨 柄や色が選べる商品は、先に「選ぶ」</b><small>「ほしいものをタップして選んでください」と書いてある商品は、<b>まず下の四角をタップ</b>します。<span class="hmini">✓ 緑色</span>に変わったら選べた合図です。そのあとで「<b>これでカートに入れる</b>」をタップしてください。</small></div></div>
-    <div class="hstep"><div class="hnum">3</div><div class="htxt"><b>画面の上にある「🛒 カート」をタップ</b><small>入れた商品と合計金額を確認できます。まちがえたときは、ここで削除できます。</small></div></div>
-    <div class="hstep"><div class="hnum">4</div><div class="htxt"><b>「注文フォームを開く」をタップ</b><small>お名前・ご住所などを入力して送信してください。</small></div></div>
+    <div class="hstep"><div class="hnum">1</div><div class="htxt"><b>ほしい商品を見つけて、「カートに入れる」をタップ</b><small>商品の写真をタップすると、くわしい説明と写真が見られます。</small></div></div>
+    <div class="hstep hsel"><div class="hnum">2</div><div class="htxt"><b>🎨 柄や色が選べる商品は、ほしい方のボタンをタップ</b><small>「オリジナル」「卒業犬バージョン」のように、名前ごとにボタンが分かれています。<b>ほしい方の<span class="hmini">🛒 カートに入れる</span></b>を押すだけです。2つともほしいときは、手順4の「その他ご要望」にご記入ください。</small></div></div>
+    <div class="hstep"><div class="hnum">3</div><div class="htxt"><b>画面の下の<span class="hmini red">🛒 ご注文はこちら</span>をタップ</b><small>入れた商品と合計金額を確認できます。まちがえたときは、ここで削除できます。</small></div></div>
+    <div class="hstep"><div class="hnum">4</div><div class="htxt"><b>「注文フォームを開く」をタップ</b><small>お名前・ご住所などを入力して送信してください。ご要望（例：同じ商品の別の柄もほしい）がある場合は、フォームの<b>「その他ご要望」</b>欄にご記入ください。</small></div></div>
     <div class="hstep"><div class="hnum">5</div><div class="htxt"><b>メールで、送料を含む金額をご案内します</b><small>お支払いは銀行振込です。ご入金の確認後に発送いたします🐾</small></div></div>
   </details>
   <div class="cat-tabs" id="catTabs">
@@ -484,6 +493,10 @@ footer a:hover{color:#fff;}
         📞 そちらにも見当たらない場合は、お手数ですが<strong>お電話</strong>にてご連絡いただけますと幸いです。
       </div>
     </div>
+    <div style="background:#f0f7ff;border:1.5px solid #8bb8e8;border-radius:12px;padding:9px 12px;margin-bottom:10px;font-size:12px;color:#2a3a52;line-height:1.7;">
+      📝 <strong>ご要望がある場合</strong>は、注文フォームの<strong>「その他ご要望」欄</strong>にご記入ください。<br>
+      <span style="font-size:11.5px;">（例：同じ商品の別の柄もほしい。欄にすでに入っている文章は消さずに、その下に続けてご記入ください）</span>
+    </div>
     <button class="order-btn" onclick="goToForm()">
       🛒 注文フォームを開く
     </button>
@@ -493,6 +506,10 @@ footer a:hover{color:#fff;}
   </div>
 </div>
 
+<div class="order-bar" id="orderBar" onclick="openCart()" role="button" style="display:none;">
+  <div class="ob-main">🛒 ご注文はこちら</div>
+  <div class="ob-sub" id="orderBarSub"></div>
+</div>
 <div class="toast" id="toast"></div>
 
 <script>
@@ -658,12 +675,11 @@ function buildCard(p) {
         ${p.badge === 'soon' ? '🔜 近日公開' : `¥${p.price.toLocaleString()} <small>（税込）</small>`}
         ${(p.origPrice && p.badge !== 'soon') ? `<span class="orig">¥${p.origPrice.toLocaleString()}</span>` : ''}
       </div>
-      <button class="add-btn${p.colors && p.colors.length && !p.soldout ? ' vbtn' : ''}" id="btn${p.id}" onclick="${p.colors && p.colors.length ? `addVariantFromCard(${p.id})` : `addToCart(${p.id})`}" ${p.soldout ? 'disabled' : ''}>
-        ${p.soldout ? (p.badge === 'soon' ? '🔜 COMING SOON' : '❌ 売り切れ') : (p.colors && p.colors.length ? variantBtnHTML(p) : '🛒 カートに入れる')}
-      </button>
+      ${(p.colors && p.colors.length && !p.soldout) ? '' : `<button class="add-btn" id="btn${p.id}" onclick="addToCart(${p.id})" ${p.soldout ? 'disabled' : ''}>
+        ${p.soldout ? (p.badge === 'soon' ? '🔜 COMING SOON' : '❌ 売り切れ') : '🛒 カートに入れる'}
+      </button>`}
     </div>
   `;
-  if (p.colors && p.colors.length && !p.soldout) applyBtnState(c.querySelector('.add-btn'), p);
   return c;
 }
 let currentCat = 'all';
@@ -691,85 +707,68 @@ let cart = {};
 let cartVariants = {};   // カート内商品のカラー選択を記録 {id: 'グレー'}
 let selectedColor = {};  // 詳細ページ・一覧での現在選択中カラー {id: 'グレー'}
 
-// ===== 選べる商品：一覧カード上で選んでそのままカートへ =====
+// ===== 選べる商品：一覧カード上で、選択肢ごとのボタンを1回押すだけでカートへ =====
 function _vesc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
-function variantOkList(p) {
-  const oks = (p.colors || []).filter(c => c.status === 'ok');
-  // 選べるものが1つだけのときは、自動で選択済みにする（迷わないように）
-  if (oks.length === 1 && !selectedColor[p.id]) selectedColor[p.id] = oks[0].label;
-  return oks;
-}
 function variantPickerHTML(p) {
-  const oks = variantOkList(p);
-  const sel = selectedColor[p.id];
-  const chips = p.colors.map(c => {
+  const oks = (p.colors || []).filter(c => c.status === 'ok');
+  const inCart = !!cart[p.id];
+  const cur = cartVariants[p.id];
+  const btns = p.colors.map(c => {
     if (c.status === 'ok') {
-      return `<button type="button" class="vchip${sel === c.label ? ' sel' : ''}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();pickVariant(${p.id}, this.dataset.vlabel)">${c.label}</button>`;
+      let cls = 'vopt', act = '🛒 カートに入れる';
+      if (inCart && cur === c.label) { cls += ' in'; act = '✓ カートに入っています'; }
+      else if (inCart) { cls += ' alt'; act = '🔄 こちらに変更する'; }
+      return `<button type="button" class="${cls}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();addVariantOption(${p.id}, this.dataset.vlabel)"><span class="vlab">${c.label}</span><span class="vact">${act}</span></button>`;
     }
     const note = c.status === 'soon' ? '🔜 近日入荷' : '❌ 売り切れ';
-    return `<button type="button" class="vchip off" disabled>${c.label}<br><span>${note}</span></button>`;
+    return `<div class="vopt off"><span class="vlab">${c.label}</span><span class="vact">${note}</span></div>`;
   }).join('');
-  const ttl = oks.length > 1 ? '👆 ほしいものをタップして選んでください' : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
-  return `<div class="vsel" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${chips}</div></div>`;
-}
-function variantBtnHTML(p) {
-  const oks = variantOkList(p);
-  if (cart[p.id]) return '✓ カートに入っています';
-  if (oks.length === 0) return '❌ 現在お選びいただけません';
-  if (!selectedColor[p.id] && oks.length > 1) return '👆 先に上から選んでください';
-  return oks.length > 1 ? '🛒 これでカートに入れる' : '🛒 カートに入れる';
-}
-function applyBtnState(btn, p) {
-  if (!btn) return;
-  const oks = variantOkList(p);
-  btn.innerHTML = variantBtnHTML(p);
-  btn.classList.toggle('need-select', !cart[p.id] && !selectedColor[p.id] && oks.length > 1);
-  btn.classList.toggle('added', !!cart[p.id]);
-  btn.disabled = (oks.length === 0 && !cart[p.id]);
+  const ttl = oks.length > 1 ? '🎨 ほしいものの「カートに入れる」を押してください' : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
+  const hint = oks.length > 1 ? '<div class="vhint">※ 2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>' : '';
+  return `<div class="vsel" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${btns}</div>${hint}</div>`;
 }
 function refreshVariantUI(id) {
   const p = products.find(x => x.id === id);
   if (!p || !p.colors || !p.colors.length || p.soldout) return;
   const box = document.getElementById('vsel' + id);
-  if (box) {
-    const tmp = document.createElement('div');
-    tmp.innerHTML = variantPickerHTML(p);
-    box.replaceWith(tmp.firstElementChild);
-  }
-  applyBtnState(document.getElementById('btn' + id), p);
+  if (!box) return;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = variantPickerHTML(p);
+  box.replaceWith(tmp.firstElementChild);
 }
-function pickVariant(id, label) {
-  selectedColor[id] = label;
-  if (cart[id]) {
-    // すでにカートに入っている場合は、選び直した内容をその場でカートにも反映
-    cartVariants[id] = label;
-    renderCart();
-    showToast('🎨 「' + label + '」に変更しました');
-  }
-  refreshVariantUI(id);
-}
-function addVariantFromCard(id) {
+function addVariantOption(id, label) {
   const p = products.find(x => x.id === id);
   if (!p || p.soldout) return;
-  if (cart[id]) { showToast('⚠️ すでにカートに入っています'); return; }
-  const sel = selectedColor[id];
-  if (!sel) {
-    showToast('👆 先に上から選んでください');
-    const box = document.getElementById('vsel' + id);
-    if (box) {
-      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
-      if (box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }
+  if (cart[id]) {
+    if (cartVariants[id] === label) { showToast('⚠️ すでにカートに入っています', 3500); return; }
+    // 別の選択肢のボタンを押したときは「変更」になる
+    cartVariants[id] = label; selectedColor[id] = label;
+    renderCart();
+    showToast('🔄 「' + label + '」に変更しました。2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください', 7000);
+    refreshVariantUI(id);
     return;
   }
   cart[id] = 1;
-  cartVariants[id] = sel;
+  cartVariants[id] = label; selectedColor[id] = label;
   renderCart();
-  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + '（' + sel + '）をカートに追加🐾');
+  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + '（' + label + '）をカートに追加🐾');
   refreshVariantUI(id);
   const cnt = document.getElementById('cartCount');
   cnt.classList.add('bump');
   setTimeout(() => cnt.classList.remove('bump'), 300);
+}
+// 画面の下の「ご注文はこちら」バー
+function updateOrderBar(count, total) {
+  const bar = document.getElementById('orderBar');
+  if (!bar) return;
+  if (count > 0) {
+    document.getElementById('orderBarSub').textContent = count + '点　¥' + total.toLocaleString() + '（送料別）';
+    bar.style.display = 'flex';
+    document.body.classList.add('has-bar');
+  } else {
+    bar.style.display = 'none';
+    document.body.classList.remove('has-bar');
+  }
 }
 
 renderGrid('all');
@@ -832,6 +831,7 @@ function renderCart() {
   const count = Object.values(cart).reduce((s,q) => s+q, 0);
   document.getElementById('cartCount').textContent = count;
   document.getElementById('totalAmt').textContent = '¥' + total.toLocaleString();
+  updateOrderBar(count, total);
   const el = document.getElementById('panelItems');
   if (!count) {
     el.innerHTML = '<div class="empty-msg"><div class="e-ico">🐾</div><p>カートは空です<br><span style="font-size:11px;color:#bbb;">商品を選んでカートに入れてください</span></p></div>';
@@ -867,11 +867,13 @@ function renderCart() {
 }
 
 function openCart() {
+  document.body.classList.add('cart-open');
   document.getElementById('panel').classList.add('open');
   document.getElementById('overlay').classList.add('open');
   document.body.style.overflow = 'hidden';
 }
 function closeCart() {
+  document.body.classList.remove('cart-open');
   document.getElementById('panel').classList.remove('open');
   document.getElementById('overlay').classList.remove('open');
   document.body.style.overflow = '';
@@ -915,12 +917,12 @@ function goToForm() {
 }
 
 let toastT;
-function showToast(msg) {
+function showToast(msg, ms) {
   const t = document.getElementById('toast');
   t.textContent = msg;
   t.classList.add('show');
   clearTimeout(toastT);
-  toastT = setTimeout(() => t.classList.remove('show'), 2800);
+  toastT = setTimeout(() => t.classList.remove('show'), ms || 2800);
 }
 
 // ===== IMAGE MODAL =====
@@ -1071,6 +1073,8 @@ function openDetail(p) {
       colorsRow.appendChild(chip);
     });
     colorsEl.style.display = 'block';
+    const hintEl = document.getElementById('detailColorsHint');
+    if (hintEl) hintEl.style.display = (p.colors.filter(x => x.status === 'ok').length > 1) ? 'block' : 'none';
   } else {
     colorsEl.style.display = 'none';
   }
@@ -1431,6 +1435,7 @@ window.addEventListener('hashchange', openFromHash);
       <div class="detail-colors" id="detailColors" style="display:none;">
         <div style="font-size:13px;color:#3d6b3d;font-weight:800;margin-bottom:6px;">🎨 ほしいものをタップして選んでください</div>
         <div id="detailColorsRow" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <div id="detailColorsHint" style="display:none;font-size:12px;color:#7a6a58;line-height:1.5;margin-top:6px;">※ 2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>
       </div>
       <div class="detail-desc" id="detailDesc" style="display:none;"></div>
       <div class="detail-shipping">
