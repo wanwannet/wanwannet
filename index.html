@@ -310,6 +310,22 @@ body.cart-open .order-bar{display:none !important;}
 .hstep.hsel{background:#eef6ee;border:2px solid #4a7a4a;border-radius:12px;padding:8px 10px;margin-left:-4px;margin-right:-4px;}
 .hmini{display:inline-block;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:800;}
 .hmini.red{background:linear-gradient(135deg,#ff7043,#e53935);}
+/* カートの画面：合計とボタンを下に固定し、商品と案内は上のエリアでスクロール */
+.panel{height:100%;height:100dvh;}
+.panel-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.panel-items{flex:none;overflow:visible;}
+.panel-notices{padding:6px 16px 20px;}
+.panel-ft{max-height:none;overflow:visible;padding:10px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 14px rgba(0,0,0,.08);background:#fff;}
+.panel-ft.empty{display:none;}
+.total-lbl{font-size:13px;font-weight:700;}
+.total-lbl small{font-size:11px;font-weight:600;color:#9a8a78;margin-left:3px;}
+.total-amt{font-size:26px;}
+.ft-prompt{background:#fff8e6;border:1.5px solid #e8a830;border-radius:10px;padding:8px 10px;margin:4px 0 8px;font-size:13px;line-height:1.6;color:#3a2c1a;text-align:center;}
+.ft-prompt strong{color:#c62828;}
+.order-btn{font-size:17px;padding:16px;}
+.panel-note{font-size:11.5px;color:#7a6a58;margin-top:8px;line-height:1.6;}
+.ci-name{font-size:13px;}
+body.cart-open .toast{bottom:auto;top:76px;}
 </style>
 </head>
 <body>
@@ -428,14 +444,10 @@ body.cart-open .order-bar{display:none !important;}
     <h2>🛒 お買い物かご</h2>
     <button class="close-btn" onclick="closeCart()">✕</button>
   </div>
-  <div class="panel-items" id="panelItems">
-    <div class="empty-msg"><div class="e-ico">🐾</div><p>カートは空です<br><span style="font-size:11px;color:#bbb;">商品を選んでカートに入れてください</span></p></div>
-  </div>
-  <div class="panel-ft">
-    <div class="total-row">
-      <span class="total-lbl">お買い物合計</span>
-      <span class="total-amt" id="totalAmt">¥0</span>
+  <div class="panel-scroll" id="panelScroll">
+    <div class="panel-items" id="panelItems">
     </div>
+    <div class="panel-notices">
     <!-- 送料負担案内 -->
     <div style="background:#fff0f0;border:1.5px solid #e84e4e;border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:11px;line-height:1.7;">
       <div style="color:#c62828;font-weight:800;">📦 送料はご支援者様のご負担となります</div>
@@ -498,11 +510,20 @@ body.cart-open .order-bar{display:none !important;}
       📝 <strong>ご要望がある場合</strong>は、注文フォームの<strong>「その他ご要望」欄</strong>にご記入ください。<br>
       <span style="font-size:11.5px;">（例：同じ商品の別の柄もほしい。欄にすでに入っている文章は消さずに、その下に続けてご記入ください）</span>
     </div>
+    </div>
+  </div>
+  <div class="panel-ft empty" id="panelFt">
+    <div class="total-row">
+      <span class="total-lbl">お買い物合計<small>（送料別）</small></span>
+      <span class="total-amt" id="totalAmt">¥0</span>
+    </div>
+    <div class="ft-prompt">👇 合計金額をご確認のうえ、よろしければ<br><strong>下の「注文フォームを開く」</strong>を押してください</div>
     <button class="order-btn" onclick="goToForm()">
       🛒 注文フォームを開く
     </button>
     <p class="panel-note">
-      🏦 お支払いは銀行振込のみ<br>入金確認後に発送いたします
+      📦 送料は別です。ご注文後、送料込みの金額をメールでご案内します<br>
+      🏦 お支払いは銀行振込のみ・入金確認後に発送いたします
     </p>
   </div>
 </div>
@@ -833,17 +854,19 @@ function renderCart() {
   document.getElementById('cartCount').textContent = count;
   document.getElementById('totalAmt').textContent = '¥' + total.toLocaleString();
   updateOrderBar(count, total);
+  const ft = document.getElementById('panelFt');
+  if (ft) ft.classList.toggle('empty', !count);   // 空のときは下の固定部分を隠す
   const el = document.getElementById('panelItems');
   if (!count) {
     el.innerHTML = '<div class="empty-msg"><div class="e-ico">🐾</div><p>カートは空です<br><span style="font-size:11px;color:#bbb;">商品を選んでカートに入れてください</span></p></div>';
     return;
   }
+  el.innerHTML = '';
   // 件数ヘッダー
   const header = document.createElement('div');
-  header.style.cssText = 'font-size:12px;color:#7a6a58;margin-bottom:4px;font-weight:700;padding:0 2px;';
-  header.textContent = '🛒 選んだ商品（' + count + '点）';
+  header.style.cssText = 'font-size:13px;color:#7a6a58;font-weight:700;padding:0 2px;line-height:1.6;';
+  header.innerHTML = '🛒 選んだ商品（' + count + '点）<br><span style="font-size:12px;font-weight:600;">まちがえたときは「🗑️ 削除」を押してください</span>';
   el.appendChild(header);
-  el.innerHTML = '';
   Object.entries(cart).forEach(([id,qty]) => {
     if (!qty) return;
     const p = products.find(x=>x.id==id);
@@ -859,7 +882,7 @@ function renderCart() {
       <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
         <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
           <div style="background:#eef5ee;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:800;color:#4a7a4a;">1点</div>
-          <button onclick="removeItem(${id})" style="background:none;border:1.5px solid #e84e4e;color:#e84e4e;font-size:11px;cursor:pointer;font-weight:700;padding:3px 8px;border-radius:20px;">🗑️ 削除</button>
+          <button onclick="removeItem(${id})" style="background:#fff;border:2px solid #e84e4e;color:#e84e4e;font-size:13px;cursor:pointer;font-weight:800;padding:8px 12px;border-radius:22px;min-height:38px;">🗑️ 削除</button>
         </div>
       </div>
     `;
