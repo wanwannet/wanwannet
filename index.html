@@ -273,6 +273,34 @@ footer a:hover{color:#fff;}
 }
 .slide-dot.active{background:var(--green);transform:scale(1.3);}
 </style>
+<style id="variant-ui-style">
+/* 選べる商品：一覧カード上の選択ボタン（年配の方にも押しやすい大きさ） */
+.vsel{margin:6px 0 4px;padding:8px;border:2px dashed #9dc89d;border-radius:12px;background:#f5f9f5;}
+.vsel-ttl{font-size:12px;font-weight:800;color:#3d6b3d;margin-bottom:6px;line-height:1.4;}
+.vsel-row{display:flex;flex-direction:column;gap:6px;}
+.vchip{width:100%;min-height:42px;padding:8px 10px;border-radius:10px;font-family:inherit;font-size:13px;font-weight:800;line-height:1.3;cursor:pointer;background:#fff;color:#3a2c1a;border:2px solid #b7d6b7;text-align:center;}
+.vchip.sel{background:#4a7a4a;color:#fff;border-color:#4a7a4a;box-shadow:0 2px 6px rgba(74,122,74,.35);}
+.vchip.sel::before{content:'✓ ';}
+.vchip.off{background:#f5f3ee;color:#a8a396;border:1.5px dashed #d8d4c8;cursor:default;font-size:11px;font-weight:700;min-height:36px;}
+.vchip.off span{font-size:10px;font-weight:700;}
+.add-btn.vbtn{font-size:13px;padding:11px 10px;}
+.add-btn.need-select{background:#fff8e6;color:#b36a00;border:2px solid #e8a830;}
+.shake{animation:vshake .45s;}
+@keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.4;}
+/* ご注文のしかた */
+.howto{max-width:760px;margin:0 auto 18px;background:#fffdf5;border:2px solid #9dc89d;border-radius:14px;padding:10px 14px 12px;}
+.howto summary{cursor:pointer;font-size:15px;font-weight:800;color:#3d6b3d;display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;}
+.howto summary::-webkit-details-marker{display:none;}
+.howto summary .hchip{font-size:11px;background:#4a7a4a;color:#fff;padding:3px 10px;border-radius:12px;font-weight:700;white-space:nowrap;}
+.hstep{display:flex;gap:10px;align-items:flex-start;margin-top:12px;}
+.hnum{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#4a7a4a;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.htxt{font-size:14px;line-height:1.65;color:#3a2c1a;}
+.htxt b{font-weight:800;color:#2f5a2f;}
+.htxt small{display:block;font-size:12.5px;color:#6b5b48;margin-top:2px;line-height:1.6;}
+.hstep.hsel{background:#eef6ee;border:2px solid #4a7a4a;border-radius:12px;padding:8px 10px;margin-left:-4px;margin-right:-4px;}
+.hmini{display:inline-block;background:#4a7a4a;color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:800;}
+</style>
 </head>
 <body>
 
@@ -345,6 +373,14 @@ footer a:hover{color:#fff;}
 
 <section class="catalog">
   <div class="sec-ttl">🐶 商品一覧 🐶</div>
+  <details class="howto" open>
+    <summary>📖 ご注文のしかた（はじめての方へ）<span class="hchip">開く／閉じる</span></summary>
+    <div class="hstep"><div class="hnum">1</div><div class="htxt"><b>ほしい商品を見つけて、ボタンをタップ</b><small>商品の写真をタップすると、くわしい説明と写真が見られます。</small></div></div>
+    <div class="hstep hsel"><div class="hnum">2</div><div class="htxt"><b>🎨 柄や色が選べる商品は、先に「選ぶ」</b><small>「ほしいものをタップして選んでください」と書いてある商品は、<b>まず下の四角をタップ</b>します。<span class="hmini">✓ 緑色</span>に変わったら選べた合図です。そのあとで「<b>これでカートに入れる</b>」をタップしてください。</small></div></div>
+    <div class="hstep"><div class="hnum">3</div><div class="htxt"><b>画面の上にある「🛒 カート」をタップ</b><small>入れた商品と合計金額を確認できます。まちがえたときは、ここで削除できます。</small></div></div>
+    <div class="hstep"><div class="hnum">4</div><div class="htxt"><b>「注文フォームを開く」をタップ</b><small>お名前・ご住所などを入力して送信してください。</small></div></div>
+    <div class="hstep"><div class="hnum">5</div><div class="htxt"><b>メールで、送料を含む金額をご案内します</b><small>お支払いは銀行振込です。ご入金の確認後に発送いたします🐾</small></div></div>
+  </details>
   <div class="cat-tabs" id="catTabs">
     <button class="cat-tab active" data-cat="all" onclick="selectCat(this)">🐾 すべて</button>
     <button class="cat-tab" data-cat="tote" onclick="selectCat(this)">🛍️ トート・エコ</button>
@@ -617,16 +653,17 @@ function buildCard(p) {
       <div class="card-num">No.${p.id}</div>
       <div class="card-name">${dispName(p.formName)}</div>
       ${p.size ? `<div class="card-size">📐 ${p.size}</div>` : ''}
-      ${p.colors && p.colors.length ? `<div class="card-colors" style="font-size:11px;font-weight:700;color:#4a7a4a;margin:2px 0;">🎨 ${p.colors.length}種類（${p.colors.map(c=>c.label).join('・')}）</div>` : ''}
+      ${p.colors && p.colors.length ? (p.soldout ? `<div class="card-colors" style="font-size:11px;font-weight:700;color:#4a7a4a;margin:2px 0;">🎨 ${p.colors.length}種類（${p.colors.map(c=>c.label).join('・')}）</div>` : variantPickerHTML(p)) : ''}
       <div class="card-price">
         ${p.badge === 'soon' ? '🔜 近日公開' : `¥${p.price.toLocaleString()} <small>（税込）</small>`}
         ${(p.origPrice && p.badge !== 'soon') ? `<span class="orig">¥${p.origPrice.toLocaleString()}</span>` : ''}
       </div>
-      <button class="add-btn" id="btn${p.id}" onclick="${p.colors && p.colors.length ? `openDetail(products.find(x=>x.id===${p.id}))` : `addToCart(${p.id})`}" ${p.soldout ? 'disabled' : ''}>
-        ${p.soldout ? (p.badge === 'soon' ? '🔜 COMING SOON' : '❌ 売り切れ') : (p.colors && p.colors.length ? '🎨 選んでカートに入れる' : '🛒 カートに入れる')}
+      <button class="add-btn${p.colors && p.colors.length && !p.soldout ? ' vbtn' : ''}" id="btn${p.id}" onclick="${p.colors && p.colors.length ? `addVariantFromCard(${p.id})` : `addToCart(${p.id})`}" ${p.soldout ? 'disabled' : ''}>
+        ${p.soldout ? (p.badge === 'soon' ? '🔜 COMING SOON' : '❌ 売り切れ') : (p.colors && p.colors.length ? variantBtnHTML(p) : '🛒 カートに入れる')}
       </button>
     </div>
   `;
+  if (p.colors && p.colors.length && !p.soldout) applyBtnState(c.querySelector('.add-btn'), p);
   return c;
 }
 let currentCat = 'all';
@@ -650,11 +687,92 @@ function selectCat(btn) {
   document.querySelectorAll('#catTabs .cat-tab').forEach(t => t.classList.toggle('active', t === btn));
   renderGrid(currentCat);
 }
-renderGrid('all');
-
 let cart = {};
 let cartVariants = {};   // カート内商品のカラー選択を記録 {id: 'グレー'}
-let selectedColor = {};  // 詳細ページでの現在選択中カラー {id: 'グレー'}
+let selectedColor = {};  // 詳細ページ・一覧での現在選択中カラー {id: 'グレー'}
+
+// ===== 選べる商品：一覧カード上で選んでそのままカートへ =====
+function _vesc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function variantOkList(p) {
+  const oks = (p.colors || []).filter(c => c.status === 'ok');
+  // 選べるものが1つだけのときは、自動で選択済みにする（迷わないように）
+  if (oks.length === 1 && !selectedColor[p.id]) selectedColor[p.id] = oks[0].label;
+  return oks;
+}
+function variantPickerHTML(p) {
+  const oks = variantOkList(p);
+  const sel = selectedColor[p.id];
+  const chips = p.colors.map(c => {
+    if (c.status === 'ok') {
+      return `<button type="button" class="vchip${sel === c.label ? ' sel' : ''}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();pickVariant(${p.id}, this.dataset.vlabel)">${c.label}</button>`;
+    }
+    const note = c.status === 'soon' ? '🔜 近日入荷' : '❌ 売り切れ';
+    return `<button type="button" class="vchip off" disabled>${c.label}<br><span>${note}</span></button>`;
+  }).join('');
+  const ttl = oks.length > 1 ? '👆 ほしいものをタップして選んでください' : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
+  return `<div class="vsel" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${chips}</div></div>`;
+}
+function variantBtnHTML(p) {
+  const oks = variantOkList(p);
+  if (cart[p.id]) return '✓ カートに入っています';
+  if (oks.length === 0) return '❌ 現在お選びいただけません';
+  if (!selectedColor[p.id] && oks.length > 1) return '👆 先に上から選んでください';
+  return oks.length > 1 ? '🛒 これでカートに入れる' : '🛒 カートに入れる';
+}
+function applyBtnState(btn, p) {
+  if (!btn) return;
+  const oks = variantOkList(p);
+  btn.innerHTML = variantBtnHTML(p);
+  btn.classList.toggle('need-select', !cart[p.id] && !selectedColor[p.id] && oks.length > 1);
+  btn.classList.toggle('added', !!cart[p.id]);
+  btn.disabled = (oks.length === 0 && !cart[p.id]);
+}
+function refreshVariantUI(id) {
+  const p = products.find(x => x.id === id);
+  if (!p || !p.colors || !p.colors.length || p.soldout) return;
+  const box = document.getElementById('vsel' + id);
+  if (box) {
+    const tmp = document.createElement('div');
+    tmp.innerHTML = variantPickerHTML(p);
+    box.replaceWith(tmp.firstElementChild);
+  }
+  applyBtnState(document.getElementById('btn' + id), p);
+}
+function pickVariant(id, label) {
+  selectedColor[id] = label;
+  if (cart[id]) {
+    // すでにカートに入っている場合は、選び直した内容をその場でカートにも反映
+    cartVariants[id] = label;
+    renderCart();
+    showToast('🎨 「' + label + '」に変更しました');
+  }
+  refreshVariantUI(id);
+}
+function addVariantFromCard(id) {
+  const p = products.find(x => x.id === id);
+  if (!p || p.soldout) return;
+  if (cart[id]) { showToast('⚠️ すでにカートに入っています'); return; }
+  const sel = selectedColor[id];
+  if (!sel) {
+    showToast('👆 先に上から選んでください');
+    const box = document.getElementById('vsel' + id);
+    if (box) {
+      box.classList.remove('shake'); void box.offsetWidth; box.classList.add('shake');
+      if (box.scrollIntoView) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
+  cart[id] = 1;
+  cartVariants[id] = sel;
+  renderCart();
+  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + '（' + sel + '）をカートに追加🐾');
+  refreshVariantUI(id);
+  const cnt = document.getElementById('cartCount');
+  cnt.classList.add('bump');
+  setTimeout(() => cnt.classList.remove('bump'), 300);
+}
+
+renderGrid('all');
 
 function selectColor(id, label, status) {
   if (status !== 'ok') return; // 在庫あり・売り切れ以外は選択不可
@@ -672,6 +790,7 @@ function selectColor(id, label, status) {
     el.style.border = isSel ? '1.5px solid #4a7a4a' : '1.5px solid #cfe3cf';
     el.style.background = isSel ? '#eef5ee' : '#fff';
   });
+  refreshVariantUI(id); // 一覧カード側の表示も同期
 }
 
 function addToCart(id) {
@@ -697,13 +816,15 @@ function removeItem(id) {
   delete cart[id];
   delete cartVariants[id];
   renderCart();
+  refreshVariantUI(id);
   showToast('🗑️ 削除しました');
 }
 
 function changeQty(id, d) {
   cart[id] = Math.max(0, (cart[id]||0) + d);
-  if (cart[id] === 0) delete cart[id];
+  if (cart[id] === 0) { delete cart[id]; delete cartVariants[id]; }
   renderCart();
+  refreshVariantUI(id);
 }
 
 function renderCart() {
@@ -924,9 +1045,10 @@ function openDetail(p) {
   if (p.colors && p.colors.length) {
     colorsRow.innerHTML = '';
     // 初期選択：在庫ありの最初の色（未選択なら）
+    // 選べるものが1つだけのときだけ自動選択（複数あるときは、お客様に選んでいただく）
     if (!selectedColor[p.id]) {
-      const firstOk = p.colors.find(c => c.status === 'ok');
-      if (firstOk) selectedColor[p.id] = firstOk.label;
+      const oks = p.colors.filter(c => c.status === 'ok');
+      if (oks.length === 1) selectedColor[p.id] = oks[0].label;
     }
     p.colors.forEach(c => {
       const chip = document.createElement('button');
@@ -1102,6 +1224,16 @@ function addToCartFromDetail() {
     showToast('⚠️ すでにカートに入っています');
     return;
   }
+  if (p.colors && p.colors.length && !selectedColor[p.id]) {
+    // 選ぶものがあるのに未選択のときは、先に選んでもらう
+    showToast('👆 先にほしいものを選んでください');
+    const row = document.getElementById('detailColorsRow');
+    if (row) {
+      row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake');
+      if (row.scrollIntoView) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
   cart[p.id] = 1;
   if (p.colors && selectedColor[p.id]) cartVariants[p.id] = selectedColor[p.id];
   renderCart();
@@ -1122,6 +1254,7 @@ function addToCartFromDetail() {
     listBtn.textContent = '✓ カート済み';
     listBtn.classList.add('added');
   }
+  refreshVariantUI(p.id); // 選べる商品は一覧カードの表示も同期
 }
 
 // 商品説明文（後から追加可能）
@@ -1296,7 +1429,7 @@ window.addEventListener('hashchange', openFromHash);
         📐 <span id="detailSizeText"></span>
       </div>
       <div class="detail-colors" id="detailColors" style="display:none;">
-        <div style="font-size:12px;color:#7a6a58;font-weight:700;margin-bottom:6px;">🎨 バリエーション</div>
+        <div style="font-size:13px;color:#3d6b3d;font-weight:800;margin-bottom:6px;">🎨 ほしいものをタップして選んでください</div>
         <div id="detailColorsRow" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
       </div>
       <div class="detail-desc" id="detailDesc" style="display:none;"></div>
