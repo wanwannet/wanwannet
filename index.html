@@ -289,7 +289,8 @@ footer a:hover{color:#fff;}
 .vhint{margin-top:6px;font-size:11px;line-height:1.5;color:#7a6a58;}
 .shake{animation:vshake .45s;}
 @keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
-.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.5;bottom:92px;z-index:500;}
+.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.5;bottom:92px;z-index:500;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility .3s;}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
 /* 画面の下に常に出る「ご注文はこちら」 */
 .order-bar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:linear-gradient(135deg,#ff7043,#e53935);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;box-shadow:0 -4px 16px rgba(0,0,0,.22);text-align:center;}
 .ob-main{font-size:18px;font-weight:800;letter-spacing:.04em;}
@@ -744,7 +745,7 @@ function addVariantOption(id, label) {
     // 別の選択肢のボタンを押したときは「変更」になる
     cartVariants[id] = label; selectedColor[id] = label;
     renderCart();
-    showToast('🔄 「' + label + '」に変更しました。2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください', 7000);
+    showToast('🔄 「' + label + '」に変更しました。2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください', 5000);
     refreshVariantUI(id);
     return;
   }
