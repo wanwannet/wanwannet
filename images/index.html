@@ -1,0 +1,1574 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
+<title>WanWan Net🐾 オリジナルグッズ</title>
+<link href="https://fonts.googleapis.com/css2?family=M+PLUS+Rounded+1c:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fdf9f3;--cream:#fff8ee;--beige:#f0e8d8;
+  --green:#6a9e6a;--green-d:#4a7a4a;--green-l:#9dc89d;--green-bg:#eef5ee;
+  --brown:#7a4f2a;--brown-l:#b07a50;
+  --gold:#e8a830;--gold-l:#f5cc70;
+  --text:#3a2c1a;--text-s:#7a6a58;
+  --white:#ffffff;--shadow:rgba(80,50,20,.10);--radius:18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+header{background:linear-gradient(135deg,var(--green-d),var(--green),#7ab87a);padding:0 16px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;height:60px;box-shadow:0 3px 16px rgba(50,100,50,.25);}
+.h-logo{display:flex;align-items:center;gap:8px;}
+.h-chara{width:44px;height:44px;border-radius:50%;overflow:hidden;background:#000;border:2px solid var(--gold-l);flex-shrink:0;}
+.h-chara img{width:100%;height:100%;object-fit:cover;}
+.h-logo-text{font-size:16px;font-weight:800;color:#fff;line-height:1.2;}
+.h-logo-sub{font-size:10px;color:rgba(255,255,255,.75);}
+.cart-btn{background:var(--white);color:var(--green-d);border:none;border-radius:50px;padding:9px 16px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;display:flex;align-items:center;gap:6px;box-shadow:0 2px 10px rgba(0,0,0,.12);transition:all .2s;}
+.cart-btn:hover{background:var(--gold-l);transform:scale(1.04);}
+.c-count{background:var(--gold);color:var(--brown);border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;}
+.c-count.bump{animation:bump .3s;}
+@keyframes bump{0%,100%{transform:scale(1);}50%{transform:scale(1.5);}}
+.notice{background:linear-gradient(90deg,var(--gold-l),var(--gold),var(--gold-l));padding:9px 16px;text-align:center;font-size:11px;font-weight:700;color:var(--brown);}
+.hero{background:linear-gradient(160deg,var(--green-bg) 0%,var(--cream) 50%,var(--beige) 100%);padding:36px 16px 28px;text-align:center;position:relative;overflow:hidden;}
+.hero-chara{display:inline-block;margin-bottom:12px;animation:float 3s ease-in-out infinite;}
+.hero-chara img{width:140px;height:140px;object-fit:contain;filter:drop-shadow(0 8px 20px rgba(120,80,30,.25));}
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-8px);}}
+.hero h1{font-size:clamp(20px,5vw,36px);font-weight:800;color:var(--green-d);line-height:1.3;}
+.hero h1 span{color:var(--brown);}
+.hero-tag{margin-top:12px;font-size:12px;color:var(--text-s);background:var(--white);display:inline-block;padding:7px 16px;border-radius:50px;border:1.5px solid var(--green-l);}
+.catalog{padding:28px 14px 60px;max-width:1000px;margin:0 auto;}
+.sec-ttl{text-align:center;font-size:16px;font-weight:800;color:var(--green-d);margin-bottom:20px;display:flex;align-items:center;justify-content:center;gap:8px;}
+.sec-ttl::before,.sec-ttl::after{content:'';flex:1;height:2px;background:linear-gradient(to right,transparent,var(--green-l));}
+.sec-ttl::after{background:linear-gradient(to left,transparent,var(--green-l));}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:16px;}
+.card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:0 4px 16px var(--shadow);display:flex;flex-direction:column;transition:transform .25s,box-shadow .25s;position:relative;}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 28px rgba(80,50,20,.16);}
+.card.soldout{opacity:.65;}
+.badge{position:absolute;top:10px;left:10px;z-index:2;font-size:11px;font-weight:900;padding:4px 11px;border-radius:20px;box-shadow:0 3px 10px rgba(0,0,0,.35);letter-spacing:0.03em;text-shadow:0 1px 3px rgba(0,0,0,.25);}
+.badge.pop{background:linear-gradient(135deg,#ff0080,#ff6600);color:#fff;animation:badgePop 2s infinite;}
+.badge.re{background:linear-gradient(135deg,#00e676,#00b0ff);color:#fff;}
+.badge.new{background:linear-gradient(135deg,#aa00ff,#ff4081);color:#fff;animation:badgePop 2s infinite;}
+.badge.sale{background:linear-gradient(135deg,#ff6d00,#ffe000);color:#333;}
+.badge.last{background:linear-gradient(135deg,#ff1744,#ff6d00);color:#fff;animation:pulse 1s infinite,badgeShake 3s infinite;}
+.badge.hot{background:linear-gradient(135deg,#ff3d00,#ff9100);color:#fff;animation:pulse 1.5s infinite;}
+.badge.one{background:linear-gradient(135deg,#6200ea,#d500f9);color:#fff;}
+.badge.season{background:linear-gradient(135deg,#00bfa5,#64dd17);color:#fff;}
+.badge.deal{background:linear-gradient(135deg,#dd2c00,#ff6d00);color:#fff;}
+.badge.outdoor{background:linear-gradient(135deg,#00c853,#1de9b6);color:#fff;}
+.badge.few{background:linear-gradient(135deg,#ff6d00,#ffea00);color:#333;animation:pulse 1s infinite;}
+.badge.wakari{background:linear-gradient(135deg,#f50057,#d500f9);color:#fff;}
+.badge.conv{background:linear-gradient(135deg,#2979ff,#00e5ff);color:#fff;}
+.badge.sotsu{background:linear-gradient(135deg,#ffd600,#ff6d00);color:#fff;}
+.badge.black{background:linear-gradient(135deg,#37474f,#000000);color:#fff;border:2px solid #eceff1;box-shadow:0 3px 12px rgba(0,0,0,.6);}
+.badge.white{background:linear-gradient(135deg,#ffffff,#e8eaf6);color:#333;border:2px solid #9fa8da;box-shadow:0 3px 10px rgba(100,100,200,.25);}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:0.7;}}
+@keyframes badgePop{0%,100%{transform:scale(1);}50%{transform:scale(1.08);}}
+@keyframes badgeShake{0%,100%{transform:translateX(0);}10%,30%,50%{transform:translateX(-2px);}20%,40%{transform:translateX(2px);}}
+.soldout-stamp{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-20deg);background:rgba(180,30,30,.85);color:#fff;font-size:13px;font-weight:800;padding:6px 14px;border-radius:6px;border:2px solid #fff;z-index:3;white-space:nowrap;box-shadow:0 2px 10px rgba(0,0,0,.3);}
+.card-img{background:linear-gradient(135deg,var(--green-bg),var(--beige));padding:24px 16px 16px;display:flex;align-items:center;justify-content:center;min-height:160px;position:relative;}
+.card-img .item-emoji{font-size:64px;line-height:1;filter:drop-shadow(0 3px 6px rgba(0,0,0,.1));}
+.card-img .mini-chara{position:absolute;bottom:6px;right:8px;width:32px;height:32px;opacity:.55;}
+.card-img .mini-chara img{width:100%;height:100%;object-fit:contain;}
+.card-body{padding:14px 16px 16px;flex:1;display:flex;flex-direction:column;gap:5px;}
+.card-num{font-size:10px;color:var(--green);font-weight:800;letter-spacing:.08em;}
+.card-name{font-size:13px;font-weight:800;color:var(--text);line-height:1.4;}
+.card-size{font-size:11px;color:var(--text-s);}
+.card-price{font-size:19px;font-weight:800;color:var(--brown);margin-top:3px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap;}
+.card-price .orig{font-size:12px;color:#aaa;text-decoration:line-through;}
+.card-price small{font-size:11px;font-weight:400;color:var(--text-s);}
+.add-btn{margin-top:10px;width:100%;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border:none;border-radius:50px;padding:11px 14px;font-family:inherit;font-size:13px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px;}
+.add-btn:hover{filter:brightness(1.1);transform:scale(1.02);}
+.add-btn.added{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);}
+.add-btn:disabled{background:#ccc;cursor:not-allowed;transform:none;}
+.overlay{position:fixed;inset:0;background:rgba(50,80,50,.45);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;}
+.overlay.open{opacity:1;pointer-events:all;}
+.panel{position:fixed;top:0;right:-440px;width:min(440px,100vw);height:100%;background:var(--white);z-index:201;display:flex;flex-direction:column;transition:right .35s cubic-bezier(.4,0,.2,1);box-shadow:-6px 0 30px rgba(0,0,0,.15);}
+.panel.open{right:0;}
+.panel-hd{background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;flex-shrink:0;}
+.panel-hd h2{font-size:16px;font-weight:800;}
+.close-btn{background:rgba(255,255,255,.2);border:none;color:#fff;width:32px;height:32px;border-radius:50%;font-size:17px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:background .2s;}
+.close-btn:hover{background:rgba(255,255,255,.35);}
+.panel-items{flex:1;overflow-y:auto;padding:16px;display:flex;flex-direction:column;gap:10px;}
+.empty-msg{text-align:center;padding:50px 20px;color:#bbb;}
+.empty-msg .e-ico{font-size:48px;margin-bottom:10px;}
+.ci{background:var(--green-bg);border-radius:12px;padding:11px 12px;display:flex;align-items:center;gap:10px;animation:fadeIn .25s;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(8px);}to{opacity:1;transform:translateY(0);}}
+.ci-ico{font-size:30px;flex-shrink:0;}
+.ci-info{flex:1;min-width:0;}
+.ci-name{font-size:12px;font-weight:800;margin-bottom:2px;line-height:1.4;}
+.ci-price{font-size:13px;font-weight:800;color:var(--brown);}
+.qty{display:flex;align-items:center;gap:5px;flex-shrink:0;}
+.qb{width:26px;height:26px;border-radius:50%;border:2px solid var(--green);background:#fff;color:var(--green-d);font-size:15px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .15s;}
+.qb:hover{background:var(--green);color:#fff;}
+.qn{font-size:14px;font-weight:800;min-width:20px;text-align:center;}
+.panel-ft{border-top:2px solid var(--beige);padding:10px 16px;flex-shrink:0;overflow-y:auto;max-height:70vh;}
+.total-row{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+.total-lbl{font-size:12px;color:var(--text-s);}
+.total-amt{font-size:21px;font-weight:800;color:var(--brown);}
+.ship-note{font-size:11px;color:var(--brown);margin-bottom:12px;background:var(--gold-l);padding:7px 11px;border-radius:10px;line-height:1.5;}
+.form-badge{background:var(--green-bg);border:1.5px solid var(--green-l);border-radius:10px;padding:8px 12px;margin-bottom:10px;font-size:11px;color:var(--green-d);line-height:1.6;text-align:center;}
+.order-btn{width:100%;background:linear-gradient(135deg,var(--brown),var(--brown-l));color:#fff;border:none;border-radius:50px;padding:14px;font-family:inherit;font-size:15px;font-weight:800;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.order-btn:hover{filter:brightness(1.08);transform:scale(1.02);}
+.panel-note{margin-top:10px;font-size:10px;color:#aaa;text-align:center;line-height:1.7;}
+.toast{position:fixed;bottom:26px;left:50%;transform:translateX(-50%) translateY(80px);background:var(--green-d);color:#fff;padding:10px 22px;border-radius:50px;font-size:13px;font-weight:700;z-index:300;transition:transform .3s cubic-bezier(.4,0,.2,1);pointer-events:none;white-space:nowrap;box-shadow:0 4px 20px rgba(50,100,50,.3);}
+.toast.show{transform:translateX(-50%) translateY(0);}
+footer{background:var(--green-d);color:rgba(255,255,255,.75);text-align:center;padding:26px 16px;font-size:12px;}
+footer .fl{color:var(--gold-l);font-weight:800;font-size:15px;margin-bottom:6px;}
+footer a{color:rgba(255,255,255,.65);text-decoration:none;}
+footer a:hover{color:#fff;}
+@media(max-width:520px){
+  .grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+  .card-img{min-height:130px;padding:16px 10px 12px;}
+  .card-img .item-emoji{font-size:50px;}
+  .card-name{font-size:12px;}
+  .card-price{font-size:16px;}
+  .add-btn{font-size:11px;padding:10px;}
+}
+
+/* ===== IMAGE MODAL ===== */
+.modal-overlay{
+  position:fixed;inset:0;background:rgba(0,0,0,.85);
+  z-index:500;display:flex;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+  padding:20px;
+}
+.modal-overlay.open{opacity:1;pointer-events:all;}
+.modal-img-wrap{
+  position:relative;max-width:90vw;max-height:90vh;
+  animation:zoomIn .3s ease;
+}
+@keyframes zoomIn{from{transform:scale(0.7);}to{transform:scale(1);}}
+.modal-img-wrap img{
+  max-width:90vw;max-height:85vh;
+  object-fit:contain;border-radius:12px;
+  box-shadow:0 20px 60px rgba(0,0,0,.5);
+}
+.modal-close{
+  position:absolute;top:-14px;right:-14px;
+  width:36px;height:36px;border-radius:50%;
+  background:var(--gold);color:var(--brown);
+  border:none;font-size:18px;font-weight:800;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 10px rgba(0,0,0,.3);transition:transform .2s;
+}
+.modal-close:hover{transform:scale(1.1);}
+.modal-name{
+  text-align:center;color:#fff;font-size:14px;font-weight:700;
+  margin-top:12px;
+}
+.card-img{cursor:zoom-in;}
+.detail-zoom-hint{
+  position:absolute;bottom:8px;left:50%;transform:translateX(-50%);
+  font-size:11px;color:#555;
+  background:rgba(255,255,255,.85);padding:3px 10px;border-radius:20px;
+  pointer-events:none;white-space:nowrap;
+}
+.detail-slide{position:relative;}
+.detail-img-main{position:relative;}
+#modalImg{transition:transform .15s;touch-action:none;}
+.zoom-hint{
+  position:absolute;bottom:6px;left:8px;
+  font-size:10px;color:var(--text-s);
+  background:rgba(255,255,255,.8);padding:2px 7px;border-radius:20px;
+  cursor:zoom-in;z-index:10;
+}
+
+/* ===== DETAIL PAGE ===== */
+.detail-overlay{
+  position:fixed;inset:0;background:var(--bg);z-index:400;
+  transform:translateX(100%);transition:transform .35s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+}
+.detail-overlay.open{transform:translateX(0);}
+.detail-header{
+  background:linear-gradient(135deg,var(--green-d),var(--green));
+  padding:14px 16px;display:flex;align-items:center;gap:12px;
+  position:sticky;top:0;z-index:10;
+}
+.detail-back{
+  background:rgba(255,255,255,.2);border:none;color:#fff;
+  width:36px;height:36px;border-radius:50%;font-size:18px;
+  cursor:pointer;display:flex;align-items:center;justify-content:center;
+  flex-shrink:0;transition:background .2s;
+}
+.detail-back:hover{background:rgba(255,255,255,.35);}
+.detail-title{font-size:15px;font-weight:800;color:#fff;line-height:1.3;}
+.detail-body{padding:0 0 100px;}
+.detail-img-main{
+  width:100%;background:linear-gradient(135deg,var(--green-bg),var(--beige));
+  display:flex;align-items:center;justify-content:center;
+  min-height:280px;position:relative;overflow:hidden;
+}
+.detail-img-main img{
+  max-width:100%;max-height:320px;object-fit:contain;
+  padding:20px;
+}
+.detail-img-main .detail-emoji{font-size:100px;padding:40px;}
+.detail-info{padding:20px 16px;}
+.detail-badge-row{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.detail-name{font-size:20px;font-weight:800;color:var(--text);line-height:1.4;margin-bottom:8px;}
+.detail-price-row{display:flex;align-items:baseline;gap:8px;margin-bottom:6px;}
+.detail-price{font-size:28px;font-weight:800;color:var(--brown);}
+.detail-price-tax{font-size:13px;color:var(--text-s);}
+.detail-orig{font-size:14px;color:#aaa;text-decoration:line-through;}
+.detail-size{
+  background:var(--green-bg);border-radius:10px;
+  padding:10px 14px;margin:12px 0;font-size:13px;color:var(--text-s);
+  display:flex;align-items:center;gap:8px;
+}
+.detail-desc{
+  font-size:13px;color:var(--text-s);line-height:1.8;
+  margin:12px 0;padding:14px;
+  background:var(--cream);border-radius:10px;
+  border-left:3px solid var(--green-l);
+}
+.detail-shipping{
+  background:var(--gold-l);border-radius:10px;
+  padding:10px 14px;font-size:11px;color:var(--brown);
+  line-height:1.7;margin:12px 0;
+}
+.detail-cart-btn{
+  position:sticky;bottom:0;left:0;right:0;
+  background:white;border-top:1px solid var(--beige);
+  padding:12px 16px;z-index:10;
+}
+.detail-cart-btn button{
+  width:100%;background:linear-gradient(135deg,var(--green-d),var(--green));
+  color:#fff;border:none;border-radius:50px;padding:16px;
+  font-family:inherit;font-size:16px;font-weight:800;
+  cursor:pointer;transition:all .2s;
+  display:flex;align-items:center;justify-content:center;gap:8px;
+}
+.detail-cart-btn button:hover{filter:brightness(1.1);}
+.detail-cart-btn button:disabled{background:#ccc;cursor:not-allowed;}
+.detail-soldout-msg{
+  text-align:center;color:#e84e4e;font-size:13px;font-weight:700;
+  margin-top:6px;
+}
+
+/* ===== DETAIL SLIDESHOW ===== */
+.detail-slides{position:relative;width:100%;background:linear-gradient(135deg,var(--green-bg),var(--beige));}
+.detail-slides-inner{display:flex;transition:transform .35s cubic-bezier(.4,0,.2,1);will-change:transform;}
+.detail-slide{min-width:100%;display:flex;align-items:center;justify-content:center;min-height:280px;}
+.detail-slide img{max-width:100%;max-height:320px;object-fit:contain;padding:16px;}
+.detail-slide .detail-emoji{font-size:100px;padding:40px;}
+.slide-prev,.slide-next{
+  position:absolute;top:50%;transform:translateY(-50%);
+  background:rgba(255,255,255,.85);border:none;
+  width:36px;height:36px;border-radius:50%;
+  font-size:16px;cursor:pointer;z-index:5;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 2px 8px rgba(0,0,0,.15);transition:all .2s;
+}
+.slide-prev{left:8px;}
+.slide-next{right:8px;}
+.slide-prev:hover,.slide-next:hover{background:white;transform:translateY(-50%) scale(1.1);}
+.slide-dots{
+  display:flex;justify-content:center;gap:6px;
+  padding:8px 0;background:linear-gradient(135deg,var(--green-bg),var(--beige));
+}
+.slide-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--tan);border:none;cursor:pointer;
+  transition:all .2s;padding:0;
+}
+.slide-dot.active{background:var(--green);transform:scale(1.3);}
+</style>
+<style id="variant-ui-style">
+/* 選べる商品：一覧カード上の「選択肢ごとのカートボタン」（年配の方にも押しやすい大きさ） */
+.vsel{margin:6px 0 4px;padding:6px;border:2px dashed #9dc89d;border-radius:12px;background:#f5f9f5;}
+.vsel-ttl{font-size:12px;font-weight:800;color:#3d6b3d;margin-bottom:6px;line-height:1.4;}
+.vsel-row{display:flex;flex-direction:column;gap:6px;}
+.vopt{width:100%;min-height:52px;padding:8px 4px;word-break:keep-all;overflow-wrap:anywhere;border-radius:12px;font-family:inherit;line-height:1.3;cursor:pointer;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border:2px solid transparent;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;text-align:center;box-shadow:0 2px 6px rgba(74,122,74,.3);}
+.vopt .vlab{font-size:12.5px;font-weight:800;}
+.vopt .vact{font-size:11.5px;font-weight:700;opacity:.95;white-space:nowrap;}
+.vopt.in{background:linear-gradient(135deg,var(--gold),var(--gold-l));color:var(--brown);box-shadow:none;}
+.vopt.alt{background:#fff;color:#3d6b3d;border-color:#4a7a4a;box-shadow:none;}
+.vopt.off{background:#f5f3ee;color:#a8a396;border:1.5px dashed #d8d4c8;cursor:default;box-shadow:none;min-height:40px;}
+.vopt.off .vlab{font-size:11.5px;font-weight:700;}
+.vopt.off .vact{font-size:10.5px;}
+.vhint{margin-top:6px;font-size:11px;line-height:1.5;color:#7a6a58;}
+.shake{animation:vshake .45s;}
+@keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
+.toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.5;bottom:92px;z-index:500;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility .3s;}
+.toast.show{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0);}
+/* 画面の下に常に出る「ご注文はこちら」 */
+.order-bar{position:fixed;left:0;right:0;bottom:0;z-index:150;background:linear-gradient(135deg,#ff7043,#e53935);color:#fff;padding:10px 16px calc(10px + env(safe-area-inset-bottom));flex-direction:column;align-items:center;justify-content:center;gap:1px;cursor:pointer;box-shadow:0 -4px 16px rgba(0,0,0,.22);text-align:center;}
+.ob-main{font-size:18px;font-weight:800;letter-spacing:.04em;}
+.ob-sub{font-size:12.5px;font-weight:700;opacity:.95;}
+body.has-bar{padding-bottom:84px;}
+body.cart-open .order-bar{display:none !important;}
+/* ご注文のしかた */
+.howto{max-width:760px;margin:0 auto 18px;background:#fffdf5;border:2px solid #9dc89d;border-radius:14px;padding:10px 14px 12px;}
+.howto summary{cursor:pointer;font-size:15px;font-weight:800;color:#3d6b3d;display:flex;align-items:center;justify-content:space-between;gap:8px;list-style:none;}
+.howto summary::-webkit-details-marker{display:none;}
+.howto summary .hchip{font-size:12px;background:#4a7a4a;color:#fff;padding:5px 12px;border-radius:14px;font-weight:700;white-space:nowrap;}
+.howto .hchip::after{content:'タップして開く';}
+.howto[open] .hchip::after{content:'閉じる';}
+.howto:not([open]){background:#eef6ee;}
+.howto .hs-ttl small{display:block;font-size:12px;font-weight:700;color:#7a6a58;}
+.hstep{display:flex;gap:10px;align-items:flex-start;margin-top:12px;}
+.hnum{flex-shrink:0;width:28px;height:28px;border-radius:50%;background:#4a7a4a;color:#fff;font-size:15px;font-weight:800;display:flex;align-items:center;justify-content:center;margin-top:1px;}
+.htxt{font-size:14px;line-height:1.65;color:#3a2c1a;}
+.htxt b{font-weight:800;color:#2f5a2f;}
+.htxt small{display:block;font-size:12.5px;color:#6b5b48;margin-top:2px;line-height:1.6;}
+.hstep.hsel{background:#eef6ee;border:2px solid #4a7a4a;border-radius:12px;padding:8px 10px;margin-left:-4px;margin-right:-4px;}
+.hmini{display:inline-block;background:linear-gradient(135deg,var(--green-d),var(--green));color:#fff;border-radius:8px;padding:1px 8px;font-size:12px;font-weight:800;}
+.hmini.red{background:linear-gradient(135deg,#ff7043,#e53935);}
+/* カートの画面：合計とボタンを下に固定し、商品と案内は上のエリアでスクロール */
+.panel{height:100%;height:100dvh;}
+.panel-scroll{flex:1;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.panel-items{flex:none;overflow:visible;}
+.panel-notices{padding:6px 16px 20px;}
+.panel-ft{max-height:none;overflow:visible;padding:10px 16px calc(12px + env(safe-area-inset-bottom));box-shadow:0 -4px 14px rgba(0,0,0,.08);background:#fff;}
+.panel-ft.empty{display:none;}
+.total-lbl{font-size:13px;font-weight:700;}
+.total-lbl small{font-size:11px;font-weight:600;color:#9a8a78;margin-left:3px;}
+.total-amt{font-size:26px;}
+.ft-prompt{background:#fff8e6;border:1.5px solid #e8a830;border-radius:10px;padding:8px 10px;margin:4px 0 8px;font-size:13px;line-height:1.6;color:#3a2c1a;text-align:center;}
+.ft-prompt strong{color:#c62828;}
+.order-btn{font-size:17px;padding:16px;}
+.panel-note{font-size:11.5px;color:#7a6a58;margin-top:8px;line-height:1.6;}
+.ci-name{font-size:13px;}
+body.cart-open .toast{bottom:auto;top:76px;}
+
+/* ===== ヒーロー（トップ画像） ===== */
+html{scroll-behavior:smooth;}
+#shopList{scroll-margin-top:66px;}
+.hero2{background:linear-gradient(180deg,#eaf4fb 0%,var(--cream) 70%,var(--bg) 100%);padding:0 0 26px;text-align:center;}
+.hero2-visual{position:relative;max-width:1100px;margin:0 auto;overflow:hidden;}
+.hero2-visual img{display:block;width:100%;height:auto;aspect-ratio:2/1;object-fit:cover;}
+.hero2-visual::after{content:'';position:absolute;left:0;right:0;bottom:0;height:18%;background:linear-gradient(to bottom,transparent,var(--cream));pointer-events:none;}
+.hero2-copy{position:absolute;top:5%;left:50%;transform:translateX(-50%);width:92%;max-width:760px;animation:heroIn .9s ease-out both;}
+.hero2-kicker{display:inline-block;background:rgba(255,255,255,.88);color:var(--green-d);font-size:clamp(10px,1.6vw,15px);font-weight:800;padding:4px 14px;border-radius:50px;box-shadow:0 2px 8px rgba(60,100,60,.15);margin-bottom:6px;}
+.hero2-ttl{font-size:clamp(17px,4.2vw,44px);font-weight:800;line-height:1.3;color:var(--green-d);
+  text-shadow:0 0 3px #fff,0 0 6px #fff,0 0 10px #fff,0 0 16px rgba(255,255,255,.9),2px 2px 0 #fff,-2px -2px 0 #fff,2px -2px 0 #fff,-2px 2px 0 #fff;}
+.hero2-ttl span{color:#e0607e;}
+.hero2-ttl em{font-style:normal;display:inline-block;margin-left:4px;animation:float 3s ease-in-out infinite;}
+.hero2-bottom{padding:4px 16px 0;margin-top:-4px;position:relative;}
+.hero2-lead{font-size:clamp(13px,2.6vw,17px);font-weight:700;color:var(--brown);line-height:1.7;margin-bottom:14px;}
+.sp-br{display:none;}
+.hero2-btn{display:inline-flex;align-items:center;gap:8px;background:linear-gradient(135deg,var(--green),var(--green-d));color:#fff;text-decoration:none;font-size:17px;font-weight:800;padding:14px 34px;border-radius:50px;box-shadow:0 6px 18px rgba(60,110,60,.35);transition:transform .2s,box-shadow .2s;animation:heroPulse 2.4s ease-in-out infinite;}
+.hero2-btn:hover{transform:translateY(-2px) scale(1.03);box-shadow:0 10px 24px rgba(60,110,60,.4);}
+.hero2-arrow{display:inline-block;animation:float 1.6s ease-in-out infinite;}
+.hero2-bottom .hero-tag{display:block;width:fit-content;max-width:100%;margin:14px auto 0;}
+@keyframes heroIn{from{opacity:0;transform:translate(-50%,-12px);}to{opacity:1;transform:translate(-50%,0);}}
+@keyframes heroPulse{0%,100%{box-shadow:0 6px 18px rgba(60,110,60,.35);}50%{box-shadow:0 6px 26px rgba(60,110,60,.6);}}
+@media (max-width:600px){
+  .hero2-visual{display:flex;flex-direction:column-reverse;}
+  .hero2-copy{position:static;transform:none;width:100%;padding:16px 12px 10px;background:linear-gradient(180deg,#d9eefa,#eaf4fb);animation:none;}
+  .hero2-ttl{font-size:clamp(22px,6.4vw,28px);}
+  .hero2-kicker{padding:3px 12px;margin-bottom:6px;font-size:11px;}
+  .hero2-ttl{text-shadow:0 0 2px #fff,0 0 4px #fff,0 0 8px #fff,1.5px 1.5px 0 #fff,-1.5px -1.5px 0 #fff,1.5px -1.5px 0 #fff,-1.5px 1.5px 0 #fff;}
+  .sp-br{display:inline;}
+  .hero2-btn{font-size:16px;padding:13px 30px;}
+}
+@media (prefers-reduced-motion:reduce){.hero2-copy,.hero2-btn,.hero2-arrow,.hero2-ttl em{animation:none;}}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="h-logo">
+    <div class="h-chara"><img src="images/header-logo.webp" alt="キャラ"></div>
+    <div>
+      <div class="h-logo-text">WanWan Net🐾</div>
+      <div class="h-logo-sub">保護犬支援オリジナルグッズ</div>
+    </div>
+  </div>
+  <button class="cart-btn" onclick="openCart()">
+    🛒 カート <span class="c-count" id="cartCount">0</span>
+  </button>
+</header>
+
+<div class="notice">🍀 このグッズ販売は完全非営利・収益は保護犬の医療費・日々のケア費用・移送交通費などの活動資金に充てられます　🐾　数量限定・売り切れの際はご了承ください　🍀</div>
+<div style="background:linear-gradient(135deg,#e53935,#ff7043);color:#fff;text-align:center;padding:10px 16px;font-size:13px;font-weight:800;letter-spacing:0.03em;">
+  🎁 5,000円以上のご注文で<span style="font-size:16px;margin:0 4px;">ノベルティグッズプレゼント</span>🎁
+  <span style="font-size:10px;font-weight:400;opacity:0.85;display:block;margin-top:2px;">※送料はご支援者様負担・ご注文後にメールにてご案内します</span>
+</div>
+
+<div class="hero2">
+  <div class="hero2-visual">
+    <picture>
+      <source media="(max-width:600px)" srcset="images/hero-main-sp.webp">
+      <img src="images/hero-main.webp" alt="クローバー畑の4匹のWanWanNet🐾キャラクター" width="1600" height="800">
+    </picture>
+    <div class="hero2-copy">
+      <div class="hero2-kicker">🍀 WanWanNet🐾 オリジナルグッズ 🍀</div>
+      <h1 class="hero2-ttl">グッズを購入して<br><span>保護犬ちゃんを応援しよう</span><em>🐾</em></h1>
+    </div>
+  </div>
+  <div class="hero2-bottom">
+    <p class="hero2-lead">お気に入りのグッズが、保護犬ちゃんの<br class="sp-br">新しい家族との出会いを支える力になります</p>
+    <a href="#shopList" class="hero2-btn">🛍️ グッズを見る <span class="hero2-arrow">↓</span></a>
+    <div class="hero-tag">🛒 カートに入れると注文フォームに自動でチェックが入ります！</div>
+  </div>
+</div>
+
+<!-- ===== 活動説明セクション ===== -->
+<section style="background:linear-gradient(135deg,#eef5ee,#fff8ee);padding:14px 16px;border-top:3px solid #9dc89d;border-bottom:3px solid #9dc89d;">
+  <div style="max-width:680px;margin:0 auto;">
+    <div style="background:#fff;border-radius:14px;padding:14px 18px;box-shadow:0 3px 12px rgba(80,120,80,.09);border:1.5px solid #c8e0c8;font-size:13px;color:#3a2c1a;line-height:1.8;">
+
+      <div style="display:flex;align-items:center;gap:7px;margin-bottom:10px;">
+        <span style="font-size:17px;">🐾</span>
+        <span style="font-size:14px;font-weight:800;color:#4a7a4a;">このグッズショップについて</span>
+      </div>
+
+      <p style="margin:0 0 10px;">
+        <strong style="color:#4a7a4a;">WanWan Net🐾</strong>は、保護団体からお預かりした犬たちを里親さんへつなぐ、
+        <strong style="color:#4a7a4a;">架け橋ボランティアチーム</strong>です。
+      </p>
+
+      <div style="background:#eef5ee;border-left:4px solid #6a9e6a;border-radius:0 8px 8px 0;padding:9px 12px;margin-bottom:10px;font-weight:700;color:#3a5a3a;font-size:12.5px;">
+        🐶 犬たちの医療費・日々のケア費用・移送交通費などの
+        <strong style="color:#e53935;">活動資金を集めるため</strong>にこのグッズショップをはじめました。
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;">
+        <div style="text-align:center;background:#f4fbf4;border:1.5px solid #9dc89d;border-radius:12px;padding:9px 6px;">
+          <div style="font-size:20px;margin-bottom:4px;">💚</div>
+          <div style="font-size:10.5px;font-weight:800;color:#4a7a4a;line-height:1.4;">完全非営利<br><span style="font-weight:400;color:#7a6a58;">ボランティア活動</span></div>
+        </div>
+        <div style="text-align:center;background:#fffbf0;border:1.5px solid #f5cc70;border-radius:12px;padding:9px 6px;">
+          <div style="font-size:20px;margin-bottom:4px;">🏥</div>
+          <div style="font-size:10.5px;font-weight:800;color:#7a4f2a;line-height:1.4;">医療費・ケア費用<br><span style="font-weight:400;color:#7a6a58;">犬のための支援</span></div>
+        </div>
+        <div style="text-align:center;background:#f5f0ff;border:1.5px solid #b39ddb;border-radius:12px;padding:9px 6px;">
+          <div style="font-size:20px;margin-bottom:4px;">🚗</div>
+          <div style="font-size:10.5px;font-weight:800;color:#6a3a8a;line-height:1.4;">移送・交通費<br><span style="font-weight:400;color:#7a6a58;">活動資金に充当</span></div>
+        </div>
+      </div>
+
+      <p style="margin:10px 0 0;font-size:11.5px;color:#7a6a58;text-align:center;border-top:1px dashed #c8e0c8;padding-top:10px;">
+        ご購入が、そのまま保護犬たちへの支援になります。温かいご協力をよろしくお願いいたします🙏
+      </p>
+    </div>
+  </div>
+</section>
+
+<section class="catalog" id="shopList">
+  <div class="sec-ttl">🐶 商品一覧 🐶</div>
+  <details class="howto">
+    <summary><span class="hs-ttl">📖 ご注文のしかた<small>はじめての方へ</small></span><span class="hchip"></span></summary>
+    <div class="hstep"><div class="hnum">1</div><div class="htxt"><b>ほしい商品を見つけて、「カートに入れる」をタップ</b><small>商品の写真をタップすると、くわしい説明と写真が見られます。</small></div></div>
+    <div class="hstep hsel"><div class="hnum">2</div><div class="htxt"><b>🎨 柄や色が選べる商品は、ほしい方のボタンをタップ</b><small>「オリジナル」「卒業犬バージョン」のように、名前ごとにボタンが分かれています。<b>ほしい方の<span class="hmini">🛒 カートに入れる</span></b>を押すだけです。2つともほしいときは、手順4の「その他ご要望」にご記入ください。</small></div></div>
+    <div class="hstep"><div class="hnum">3</div><div class="htxt"><b>画面の下の<span class="hmini red">🛒 ご注文はこちら</span>をタップ</b><small>入れた商品と合計金額を確認できます。まちがえたときは、ここで削除できます。</small></div></div>
+    <div class="hstep"><div class="hnum">4</div><div class="htxt"><b>「注文フォームを開く」をタップ</b><small>お名前・ご住所などを入力して送信してください。ご要望（例：同じ商品の別の柄もほしい）がある場合は、フォームの<b>「その他ご要望」</b>欄にご記入ください。</small></div></div>
+    <div class="hstep"><div class="hnum">5</div><div class="htxt"><b>メールで、送料を含む金額をご案内します</b><small>お支払いは銀行振込です。ご入金の確認後に発送いたします🐾</small></div></div>
+  </details>
+  <div class="cat-guide" id="catGuide">🔍 見たい種類を、タップして選べます</div>
+  <div class="cat-tabs" id="catTabs">
+    <button class="cat-tab cat-all active" data-cat="all" onclick="selectCat(this)">🐾 すべての商品を見る</button>
+    <button class="cat-tab" data-cat="tote" onclick="selectCat(this)">🛍️ トート・エコ</button>
+    <button class="cat-tab" data-cat="shoulder" onclick="selectCat(this)">🎒 ショルダー・<wbr>斜め掛け</button>
+    <button class="cat-tab" data-cat="ruck" onclick="selectCat(this)">🧳 リュック・<wbr>トラベル</button>
+    <button class="cat-tab" data-cat="pouch" onclick="selectCat(this)">👝 ポーチ・ケース</button>
+    <button class="cat-tab" data-cat="wear" onclick="selectCat(this)">👕 ウェア・帽子</button>
+    <button class="cat-tab" data-cat="bottle" onclick="selectCat(this)">🍶 ボトル・給水</button>
+    <button class="cat-tab" data-cat="zakka" onclick="selectCat(this)">🔑 アクキー・雑貨</button>
+    <button class="cat-tab cat-soldout" data-cat="soldout" onclick="selectCat(this)">📦 売り切れ・COMING SOON</button>
+  </div>
+  <div class="cat-now" id="catNow">
+    <span class="cat-now-txt"><small>📌 いま表示中の種類</small><br><b id="catNowName">すべての商品</b></span>
+    <button type="button" onclick="scrollToCats()">↑ 種類を<br>えらびなおす</button>
+  </div>
+  <div class="grid" id="productGrid"></div>
+</section>
+
+<style>
+/* 商品の種類ボタン：全部が一度に見える大きなボタン（横スクロールなし） */
+.cat-guide{text-align:center;font-size:15px;font-weight:800;color:#3d6b3d;margin:6px 0 10px;line-height:1.5;}
+.cat-tabs{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;padding:2px 0 12px;}
+.cat-tab{border:2px solid #9dc89d;background:#fff;color:#3d6b3d;font-family:inherit;font-weight:800;font-size:14px;line-height:1.35;padding:8px 6px;word-break:keep-all;min-height:54px;border-radius:14px;cursor:pointer;display:flex;align-items:center;justify-content:center;text-align:center;box-shadow:0 2px 6px rgba(74,122,74,.15);transition:all .15s;}
+.cat-tab:hover{background:#eef5ee;}
+.cat-tab.cat-all{grid-column:1 / -1;min-height:58px;font-size:16px;}
+.cat-tab.cat-soldout{grid-column:1 / -1;min-height:42px;font-size:13px;border-color:#c98a8a;color:#b05a5a;}
+.cat-tab.active{background:linear-gradient(135deg,#4a7a4a,#5a9a5a);color:#fff;border-color:#3d6b3d;box-shadow:0 3px 10px rgba(74,122,74,.4);}
+.cat-tab.active::before{content:'✓ ';}
+.cat-tab.cat-soldout.active{background:linear-gradient(135deg,#b05a5a,#c98a8a);border-color:#b05a5a;color:#fff;}
+@media(min-width:700px){.cat-tabs{grid-template-columns:repeat(4,1fr);}}
+/* いま表示中の種類（スクロールしても上に残る） */
+.cat-now{position:sticky;top:60px;z-index:90;display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fffdf5;border:2px solid #9dc89d;border-radius:12px;padding:6px 10px;margin:0 0 12px;box-shadow:0 3px 8px rgba(0,0,0,.08);}
+.cat-now-txt{font-size:14px;line-height:1.35;color:#3d6b3d;}
+.cat-now-txt small{font-size:11.5px;font-weight:700;color:#7a6a58;}
+.cat-now-txt b{font-weight:800;}
+.cat-now button{flex-shrink:0;font-family:inherit;font-size:12px;font-weight:800;line-height:1.3;color:#fff;background:#4a7a4a;border:none;border-radius:16px;padding:7px 12px;cursor:pointer;}
+</style>
+
+<footer>
+  <div class="fl">🐾 WanWan Net</div>
+  <p style="margin-top:6px;margin-bottom:8px;font-size:11px;color:rgba(255,255,255,.8);line-height:1.8;">
+    このショップは<strong style="color:#f5cc70;">保護団体と里親さんをつなぐ架け橋ボランティアチーム</strong>が運営する非営利グッズショップです。<br>
+    収益は保護犬の医療費・日々のケア費用・移送交通費などの活動資金に充てられます。
+  </p>
+  <p style="margin-top:4px;">📞 <a href="tel:080-7017-7986">080-7017-7986</a>　　
+  <a href="https://wanwannet.crayonsite.net/" target="_blank">公式ホームページ ↗</a></p>
+</footer>
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+<div class="panel" id="panel">
+  <div class="panel-hd">
+    <h2>🛒 お買い物かご</h2>
+    <button class="close-btn" onclick="closeCart()">✕</button>
+  </div>
+  <div class="panel-scroll" id="panelScroll">
+    <div class="panel-items" id="panelItems">
+    </div>
+    <div class="panel-notices">
+    <!-- 送料負担案内 -->
+    <div style="background:#fff0f0;border:1.5px solid #e84e4e;border-radius:10px;padding:8px 12px;margin-bottom:8px;font-size:11px;line-height:1.7;">
+      <div style="color:#c62828;font-weight:800;">📦 送料はご支援者様のご負担となります</div>
+      <div style="color:#7a6a58;">ご注文後、送料を含めた金額をメールにてお知らせします</div>
+      <div style="color:#e53935;font-weight:700;margin-top:2px;">🎁 5,000円以上のご注文でノベルティグッズプレゼント</div>
+    </div>
+    <!-- 送料目安 -->
+    <div style="margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:800;color:#4a7a4a;margin-bottom:6px;">📦 送料の目安（ヤマト運輸）</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:5px;margin-bottom:6px;">
+        <div style="background:#fff0f0;border:1px solid #ffaaaa;border-radius:8px;padding:6px 4px;text-align:center;font-size:10px;">
+          <div style="font-weight:800;color:#e53935;font-size:11px;">こねこ便</div>
+          <div style="font-size:13px;font-weight:800;color:#e53935;">420円</div>
+          <div style="color:#888;font-size:9px;">小物類</div>
+        </div>
+        <div style="background:#fff8ee;border:1px solid #f5cc70;border-radius:8px;padding:6px 4px;text-align:center;font-size:10px;">
+          <div style="font-weight:800;color:#e8a830;font-size:11px;">宅急便コンパクト</div>
+          <div style="font-size:13px;font-weight:800;color:#e8a830;">710円〜</div>
+          <div style="color:#888;font-size:9px;">ポーチ等</div>
+        </div>
+        <div style="background:#eef5ee;border:1px solid #9dc89d;border-radius:8px;padding:6px 4px;text-align:center;font-size:10px;">
+          <div style="font-weight:800;color:#4a7a4a;font-size:11px;">宅急便</div>
+          <div style="font-size:13px;font-weight:800;color:#4a7a4a;">790円〜</div>
+          <div style="color:#888;font-size:9px;">バッグ等</div>
+        </div>
+      </div>
+      <details style="font-size:10px;color:#7a6a58;">
+        <summary style="cursor:pointer;color:#4a7a4a;font-weight:700;display:flex;align-items:center;justify-content:space-between;">📋 地域別送料を見る <span style="font-size:11px;background:#4a7a4a;color:white;padding:2px 8px;border-radius:10px;">開く／閉じる</span></summary>
+        <img src="images/hero-chara.webp" alt="送料表" style="width:100%;border-radius:8px;margin-top:6px;">
+      </details>
+    </div>
+    <!-- 注文フロー3ステップ -->
+    <div style="background:#f5f9f5;border:1.5px solid #9dc89d;border-radius:12px;padding:10px 12px;margin-bottom:10px;">
+      <div style="font-size:11px;font-weight:800;color:#4a7a4a;margin-bottom:8px;text-align:center;">📋 ご注文の流れ</div>
+      <div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:7px;">
+        <div style="background:#4a7a4a;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">1</div>
+        <div style="font-size:11px;color:#3a2c1a;line-height:1.5;"><span style="font-weight:800;">カートに入れた商品の合計金額を確認</span>し、下の注文フォームボタンを押して必要事項をご記入ください</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:7px;">
+        <div style="background:#4a7a4a;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">2</div>
+        <div style="font-size:11px;color:#3a2c1a;line-height:1.5;"><span style="font-weight:800;">送料を含む金額をメールでご案内</span>します（2日経っても届かない場合はお電話ください）</div>
+      </div>
+      <div style="display:flex;align-items:flex-start;gap:7px;">
+        <div style="background:#4a7a4a;color:#fff;border-radius:50%;width:20px;height:20px;font-size:11px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;margin-top:1px;">3</div>
+        <div style="font-size:11px;color:#3a2c1a;line-height:1.5;"><span style="font-weight:800;">ご入金確認後、通常1〜2日で発送</span>いたします🐾</div>
+      </div>
+    </div>
+    <!-- メール案内(重要・目立たせる) -->
+    <div style="background:linear-gradient(135deg,#fff8e6,#fff0f0);border:2px solid #e8a830;border-radius:12px;padding:10px 12px;margin-bottom:10px;box-shadow:0 2px 6px rgba(232,168,48,.25);">
+      <div style="font-size:12px;font-weight:800;color:#c62828;display:flex;align-items:center;gap:4px;margin-bottom:5px;">
+        ⚠️ 必ずお読みください
+      </div>
+      <div style="font-size:11.5px;color:#3a2c1a;line-height:1.7;">
+        ご注文後、<strong>WanWanNet🐾より送料等の金額をお伝えするメール</strong>をお送りします。<br>
+        📩 <strong>ご注文から2日経ってもメールが届かない場合</strong>は、<strong style="color:#c62828;">迷惑メールフォルダ</strong>をご確認ください。<br>
+        📞 そちらにも見当たらない場合は、お手数ですが<strong>お電話</strong>にてご連絡いただけますと幸いです。
+      </div>
+    </div>
+    <div style="background:#f0f7ff;border:1.5px solid #8bb8e8;border-radius:12px;padding:9px 12px;margin-bottom:10px;font-size:12px;color:#2a3a52;line-height:1.7;">
+      📝 <strong>ご要望がある場合</strong>は、注文フォームの<strong>「その他ご要望」欄</strong>にご記入ください。<br>
+      <span style="font-size:11.5px;">（例：同じ商品の別の柄もほしい。欄にすでに入っている文章は消さずに、その下に続けてご記入ください）</span>
+    </div>
+    </div>
+  </div>
+  <div class="panel-ft empty" id="panelFt">
+    <div class="total-row">
+      <span class="total-lbl">お買い物合計<small>（送料別）</small></span>
+      <span class="total-amt" id="totalAmt">¥0</span>
+    </div>
+    <div class="ft-prompt">👇 合計金額をご確認のうえ、よろしければ<br><strong>下の「注文フォームを開く」</strong>を押してください</div>
+    <button class="order-btn" onclick="goToForm()">
+      🛒 注文フォームを開く
+    </button>
+    <p class="panel-note">
+      📦 送料は別です。ご注文後、送料込みの金額をメールでご案内します<br>
+      🏦 お支払いは銀行振込のみ・入金確認後に発送いたします
+    </p>
+  </div>
+</div>
+
+<div class="order-bar" id="orderBar" onclick="openCart()" role="button" style="display:none;">
+  <div class="ob-main">🛒 ご注文はこちら</div>
+  <div class="ob-sub" id="orderBarSub"></div>
+</div>
+<div class="toast" id="toast"></div>
+
+<script>
+const CHARA = "images/header-logo.webp";
+
+const products = [
+  {id:1, formName:"No.1ミラー オリジナルバージョン★ 350円", img:"images/p1-main.jpg", imgs:["images/p1-main.jpg","images/p1-main.webp","images/p1-slide3.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"🪞", badge:null, soldout:false, colors:[{label:"ブラック",status:"ok"},{label:"ホワイト",status:"ok"}]},
+  {id:2, formName:"No.2 巾着 250円", img:"images/p2-main.webp", size:"9cm / 3.54in", price:250, emoji:"👜", badge:'last', soldout:true},
+  {id:3, formName:"No.3 ボールペン 350円", img:"images/p3-main.webp", size:"", price:350, emoji:"🖊️", badge:null, soldout:false},
+  {id:4, formName:"No.4 収納ポーチ（中） 650円", img:"images/p4-main.webp", size:"21.5cm×12.5cm", price:650, emoji:"💼", badge:null, soldout:false},
+  {id:5, formName:"No.5お出かけバック★ 1500円・1700円", img:"images/p5-main.jpg", imgs:["images/p5-main.jpg","images/p5-slide2.jpg","images/p5-slide3.jpg","images/p5-slide4.jpg","images/p5-slide5.jpg"], size:"オリジナル(ミニ)：縦18cm×横25cm×マチ13cm／卒業犬(ビッグ)：縦25cm×横32cm×マチ11cm", price:1500, emoji:"👜", badge:'new', soldout:false, colors:[{label:"オリジナルバージョン(ミニ) 1500円",status:"ok"},{label:"卒業犬バージョン(ビッグ) 1700円",status:"ok"}]},
+  {id:6, formName:"No.6 斜め掛けポーチ 1600円", img:"images/p6-main.webp", size:"14cm×20cm×5cm", price:1600, emoji:"👝", badge:'re', soldout:false},
+  {id:7, formName:"No.7 ショルダーバッグ★（黒） 1850円", img:"images/p7-main.jpg", imgs:["images/p7-main.jpg","images/p7-slide2.jpg","images/p7-slide3.jpg","images/p7-slide4.jpg"], size:"35cm×30cm×5cm", price:1850, emoji:"🎒", badge:'re', soldout:false, colors:[{label:"オリジナルバージョン",status:"ok"},{label:"卒業犬バージョン",status:"soon"},{label:"ヨークシャーテリア",status:"ok"}]},
+  {id:8, formName:"No.8 エプロン 1300円", img:"images/p8-main.webp", size:"67cm（着ひも調整可）", price:1300, emoji:"👗", badge:'last', soldout:true},
+  {id:9, formName:"No.9ウエストポーチ1750円", img:"images/p9-main.webp", size:"", price:1750, emoji:"🏅", badge:'last', soldout:false},
+  {id:10, formName:"No.10 トートバック 1100円", img:"images/p10-main.webp", size:"33.5cm×37.5cm", price:1100, emoji:"🛍️", badge:'conv', soldout:false},
+  {id:11, formName:"No.11 ボディーバック 1600円", img:"images/p11-main.webp", size:"22cm×16cm×5.5cm", price:1600, emoji:"💼", badge:'pop', soldout:false},
+  {id:12, formName:"No.12 多機能トートバッグ 2000円", img:"images/p12-main.webp", size:"30cm×41cm×10cm", price:2000, emoji:"🖤", badge:null, soldout:true},
+  {id:13, formName:"No.13 おやつ入れ（円型） 700円", img:"images/p13-main.webp", size:"8cm×8cm", price:700, emoji:"🫙", badge:'few', soldout:false},
+  {id:14, formName:"No.14 おやつ入れ（長方形）700円", img:"images/p14-main.jpg", imgs:["images/p14-main.jpg","images/p14-slide2.jpg","images/p14-slide3.jpg"], size:"9.5cm×6cm×2.2cm", price:700, emoji:"📦", badge:'pop', soldout:false},
+  {id:15, formName:"No.15ショルダーバッグ★（白 ） 1850円", img:"images/p15-main.jpg", imgs:["images/p15-main.jpg","images/p15-slide2.jpg","images/p15-slide3.jpg","images/p15-slide4.jpg"], size:"35cm×30cm×5cm", price:1850, emoji:"🎒", badge:'new', soldout:false, colors:[{label:"チワワ",status:"soon"},{label:"トイプードル",status:"soon"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:16, formName:"No.16 コンパクトエコバック 750円", img:"images/p16-main.webp", size:"38cm×40cm", price:750, emoji:"♻️", badge:null, soldout:false},
+  {id:17, formName:"No.17 収納ケース★ 850円", img:"images/p17-main.jpg", imgs:["images/p17-main.jpg","images/p17-slide2.jpg","images/p17-slide3.jpg","images/p17-slide4.jpg"], size:"11cm×8cm×4cm", price:850, emoji:"🗂️", badge:null, soldout:false, colors:[{label:"オリジナルバージョン",status:"ok"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:18, formName:"No.18 小物入れ（大） 650円", img:"images/p18-main.webp", size:"21cm×15cm", price:650, emoji:"🪣", badge:null, soldout:false},
+  {id:19, formName:"No.19 ハンドバック 2Wayタイプ 1850円", img:"images/p19-main.jpg", size:"16cm×23cm×8cm", price:1850, emoji:"👜", badge:'re', soldout:false},
+  {id:20, formName:"No.20 多機能横型ショルダーバック(黒)卒業犬バージョン 2200円", img:"images/p20-main.jpg", imgs:["images/p20-main.jpg","images/p98-slide2.jpg","images/p98-slide3.jpg"], size:"縦20cm 横25cm 幅7cm", price:2200, emoji:"👜", badge:'re', soldout:false},
+  {id:21, formName:"No.21 パケットハット（黒）1100円", img:"images/p21-main.webp", size:"58サイズ・リバーシブル", price:1100, emoji:"🪖", badge:'last', soldout:false},
+  {id:22, formName:"No.22 大容量エコバック（黒） 1100円", img:"images/p22-main.webp", imgs:["images/p22-main.webp","images/p22-slide2.jpg"], size:"53cm×38cm×10cm", price:1100, emoji:"🖤", badge:'last', soldout:true},
+  {id:23, formName:"No.23 スポーツウォーターボトル（黒）400ml 1100円", img:"images/p23-main.jpg", imgs:["images/p23-main.jpg","images/p23-slide2.jpg"], size:"縦14cm 幅6.7cm 容量400ml", price:1100, emoji:"⚫", badge:'last', soldout:false},
+  {id:24, formName:"No.24 スポーツウォーターボトル（白）600ml 1200円", img:"images/p24-main.jpg", imgs:["images/p24-main.jpg","images/p24-slide2.jpg"], size:"縦19cm 幅7cm 容量600ml", price:1200, emoji:"⚪", badge:'last', soldout:false},
+  {id:25, formName:"No.25半袖Ｔシャツ Sサイ ズ(白） 1300円", img:"images/p25-main.webp", size:"Sサイズ", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:26, formName:"No.26 トートバック&ポーチ2点セット2200円", img:"images/p26-main.webp", size:"33cm×29cm×16cm", price:2200, emoji:"🛍️", badge:null, soldout:true},
+  {id:27, formName:"No.27 ミニお散歩バック（黒） 訳あり商品 38%off800円", img:"images/p27-main.webp", size:"26cm×22cm×5cm", price:800, origPrice:1300, emoji:"🐕", badge:'off38', soldout:false},
+  {id:28, formName:"No.28 サプリメントケース 800円", img:"images/p28-main.webp", size:"5cm×5cm", price:800, emoji:"💊", badge:null, soldout:true},
+  {id:29, formName:"No.29 小物入れ黒(中） 訳あり商品 50%off 300円", img:"images/p29-main.webp", size:"21.5cm×12.5cm", price:300, emoji:"🏷️", badge:'last', soldout:false},
+  {id:30, formName:"No.30 A7サイズ ポケットノート★ 350円", img:"images/p30-main.jpg", imgs:["images/p30-main.jpg","images/p30-slide2.jpg","images/p30-slide3.jpg"], size:"縦105mm × 横77mm（A7サイズ）", price:350, emoji:"📓", badge:'new', soldout:false},
+  {id:31, formName:"No.31スライド式コンパクトケース★400円", img:"images/p31-main.jpg", size:"約6cm × 3.4cm（奥行き約2.36cm）", price:400, emoji:"📦", badge:'new', soldout:false, colors:[{label:"A 仲良しワンコ",status:"ok"},{label:"B オリジナル",status:"soon"}]},
+  {id:32, formName:"No.32サンダル★（黒）1300円", img:"images/p32-main.jpg", imgs:["images/p32-main.jpg","images/p32-slide2.jpg"], size:"24cm", price:1300, emoji:"👡", badge:'last', soldout:false, colors:[{label:"オリジナルバージョン",status:"ok"},{label:"卒業犬バージョン",status:"soldout"}]},
+  {id:33, formName:"No.33ウォーターボトル300ml 650円", img:"images/p33-main.webp", size:"5.4cm×17cm", price:650, emoji:"🍶", badge:'pop', soldout:true},
+  {id:34, formName:"No.34犬用ウォーターボトル（イエロー）1200円", img:"images/p34-main.webp", size:"7.5cm×20.5cm", price:1200, emoji:"🟡", badge:null, soldout:true},
+  {id:35, formName:"No.35犬用ウォーターボトル（ブルー）1200円", img:"images/p35-main.webp", size:"7.5cm×20.5cm", price:1200, emoji:"🔵", badge:'re', soldout:false},
+  {id:36, formName:"No.36おやつ入れ 訳あり商品 50%off 300円", img:"images/p36-main.jpg", imgs:["images/p36-main.jpg","images/p14-slide2.jpg","images/p14-slide3.jpg"], size:"", price:300, emoji:"🏷️", badge:'wakari', soldout:false},
+  {id:37, formName:"No.37半袖Ｔシャツ Sサイズ(黒）1300円", img:"images/p37-main.webp", size:"Sサイズ", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:38, formName:"No.38大容量メッシュトート&小物入れ2点セット 2200円", img:"images/p38-main.jpg", imgs:["images/p38-main.jpg","images/p38-slide2.jpg","images/p38-slide3.jpg","images/p38-slide4.jpg"], size:"バック縦35cm 横45cm 幅15cm 小物入れ縦18cm 横22.5cm 幅8cm", price:2200, emoji:"🛍️", badge:'re', soldout:true},
+  {id:39, formName:"No.39スマホショルダー（茶）2200円", img:"images/p39-main.webp", size:"20.5cm×11cm×3cm", price:2200, emoji:"📱", badge:null, soldout:true},
+  {id:40, formName:"№40アクキー&クローバー 3点セット トイプードル 550円", img:"images/p40-main.webp", size:"3点セット", price:550, emoji:"🔑", badge:null, soldout:false},
+  {id:41, formName:"№41アクキー&クローバー 3点セット チワワ 550円", img:"images/p41-main.jpg", imgs:["images/p41-main.jpg","images/p41-slide2.jpg","images/p41-slide3.jpg","images/p22-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:'pop', soldout:false},
+  {id:42, formName:"№42アクキー&クローバー3点セット ヨークシャーテリア 550円", img:"images/p53-slide2.jpg", imgs:["images/p53-slide2.jpg","images/p53-main.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:null, soldout:false},
+  {id:43, formName:"№43アクキー&クローバー 3点セット マルチーズ 550円", img:"images/p43-main.jpg", imgs:["images/p43-main.jpg","images/p43-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:null, soldout:false},
+  {id:44, formName:"№44アクキー&クローバー 3点セット ポメラニアン 550円", img:"images/p44-main.jpg", imgs:["images/p44-main.jpg","images/p44-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:'re', soldout:false},
+  {id:45, formName:"№45半袖Ｔシャツ Sサイ ズ(白）チワワ 1300円", img:"images/p45-main.jpg", imgs:["images/p45-main.jpg","images/p45-slide2.jpg"], size:"Sサイズ（S-M）", price:1300, emoji:"👕", badge:'last', soldout:true},
+  {id:46, formName:"№46半袖Ｔシャツ Sサイ ズ(黒）マルチーズ 1300円", img:"images/p46-main.jpg", size:"Sサイズ（S-M）", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:47, formName:"№47キャンバストートバック(黒）1500円", img:"images/p47-main.jpg", size:"32cm×40cm×6cm", price:1500, emoji:"👜", badge:'one', soldout:true},
+  {id:48, formName:"№48ウエストシェイプ半袖Tシャツ（黒）M 1300円", img:"images/p48-main.jpg", imgs:["images/p48-main.jpg","images/p45-slide2.jpg","images/p45-slide2.jpg"], size:"サイズM", price:1300, emoji:"👕", badge:'re', soldout:true},
+  {id:49, formName:"№49ミニお散歩バック（白）卒業犬 1300円", img:"images/p49-main.jpg", imgs:["images/p49-main.jpg","images/p49-slide2.jpg"], size:"縦:約22cm 横:約26cm マチ:約5cm", price:1300, emoji:"👜", badge:'re', soldout:false},
+  {id:50, formName:"№50小物入れ（小）ブラック 卒業犬 450円", img:"images/p50-main.jpg", imgs:["images/p50-main.jpg","images/p50-slide2.jpg","images/p50-slide3.jpg","images/p50-slide4.jpg"], size:"縦:約11.5cm 横:約10.5cm", price:450, emoji:"🎒", badge:'re', soldout:false},
+  {id:51, formName:"№51ミラー（白）卒業犬 350円", img:"images/p51-main.jpg", imgs:["images/p51-main.jpg","images/p51-slide2.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"✨", badge:'sotsu', soldout:false},
+  {id:52, formName:"№52トレーナー★2000円", img:"images/p52-main.jpg", imgs:["images/p52-main.jpg","images/p52-slide2.jpg","images/p52-slide3.jpg","images/p52-slide4.jpg"], size:"S-Mサイズ", price:2000, emoji:"🧥", badge:'new', soldout:false, colors:[{label:"グレー",status:"ok"},{label:"ブラック",status:"soldout"}]},
+  {id:53, formName:"NO.53アクキー&クローバー 3点セット 卒業犬バージョン 550円", img:"images/p42-main.jpg", imgs:["images/p42-main.jpg","images/p42-slide2.jpg"], size:"3点セット", price:550, emoji:"🔑", badge:'sotsu', soldout:false},
+  {id:54, formName:"NO.54オリジナルサンダル（ホワイト）1200円", img:"images/p54-main.jpg", imgs:["images/p54-main.jpg"], size:"24.0〜24.5cm", price:1200, emoji:"👡", badge:'re', soldout:true},
+  {id:55, formName:"NO.55多機能トーﾄバック★ 2000円", img:"images/p55-slide6.jpg", imgs:["images/p55-slide6.jpg","images/p55-main.jpg","images/p55-slide2.jpg","images/p55-slide3.jpg","images/p55-slide4.jpg","images/p55-slide5.jpg","images/p55-slide7.jpg"], size:"縦:約30cm 横:約41cm マチ:約10cm", price:2000, emoji:"👜", badge:'newcolor', soldout:false, colors:[{label:"トイプードル",status:"soldout"},{label:"ヨークシャーテリア",status:"ok"},{label:"トイプードル（ベージュ）",status:"ok"}]},
+  {id:56, formName:"NO.56ウエストポーチ★（白） 1850円", img:"images/p56-main.jpg", imgs:["images/p56-main.jpg","images/p56-slide2.jpg","images/p56-slide3.jpg"], size:"横:約33cm 高さ:約14cm マチ:約9cm", price:1850, emoji:"👝", badge:'new', soldout:false, colors:[{label:"ポメラニアン",status:"soon"},{label:"ヨークシャーテリア",status:"soon"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:57, formName:"NO.57コンパクトエコバック（黒） 卒業犬 750円", img:"images/p57-main.jpg", imgs:["images/p57-main.jpg","images/p57-slide2.jpg","images/p57-slide3.jpg","images/p57-slide4.jpg"], size:"縦:約40cm 横:約38cm 持ち手:約20cm", price:750, emoji:"🛍️", badge:'re', soldout:false},
+  {id:58, formName:"NO.58保冷・保温ランチバッグ（ネイビー）外ポケット付き 2000円", img:"images/p58-main.jpg", imgs:["images/p58-main.jpg","images/p58-slide2.jpg","images/p58-slide3.jpg"], size:"縦:約25cm 横:約25cm 幅:約14cm", price:2000, emoji:"🧊", badge:null, soldout:true},
+  {id:59, formName:"NO.59コンパクトエコバック チワワ卒業犬 750円", img:"images/p59-main.jpg", imgs:["images/p59-main.jpg","images/p59-slide2.jpg","images/p59-slide3.jpg","images/p41-slide3.jpg"], size:"縦:約40cm 横:約38cm 持ち手:約20cm", price:750, emoji:"🛍️", badge:'pop', soldout:false},
+  {id:60, formName:"NO.60卒業犬半袖Tシャツ（S）ブラック ポメラニアン 1300円", img:"images/p60-main.jpg", imgs:["images/p60-main.jpg","images/p60-slide2.jpg"], size:"S（S-M）大きめ", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:61, formName:"NO.61卒業犬半袖Tシャツ（S）ピンク ポメチワ 1300円", img:"images/p61-main.jpg", imgs:["images/p61-main.jpg","images/p61-slide2.jpg"], size:"S-M", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:62, formName:"NO.62オリジナル半袖Tシャツ（L）グレー 1300円", img:"images/p62-main.jpg", imgs:["images/p62-main.jpg"], size:"L（大きめ）", price:1300, emoji:"👕", badge:'last', soldout:false},
+  {id:63, formName:"NO.63卒業犬半袖Tシャツ 前後（S）ブラック マルチーズ 1300円", img:"images/p63-main.jpg", imgs:["images/p63-main.jpg","images/p63-slide2.jpg","images/p63-slide3.jpg","images/p63-slide4.jpg"], size:"S-M", price:1300, emoji:"👕", badge:null, soldout:true},
+  {id:64, formName:"NO.64保温保冷バッグ ブルー 横にポケットなし  1700円", img:"images/p64-main.jpg", imgs:["images/p64-main.jpg","images/p64-slide2.jpg","images/p64-slide3.jpg","images/p64-slide4.jpg","images/p64-slide5.jpg"], size:"縦17cm 横20cm 幅15cm", price:1700, emoji:"🧊", badge:null, soldout:true},
+  {id:65, formName:"NO.65ペット用ウォーターボトル＆おやつケース（イエロー）1300円", img:"images/p65-main.jpg", imgs:["images/p65-main.jpg","images/p65-slide2.jpg","images/p65-slide3.jpg","images/p65-slide4.jpg"], size:"高さ約29cm 幅約9cm", price:1300, emoji:"🐾", badge:null, soldout:true},
+  {id:66, formName:"NO.66携帯用ペット給水ボトル（グリーン）訳あり商品 46%off  700円", img:"images/p66-main.jpg", imgs:["images/p66-main.jpg","images/p66-slide2.jpg","images/p66-slide3.jpg","images/p66-slide4.jpg"], size:"高さ約19.5cm 幅約15.5cm 容量500ml", price:700, origPrice:1300, emoji:"💧", badge:'off46', soldout:false},
+  {id:67, formName:"NO.67バックパック★ 2100円", img:"images/p67-main-new.jpg", imgs:["images/p67-main-new.jpg","images/p67-main.jpg","images/p67-slide6.jpg","images/p67-slide7.jpg","images/p67-slide2.jpg","images/p67-slide3.jpg","images/p67-slide4.jpg","images/p67-slide5.jpg"], size:"縦37cm 横29cm 幅11cm", price:2100, emoji:"🎒", badge:'new', soldout:false, colors:[{label:"卒業犬バージョン",status:"ok"},{label:"オリジナルバージョン",status:"ok"},{label:"ヨークシャーテリア",status:"ok"}]},
+  {id:68, formName:"NO.68リュック★（黒）2100円", img:"images/p68-main-new.jpg", imgs:["images/p68-main-new.jpg","images/p68-main.jpg","images/p68-slide6.jpg","images/p68-slide2.jpg","images/p68-slide3.jpg","images/p68-slide4.jpg","images/p68-slide5.jpg"], size:"縦37cm 横23cm 幅12.5cm", price:2100, emoji:"🎒", badge:'new', soldout:false, colors:[{label:"オリジナルバージョン",status:"soon"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:69, formName:"NO.69トラベルバック（黒）3000円", img:"images/p69-main.jpg", imgs:["images/p69-main.jpg","images/p69-slide2.jpg","images/p69-slide3.jpg","images/p69-slide4.jpg","images/p69-slide5.jpg"], size:"縦27cm 横47cm 幅23cm", price:3000, emoji:"🧳", badge:'re', soldout:false},
+  {id:70, formName:"NO.70犬用ウォーターボトルワンタッチ（白）1350円", img:"images/p70-main.jpg", imgs:["images/p70-main.jpg","images/p70-slide2.jpg"], size:"容量300ml", price:1350, emoji:"⚪", badge:null, soldout:true},
+  {id:71, formName:"NO.71卒業犬コンパクト財布（茶色）1800円", img:"images/p71-main.jpg", imgs:["images/p71-main.jpg","images/p71-slide2.jpg","images/p71-slide3.jpg"], size:"縦8cm 横11cm 幅4cm", price:1800, emoji:"👛", badge:'re', soldout:false},
+  {id:72, formName:"NO.72超軽量折り畳みバックパック★（黒）1600円", img:"images/p72-main.jpg", imgs:["images/p72-slide1.jpg","images/p72-slide4.jpg","images/p72-slide2.jpg","images/p72-slide3.jpg"], size:"縦43cm 横31cm", price:1600, emoji:"🎒", badge:'new', soldout:false, colors:[{label:"オリジナルバージョン",status:"ok"},{label:"卒業犬バージョン",status:"soldout"}]},
+  {id:73, formName:"NO.73犬用ウォーターボトル（ライトグレー）1200円", img:"images/p73-main.jpg", imgs:["images/p73-main.jpg","images/p73-slide2.jpg","images/p73-slide3.jpg"], size:"縦20cm 横7.5cm 容量350ml", price:1200, emoji:"🩶", badge:'re', soldout:false},
+  {id:74, formName:"NO.74コンパクト球体型 ウォーターボトル（ピンク）1300円", img:"images/p74-main.jpg", imgs:["images/p74-slide1.jpg","images/p74-slide2.jpg","images/p74-slide4.jpg"], size:"縦9cm 横8.7cm 容量285ml", price:1300, emoji:"🩷", badge:'re', soldout:false},
+  {id:75, formName:"NO.75コンパクト球体型 ウォーターボトル（パープル）1300円", img:"images/p75-main.jpg", imgs:["images/p75-main.jpg","images/p75-slide2.jpg","images/p75-slide3.jpg","images/p75-slide4.jpg","images/p75-slide5.jpg","images/p74-slide4.jpg"], size:"縦9cm 横8.7cm 容量285ml", price:1300, emoji:"🟣", badge:'re', soldout:false},
+  {id:77, formName:"NO.77トートバッグ 卒業犬バージョン（黒）1100円", img:"images/p77-main.jpg", imgs:["images/p77-main.jpg","images/p77-slide2.jpg","images/p77-slide3.jpg"], size:"縦40cm 横35cm", price:1100, emoji:"👜", badge:null, soldout:true},
+  {id:76, formName:"NO.76斜め掛けポーチ（ポシェット）卒業犬バージョン 1600円", img:"images/p76-main.jpg", imgs:["images/p76-main.jpg","images/p76-slide2.jpg","images/p76-slide3.jpg","images/p76-slide4.jpg","images/p76-slide5.jpg","images/p76-slide6.jpg"], size:"縦18.5cm 横13.5cm 幅4cm", price:1600, emoji:"👝", badge:'new', soldout:false},
+  {id:78, formName:"NO.78巾着軽量バック★（黒）1500円", img:"images/no78.png", imgs:["images/no78.png","images/p78-main.jpg","images/124.png","images/p78-slide2.jpg","images/p78-slide3.jpg","images/p78-slide4.jpg"], size:"縦20.5cm 横19.5cm 幅8cm", price:1500, emoji:"👜", badge:'one', soldout:true, colors:[{label:"卒業犬バージョン",status:"soldout"},{label:"マルチーズ",status:"soldout"}]},
+  {id:79, formName:"NO.79保冷・保温ランチバッグ（ブラック）外ポケット付き 2000円", img:"images/p79-main.png", imgs:["images/p79-main.png","images/p79-slide2.png","images/p79-slide3.png"], size:"縦25cm 横25cm 幅14.5cm", price:2000, emoji:"🧊", badge:'one', soldout:true},
+  {id:80, formName:"NO.80大容量メッシュトート1600円", img:"images/p38-slide2.jpg", imgs:["images/p38-slide2.jpg","images/p80-slide2.jpg","images/p38-slide3.jpg","images/p38-slide4.jpg"], size:"縦35cm 横45cm 幅15cm", price:1600, emoji:"🛍️", badge:'pop', soldout:true},
+  {id:81, formName:"NO.81多機能トート卒業犬バージョン全面ポケット付き（白）2200円", img:"images/p81-main.jpg", imgs:["images/p81-main.jpg","images/p81-slide2.jpg","images/p81-slide3.jpg","images/p81-slide4.jpg"], size:"縦29cm 横37cm", price:2200, emoji:"🤍", badge:'one', soldout:false},
+  {id:82, formName:"NO.82ミニお散歩バック（黒）卒業犬1300円", img:"images/p82-main.jpg", imgs:["images/p82-main.jpg","images/p82-slide2.jpg","images/p82-slide3.jpg"], size:"縦22cm 横26cm マチ5cm", price:1300, emoji:"🐾", badge:'re', soldout:true},
+  {id:83, formName:"NO.83サプリメントケース（ほのぼのバージョン）800円", img:"images/p83-main.jpg", imgs:["images/p83-main.jpg","images/p83-slide2.jpg","images/p83-slide3.jpg","images/p83-slide4.jpg"], size:"縦5cm 横5cm マチ5cm", price:800, emoji:"💊", badge:'re', soldout:false},
+  {id:84, formName:"NO.84卒業犬バージョン 大容量エコバック（黒）1100円", img:"images/p84-main.jpg", imgs:["images/p84-main.jpg","images/p84-slide2.jpg","images/p84-slide3.jpg"], size:"縦38cm 横53cm マチ10cm", price:1100, emoji:"🛍️", badge:'re', soldout:true},
+  {id:85, formName:"NO.85携帯用ペット給水ボトル&折り畳み皿 2点セット★ 1550円", img:"images/p85-main.jpg", imgs:["images/p85-main.jpg","images/p85-slide2.jpg","images/p85-slide3.jpg","images/p85-slide4.jpg"], size:"給水ボトル18.5cm×14.5cm 折りたたみボウル13cm×5.5cm", price:1550, emoji:"💚", badge:'green', soldout:false, colors:[{label:"イエロー",status:"soldout"},{label:"グリーン",status:"ok"}]},
+  {id:86, formName:"NO.86 筒形ミニボストンバック（ブラック）2100円", img:"images/p86-main.jpg", imgs:["images/p86-main.jpg","images/p86-slide2.jpg","images/p86-slide3.jpg","images/p86-slide4.jpg"], size:"縦22cm 横40cm 幅22cm", price:2100, emoji:"👜", badge:'new', soldout:false},
+  {id:87, formName:"NO.87 メイクバッグ（ブラック）1100円", img:"images/p87-main.jpg", imgs:["images/p87-main.jpg","images/p87-slide2.jpg"], size:"縦12.5cm 横19cm 幅8cm", price:1100, emoji:"💄", badge:'new', soldout:false},
+  {id:88, formName:"NO.88 ハートチャーム付きバック★（パープル）1800円", img:"images/p88-slide4.jpg", imgs:["images/p88-slide4.jpg","images/p88-main.jpg","images/p88-slide2.jpg","images/p88-slide3.jpg","images/p88-slide5.jpg"], size:"縦22cm 横22cm 幅10cm", price:1800, emoji:"💜", badge:'new', soldout:false, colors:[{label:"オリジナル",status:"ok"},{label:"ポメラニアン",status:"ok"},{label:"チワワ",status:"soon"}]},
+  {id:89, formName:"NO.89 ハートチャーム付きバック★（ブラック）1800円", img:"images/p89-main.jpg", imgs:["images/p89-main.jpg","images/p89-slide2.jpg","images/p89-slide3.jpg","images/p89-slide4.jpg"], size:"縦22cm 横22cm 幅10cm", price:1800, emoji:"🖤", badge:'new', soldout:false, colors:[{label:"オリジナルバージョン",status:"soldout"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:90, formName:"NO.90 長袖Tシャツ（白）1600円", img:"images/p90-main.jpg", imgs:["images/p90-main.jpg","images/p90-slide2.jpg"], size:"Sサイズ（大きめ）", price:1600, emoji:"👕", badge:'new', soldout:false},
+  {id:91, formName:"NO.91 バックプリント フード付きトレーナー ★ 2500円", img:"images/p91-main.jpg", imgs:["images/p91-main.jpg","images/p91-slide2.jpg","images/p91-slide3.jpg","images/p91-slide4.jpg"], size:"Sサイズ", price:2500, emoji:"🧥", badge:'new', soldout:false, colors:[{label:"グレー",status:"ok"},{label:"ブラック",status:"ok"}]},
+  {id:92, formName:"NO.92 トラベルバック（白）卒業犬バージョン 3000円", img:"images/p92-main.jpg", imgs:["images/p92-main.jpg","images/p92-slide2.jpg","images/p92-slide3.jpg"], size:"縦27cm 横46cm 幅22cm", price:3000, emoji:"🧳", badge:'re', soldout:false},
+  {id:93, formName:"NO.93 サプリメントケース 卒業犬バージョン 800円", img:"images/p93-main.jpg", imgs:["images/p93-main.jpg","images/p93-slide2.jpg"], size:"直径5cm", price:800, emoji:"💊", badge:'re', soldout:false},
+  {id:94, formName:"NO.94 サプリメントケース 長方形★ 800円", img:"images/p94-main.jpg", imgs:["images/p94-main.jpg","images/p94-slide2.jpg","images/p94-slide3.jpg"], size:"縦4cm 横5.5cm 幅1.5cm", price:800, emoji:"💊", badge:'new', soldout:false, colors:[{label:"オリジナル",status:"soldout"},{label:"ほのぼの",status:"ok"}]},
+  {id:95, formName:"NO.95 肩掛けショルダーバッグ （黒）卒業犬バージョン 1850円", img:"images/p95-main.jpg", imgs:["images/p95-main.jpg","images/p95-slide2.jpg"], size:"縦18cm 横27cm 幅8cm", price:1850, emoji:"👜", badge:'new', soldout:false},
+  {id:96, formName:"NO.96 保冷・保温ランチバッグ（黒）卒業犬バージョン 1900円", img:"images/p96-main.jpg", imgs:["images/p96-main.jpg","images/p96-slide2.jpg","images/p96-slide3.jpg","images/p96-slide4.jpg","images/p96-slide5.jpg"], size:"縦18cm 横22.5cm 幅16cm", price:1900, emoji:"🧊", badge:'one', soldout:false},
+  {id:97, formName:"NO.97 フェルトトートバック★トイプードル1900円", img:"images/p97-main.jpg", imgs:["images/p97-main.jpg","images/p97-slide2.jpg","images/p97-slide3.jpg","images/p97-slide4.jpg"], size:"縦30cm × 横40cm × マチ15cm", price:1900, emoji:"👜", badge:'re', soldout:false, colors:[{label:"グレー",status:"soldout"},{label:"ベージュ",status:"ok"}]},
+  {id:98, formName:"NO.98 多機能横型ショルダーバック(黒) 2200円", img:"images/p98-main.jpg", imgs:["images/p98-main.jpg","images/p98-slide2.jpg","images/p98-slide3.jpg"], size:"縦20cm 横25cm 幅7cm", price:2200, emoji:"👜", badge:'new', soldout:false},
+  {id:99, formName:"NO.99  麻 トートバック 1600円", img:"images/p99-main.jpg", imgs:["images/p99-main.jpg","images/p99-slide2.jpg","images/p99-slide3.jpg"], size:"高さ26.5cm 横37cm 幅18cm", price:1600, emoji:"👜", badge:'re', soldout:false},
+  {id:100, formName:"NO.100 ハンドバック（白）卒業犬バージョン 1900円", img:"images/p100-main.jpg", imgs:["images/p100-main.jpg","images/p100-slide2.jpg","images/p100-slide3.jpg"], size:"縦28cm 横22cm 幅8cm", price:1900, emoji:"👜", badge:'re', soldout:false},
+  {id:101, formName:"No.101デニムミニトート★ 1300円", img:"images/p101-main.jpg", imgs:["images/p101-main.jpg","images/p101-slide2.jpg","images/p101-slide3.jpg","images/p101-slide4.jpg"], size:"縦:約20cm 横:約30cm", price:1300, emoji:"👖", badge:'soon', soldout:true, colors:[{label:"ヨークシャーテリア",status:"soon"},{label:"ポメラニアン",status:"soon"}]},
+  {id:103, formName:"No.103ソックス3点セット★ 1200円", img:"images/p103-main.jpg", imgs:["images/p103-main.jpg","images/p103-slide2.jpg"], size:"KIDS 21cm", price:1200, emoji:"🧦", badge:'new', soldout:false, colors:[{label:"トイプードル",status:"ok"}]},
+  {id:106, formName:"No.106バックハンガー★750円", img:"images/p106-main.jpg", imgs:["images/p106-main.jpg","images/p106-slide2.jpg","images/p106-slide3.jpg"], size:"正面直径:約4.3cm 厚み:約1.1cm 長さ(フック使用時):約9cm", price:750, emoji:"👜", badge:'new', soldout:false},
+  {id:102, formName:"No.102アンブレラマーカー★ 600円", img:"images/p102-main.jpg", imgs:["images/p102-main.jpg","images/p102-slide2.jpg"], size:"リング直径:約2cm", price:550, emoji:"☂️", badge:'new', soldout:false, colors:[{label:"卒業犬バージョン",status:"ok"},{label:"チワワ",status:"ok"},{label:"マルチーズ",status:"ok"}]},
+  {id:104, formName:"No.104フェルトトートバック★ヨークシャテリア1900円", img:"images/p104-main.jpg", imgs:["images/p104-main.jpg","images/p104-slide2.jpg","images/p104-slide3.jpg","images/p104-slide4.jpg","images/p104-slide5.jpg"], size:"縦:約30cm 横:約40cm マチ:約15cm", price:1900, emoji:"👜", badge:'new', soldout:false, colors:[{label:"グレー",status:"ok"},{label:"ベージュ",status:"soon"}]},
+  {id:105, formName:"No.105折りたたみ式スマホスタンド★250円", img:"images/p105-main.jpg", imgs:["images/p105-main.jpg","images/p105-slide2.jpg","images/p105-slide3.jpg","images/p105-slide4.jpg","images/p105-slide5.jpg"], size:"コンパクトサイズ（角度調整可能・本体カラーはランダム発送）", price:250, emoji:"📱", badge:'new', soldout:false, colors:[{label:"チワワ",status:"ok"},{label:"マルチーズ",status:"soon"},{label:"ヨークシャーテリア",status:"ok"},{label:"ポメラニアン",status:"ok"},{label:"トイプードル",status:"ok"}]},
+  {id:107, formName:"No.107ペットフード＆水ボトル ★1200円", img:"images/p107-main-v2.jpg", size:"高さ:約11.5cm 幅:約8.6cm", price:1200, emoji:"🍼", badge:'new', soldout:false, colors:[{label:"オリジナルキャラバージョン",status:"soldout"},{label:"卒業犬バージョン",status:"ok"}]},
+  {id:108, formName:"No.108ランドリーバスケット★1200円", img:"images/p108-main.jpg", size:"縦:約47cm 横:約30cm 奥行:約30cm", price:1200, emoji:"🧺", badge:'new', soldout:false},
+  {id:109, formName:"No.109カラビナ付きメガネケース★1100円", img:"images/p109-main.jpg", size:"幅:約17cm 高さ:約8cm", price:1100, emoji:"👓", badge:'new', soldout:false},
+  {id:110, formName:"No.110 2点セット球体型 ウォーターボトル＆マナー袋入れ★1500円", img:"images/p110-main.jpg", imgs:["images/p110-main.jpg","images/p110-slide2.jpg","images/p110-slide3.jpg"], size:"給水ボトル:高さ約9cm×幅8.7cm（容量285ml） マナーポーチ:高さ約11.5cm×幅10cm", price:1500, emoji:"💧", badge:'new', soldout:false},
+  {id:111, formName:"No.111 ジッパー付きフェルトバック★2100円", img:"images/p111-main.jpg", imgs:["images/p111-main.jpg","images/p111-slide2.jpg","images/p111-slide3.jpg"], size:"縦:約30cm 横:約35cm マチ:約13cm（持ち手部分を除く）", price:2100, emoji:"👜", badge:'new', soldout:false},
+  {id:112, formName:"No.112 ポケットたくさん軽量バック★2100円", img:"images/p112-main.jpg", imgs:["images/p112-main.jpg","images/p112-slide2.jpg","images/p112-slide3.jpg"], size:"高さ:約27cm 幅:約32cm（持ち手部分を除く）", price:2100, emoji:"👜", badge:'new', soldout:false},
+  {id:113, formName:"No.113 モコモコスリッパ（黒）★1600円", img:"images/p113-main.jpg", imgs:["images/p113-main.jpg","images/p113-slide2.jpg"], size:"24～24.5cm", price:1600, emoji:"🥿", badge:'new', soldout:true},
+  {id:114, formName:"No.114 モコモコスリッパ（白）★1600円", img:"images/p114-main.jpg", imgs:["images/p114-main.jpg","images/p114-slide2.jpg"], size:"24～24.5cm", price:1600, emoji:"🥿", badge:'new', soldout:false},
+  {id:115, formName:"No.115 ミニ財布 オリジナル★1800円", img:"images/p115-main.jpg", imgs:["images/p115-main.jpg","images/p115-slide2.jpg","images/p115-slide3.jpg"], size:"縦:約11cm 横:約8.3cm 厚み:約1.2cm", price:1800, emoji:"👛", badge:'new', soldout:false},
+  {id:116, formName:"No.116 キーホルダー爪切り 1つで4役-★800円", img:"images/p116-main-v2.jpg", imgs:["images/p116-main-v2.jpg","images/p116-slide2.jpg","images/p116-slide3.jpg"], size:"長さ:約6cm 刃の幅:約1.2cm 重さ:約30g", price:800, emoji:"🔑", badge:'new', soldout:false},
+  {id:117, formName:"No.117片手で開くメガネケース★1100円", img:"images/p117-main.jpg", imgs:["images/p117-main.jpg","images/p117-slide2.jpg"], size:"縦:約18.5cm 横:約9.5cm", price:1100, emoji:"👓", badge:'new', soldout:false},
+  {id:118, formName:"No.118 ソフトレザートートバッグ★2000円", img:"images/p118-main.jpg", imgs:["images/p118-main.jpg","images/p118-slide2.jpg"], size:"縦:約21cm 横:約34cm 底(マチ):約8.5cm", price:2000, emoji:"👜", badge:'new', soldout:false},
+  {id:119, formName:"No.119 クレジットカードホルダー★1800円", img:"images/p119-main.jpg", imgs:["images/p119-main.jpg","images/p119-slide2.jpg"], size:"横:約11cm 縦:約8cm 厚さ:約2cm", price:1800, emoji:"💳", badge:'new', soldout:false}
+]
+
+const badgeMap = {pop:'👑 人気商品', re:'🔄 再入荷', new:'✨ NEW', sale:'🏷️ 訳あり', last:'⚠️ ラスト1点', hot:'🔥 大人気商品', one:'💎 1点もの', season:'🌞 季節にぴったり', deal:'🤑 お買い得', outdoor:'🏕️ レジャーに大活躍', few:'🔔 残り僅か', wakari:'💰 訳アリお買い得', conv:'👍 お手頃で便利', sotsu:'🌸 しあわせの証', black:'🖤 ブラックもあり', white:'🤍 ホワイトもあり', soon:'✨ COMING SOON', green:'💚 グリーン新色入荷', off46:'🏷️ 46%OFF', off38:'🏷️ 38%OFF', newcolor:'✨ 新色追加'};
+// 表示用：商品名から末尾の価格表記（例:1500円）を除去（Googleフォーム送信用のformNameは変更しない）
+function dispName(n){ return n.replace(/[\d,]+円/g, '').trim(); }
+// カテゴリー対応表（id→カテゴリー）：商品データ本体・No.・QR・管理表には一切影響しない
+const productCategory = {1:'zakka', 2:'pouch', 3:'zakka', 4:'pouch', 5:'shoulder', 6:'shoulder', 7:'shoulder', 8:'wear', 9:'shoulder', 10:'tote', 11:'shoulder', 12:'tote', 13:'pouch', 14:'pouch', 15:'shoulder', 16:'tote', 17:'pouch', 18:'pouch', 19:'shoulder', 20:'shoulder', 21:'wear', 22:'tote', 23:'bottle', 24:'bottle', 25:'wear', 26:'tote', 27:'ruck', 28:'pouch', 29:'pouch', 30:'zakka', 31:'pouch', 32:'wear', 33:'bottle', 34:'bottle', 35:'bottle', 36:'pouch', 37:'wear', 38:'tote', 39:'shoulder', 40:'zakka', 41:'zakka', 42:'zakka', 43:'zakka', 44:'zakka', 45:'wear', 46:'wear', 47:'tote', 48:'wear', 49:'ruck', 50:'pouch', 51:'zakka', 52:'wear', 53:'zakka', 54:'wear', 55:'tote', 56:'shoulder', 57:'tote', 58:'ruck', 59:'tote', 60:'wear', 61:'wear', 62:'wear', 63:'wear', 64:'ruck', 65:'bottle', 66:'bottle', 67:'ruck', 68:'ruck', 69:'ruck', 70:'bottle', 71:'pouch', 72:'ruck', 73:'bottle', 74:'bottle', 75:'bottle', 76:'shoulder', 77:'tote', 78:'ruck', 79:'ruck', 80:'tote', 81:'tote', 82:'ruck', 83:'pouch', 84:'tote', 85:'bottle', 86:'ruck', 87:'pouch', 88:'shoulder', 89:'shoulder', 90:'wear', 91:'wear', 92:'ruck', 93:'pouch', 94:'pouch', 95:'shoulder', 96:'ruck', 97:'tote', 98:'shoulder', 99:'tote', 100:'shoulder', 101:'tote', 102:'zakka', 103:'wear', 104:'tote', 105:'zakka', 106:'zakka', 107:'bottle', 108:'zakka', 109:'zakka', 110:'bottle', 111:'tote', 112:'tote', 113:'wear', 114:'wear', 115:'zakka', 116:'zakka', 117:'zakka', 118:'tote', 119:'zakka'};
+
+const grid = document.getElementById('productGrid');
+// 表示順のみ並べ替え（データ本体・No.・QR・管理表には影響しない）：在庫あり→COMING SOON→売り切れ、各グループ内はNo.昇順
+const displayOrder = products.slice().sort((a, b) => {
+  const rank = x => (x.badge === 'soon' ? 1 : (x.soldout ? 2 : 0));
+  const d = rank(a) - rank(b);
+  return d !== 0 ? d : a.id - b.id;
+});
+function buildCard(p) {
+  const c = document.createElement('div');
+  c.className = 'card' + (p.soldout ? ' soldout' : '');
+  c.style.cursor = 'pointer';
+  c.onclick = (e) => { if (!e.target.classList.contains('add-btn')) openDetail(products.find(x=>x.id===p.id)); };
+  c.innerHTML = `
+    ${p.badge ? `<div class="badge ${p.badge}">${badgeMap[p.badge]}</div>` : ''}
+    ${p.soldout ? (p.badge === 'soon' ? '<div class="soldout-stamp" style="background:linear-gradient(135deg,#1a1a2e,#16213e);letter-spacing:1.5px;">COMING SOON</div>' : '<div class="soldout-stamp">SOLD OUT</div>') : ''}
+    <div class="card-img" onclick="openDetail(products.find(x=>x.id===${p.id}))" style="cursor:pointer;">
+      ${p.img
+        ? `<img src="${p.img}" style="max-width:100%;max-height:140px;object-fit:contain;border-radius:8px;" data-fullsrc="${p.img}" data-name="${dispName(p.formName)}">`
+        : `<span class="item-emoji">${p.emoji}</span>`
+      }
+      <span class="mini-chara"><img src="${CHARA}" alt=""></span>
+      ${p.img ? '<span class="zoom-hint" onclick="event.stopPropagation();openImgModal(\'' + p.img + '\',\'' + dispName(p.formName) + '\')">🔍 拡大</span>' : ''}
+    </div>
+    <div class="card-body">
+      <div class="card-num">No.${p.id}</div>
+      <div class="card-name">${dispName(p.formName)}</div>
+      ${p.size ? `<div class="card-size">📐 ${p.size}</div>` : ''}
+      ${p.colors && p.colors.length ? (p.soldout ? `<div class="card-colors" style="font-size:11px;font-weight:700;color:#4a7a4a;margin:2px 0;">🎨 ${p.colors.length}種類（${p.colors.map(c=>c.label).join('・')}）</div>` : variantPickerHTML(p)) : ''}
+      <div class="card-price">
+        ${p.badge === 'soon' ? '🔜 近日公開' : `¥${p.price.toLocaleString()} <small>（税込）</small>`}
+        ${(p.origPrice && p.badge !== 'soon') ? `<span class="orig">¥${p.origPrice.toLocaleString()}</span>` : ''}
+      </div>
+      ${(p.colors && p.colors.length && !p.soldout) ? '' : `<button class="add-btn" id="btn${p.id}" onclick="addToCart(${p.id})" ${p.soldout ? 'disabled' : ''}>
+        ${p.soldout ? (p.badge === 'soon' ? '🔜 COMING SOON' : '❌ 売り切れ') : '🛒 カートに入れる'}
+      </button>`}
+    </div>
+  `;
+  return c;
+}
+let currentCat = 'all';
+function renderGrid(cat) {
+  grid.innerHTML = '';
+  let shown = 0;
+  displayOrder.forEach(p => {
+    const isTrueSoldOut = p.soldout && p.badge !== 'soon'; // 通常の売り切れ
+    const isComingSoon = p.badge === 'soon'; // 商品全体がCOMING SOON（まだ何も購入できない）
+    const isUnavailable = isTrueSoldOut || isComingSoon; // 今すぐ買えないもの
+    if (cat === 'soldout') {
+      if (!isUnavailable) return; // 売り切れタブ：売り切れ＋COMING SOONをまとめて表示（カテゴリー横断）
+    } else {
+      if (cat && cat !== 'all' && productCategory[p.id] !== cat) return;
+      if (isUnavailable) return; // 通常タブ：売り切れ・COMING SOONは非表示
+    }
+    grid.appendChild(buildCard(p));
+    shown++;
+  });
+  // 「いま表示中の種類」の表示を更新
+  const nameEl = document.getElementById('catNowName');
+  if (nameEl) {
+    const act = document.querySelector('#catTabs .cat-tab.active');
+    const nm = (!cat || cat === 'all') ? 'すべての商品' : (act ? act.textContent.trim() : '');
+    nameEl.textContent = nm + '（' + shown + '点）';
+  }
+}
+function selectCat(btn) {
+  currentCat = btn.dataset.cat;
+  document.querySelectorAll('#catTabs .cat-tab').forEach(t => t.classList.toggle('active', t === btn));
+  renderGrid(currentCat);
+  scrollToResults();
+}
+// 種類を押したら、見つかった商品の先頭が見える位置まで自動で動く
+function scrollToResults() {
+  const g = document.getElementById('productGrid');
+  const bar = document.getElementById('catNow');
+  if (!g || !bar) return;
+  const y = g.getBoundingClientRect().top + window.scrollY - 60 - bar.offsetHeight - 16;
+  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+}
+// 「種類をえらびなおす」→ 種類ボタンのところへ戻る
+function scrollToCats() {
+  const t = document.getElementById('catGuide');
+  if (!t) return;
+  const y = t.getBoundingClientRect().top + window.scrollY - 76;
+  window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' });
+}
+let cart = {};
+let cartVariants = {};   // カート内商品のカラー選択を記録 {id: 'グレー'}
+let selectedColor = {};  // 詳細ページ・一覧での現在選択中カラー {id: 'グレー'}
+
+// ===== 選べる商品：一覧カード上で、選択肢ごとのボタンを1回押すだけでカートへ =====
+function _vlab(s) { return _vesc(s).replace(/バージョン/g, '<wbr>バージョン'); }
+function _vesc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
+function variantPickerHTML(p) {
+  const oks = (p.colors || []).filter(c => c.status === 'ok');
+  const inCart = !!cart[p.id];
+  const cur = cartVariants[p.id];
+  const btns = p.colors.map(c => {
+    if (c.status === 'ok') {
+      let cls = 'vopt', act = '🛒 カートに入れる';
+      if (inCart && cur === c.label) { cls += ' in'; act = '✓ カートに入っています'; }
+      else if (inCart) { cls += ' alt'; act = '🔄 こちらに変更する'; }
+      return `<button type="button" class="${cls}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();addVariantOption(${p.id}, this.dataset.vlabel)"><span class="vlab">${_vlab(c.label)}</span><span class="vact">${act}</span></button>`;
+    }
+    const note = c.status === 'soon' ? '🔜 近日入荷' : '❌ 売り切れ';
+    return `<div class="vopt off"><span class="vlab">${_vlab(c.label)}</span><span class="vact">${note}</span></div>`;
+  }).join('');
+  const ttl = oks.length > 1 ? '👇 ほしい方のボタンを押してください' : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
+  const hint = oks.length > 1 ? '<div class="vhint">※ 2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>' : '';
+  return `<div class="vsel" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${btns}</div>${hint}</div>`;
+}
+function refreshVariantUI(id) {
+  const p = products.find(x => x.id === id);
+  if (!p || !p.colors || !p.colors.length || p.soldout) return;
+  const box = document.getElementById('vsel' + id);
+  if (!box) return;
+  const tmp = document.createElement('div');
+  tmp.innerHTML = variantPickerHTML(p);
+  box.replaceWith(tmp.firstElementChild);
+}
+function addVariantOption(id, label) {
+  const p = products.find(x => x.id === id);
+  if (!p || p.soldout) return;
+  if (cart[id]) {
+    if (cartVariants[id] === label) { showToast('⚠️ すでにカートに入っています', 3500); return; }
+    // 別の選択肢のボタンを押したときは「変更」になる
+    cartVariants[id] = label; selectedColor[id] = label;
+    renderCart();
+    showToast('🔄 「' + label + '」に変更しました。2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください', 5000);
+    refreshVariantUI(id);
+    return;
+  }
+  cart[id] = 1;
+  cartVariants[id] = label; selectedColor[id] = label;
+  renderCart();
+  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + '（' + label + '）をカートに追加🐾');
+  refreshVariantUI(id);
+  const cnt = document.getElementById('cartCount');
+  cnt.classList.add('bump');
+  setTimeout(() => cnt.classList.remove('bump'), 300);
+}
+// 画面の下の「ご注文はこちら」バー
+function updateOrderBar(count, total) {
+  const bar = document.getElementById('orderBar');
+  if (!bar) return;
+  if (count > 0) {
+    document.getElementById('orderBarSub').textContent = count + '点　¥' + total.toLocaleString() + '（送料別）';
+    bar.style.display = 'flex';
+    document.body.classList.add('has-bar');
+  } else {
+    bar.style.display = 'none';
+    document.body.classList.remove('has-bar');
+  }
+}
+
+renderGrid('all');
+
+function selectColor(id, label, status) {
+  if (status !== 'ok') return; // 在庫あり・売り切れ以外は選択不可
+  selectedColor[id] = label;
+  // すでにカートに入っている商品は、選び直した色をその場でカートにも反映する
+  if (cart[id]) {
+    cartVariants[id] = label;
+    renderCart();
+    showToast('🎨 「' + label + '」に変更しました');
+  }
+  document.querySelectorAll('#detailColorsRow .color-chip').forEach(el => {
+    if (el.dataset.status !== 'ok') return; // 選択不可チップの見た目は触らない
+    const isSel = el.dataset.label === label;
+    el.classList.toggle('selected', isSel);
+    el.style.border = isSel ? '1.5px solid #4a7a4a' : '1.5px solid #cfe3cf';
+    el.style.background = isSel ? '#eef5ee' : '#fff';
+  });
+  refreshVariantUI(id); // 一覧カード側の表示も同期
+}
+
+function addToCart(id) {
+  const p = products.find(x => x.id === id);
+  if (p.soldout) return;
+  if (cart[id]) {
+    showToast('⚠️ すでにカートに入っています');
+    return;
+  }
+  cart[id] = 1;
+  renderCart();
+  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + ' をカートに追加🐾');
+  const btn = document.getElementById('btn' + id);
+  btn.textContent = '✓ 追加しました！';
+  btn.classList.add('added');
+  setTimeout(() => { btn.innerHTML = '🛒 カートに入れる'; btn.classList.remove('added'); }, 1400);
+  const cnt = document.getElementById('cartCount');
+  cnt.classList.add('bump');
+  setTimeout(() => cnt.classList.remove('bump'), 300);
+}
+
+function removeItem(id) {
+  delete cart[id];
+  delete cartVariants[id];
+  renderCart();
+  refreshVariantUI(id);
+  showToast('🗑️ 削除しました');
+}
+
+function changeQty(id, d) {
+  cart[id] = Math.max(0, (cart[id]||0) + d);
+  if (cart[id] === 0) { delete cart[id]; delete cartVariants[id]; }
+  renderCart();
+  refreshVariantUI(id);
+}
+
+function renderCart() {
+  const total = Object.entries(cart).reduce((s,[id,q]) => s + products.find(x=>x.id==id).price*q, 0);
+  const count = Object.values(cart).reduce((s,q) => s+q, 0);
+  document.getElementById('cartCount').textContent = count;
+  document.getElementById('totalAmt').textContent = '¥' + total.toLocaleString();
+  updateOrderBar(count, total);
+  const ft = document.getElementById('panelFt');
+  if (ft) ft.classList.toggle('empty', !count);   // 空のときは下の固定部分を隠す
+  const el = document.getElementById('panelItems');
+  if (!count) {
+    el.innerHTML = '<div class="empty-msg"><div class="e-ico">🐾</div><p>カートは空です<br><span style="font-size:11px;color:#bbb;">商品を選んでカートに入れてください</span></p></div>';
+    return;
+  }
+  el.innerHTML = '';
+  // 件数ヘッダー
+  const header = document.createElement('div');
+  header.style.cssText = 'font-size:13px;color:#7a6a58;font-weight:700;padding:0 2px;line-height:1.6;';
+  header.innerHTML = '🛒 選んだ商品（' + count + '点）<br><span style="font-size:12px;font-weight:600;">まちがえたときは「🗑️ 削除」を押してください</span>';
+  el.appendChild(header);
+  Object.entries(cart).forEach(([id,qty]) => {
+    if (!qty) return;
+    const p = products.find(x=>x.id==id);
+    const d = document.createElement('div');
+    d.className = 'ci';
+    d.innerHTML = `
+      <div class="ci-ico" style="width:56px;height:56px;flex-shrink:0;background:#f0e8d8;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;">${p.img ? '<img src="'+p.img+'" style="width:56px;height:56px;object-fit:cover;border-radius:10px;">' : '<span style="font-size:32px;">'+p.emoji+'</span>'}</div>
+      <div class="ci-info">
+        <div class="ci-name">${dispName(p.formName)}</div>
+        ${cartVariants[id] ? `<div style="font-size:11px;color:#4a7a4a;font-weight:700;">🎨 ${cartVariants[id]}</div>` : ''}
+        <div class="ci-price" style="color:#7a4f2a;font-weight:800;">¥${p.price.toLocaleString()}</div>
+      </div>
+      <div style="display:flex;flex-direction:column;align-items:center;gap:4px;flex-shrink:0;">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:4px;">
+          <div style="background:#eef5ee;border-radius:8px;padding:3px 10px;font-size:12px;font-weight:800;color:#4a7a4a;">1点</div>
+          <button onclick="removeItem(${id})" style="background:#fff;border:2px solid #e84e4e;color:#e84e4e;font-size:13px;cursor:pointer;font-weight:800;padding:8px 12px;border-radius:22px;min-height:38px;">🗑️ 削除</button>
+        </div>
+      </div>
+    `;
+    el.appendChild(d);
+  });
+}
+
+function openCart() {
+  document.body.classList.add('cart-open');
+  document.getElementById('panel').classList.add('open');
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeCart() {
+  document.body.classList.remove('cart-open');
+  document.getElementById('panel').classList.remove('open');
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ===== Googleフォーム自動チェック連動 =====
+// entry.700128708 = ④ご希望商品番号（チェックボックス）
+// entry.2097723250 = ⑤その他ご要望（数量・小計メモ）
+const FORM_BASE      = 'https://docs.google.com/forms/d/e/1FAIpQLSfSXz1VUorTGiQV9Slkxj48G_aFgBJDSwHS90CrsABAw8FVCw/viewform';
+const ENTRY_CHECKBOX = 'entry.700128708';
+const ENTRY_NOTE     = 'entry.2087862510';
+
+function goToForm() {
+  const count = Object.values(cart).reduce((s,q)=>s+q,0);
+  if (!count) { showToast('⚠️ カートに商品を入れてください'); return; }
+
+  const params = [];
+  const qtyNotes = [];
+
+  Object.entries(cart).forEach(([id, qty]) => {
+    const p = products.find(x => x.id == id);
+    // チェックボックス：formNameをそのまま渡す（フォームの選択肢と完全一致）
+    // Googleフォームのプリフィルは+をスペースとして使う（quote_plus形式）
+    params.push(ENTRY_CHECKBOX + '=' + encodeURIComponent(p.formName).replace(/%20/g, '+'));
+    // 備考欄には「色・サイズ等を選んでカートに入れた商品」のみ記載する
+    if (p.colors && cartVariants[id]) {
+      qtyNotes.push(p.formName.split(' ').slice(0,2).join(' ') + ' × ' + qty + '点（カラー:' + cartVariants[id] + '）');
+    }
+  });
+
+  // その他ご要望欄に数量と小計を自動入力
+  const total = Object.entries(cart).reduce((s,[id,q])=>s+products.find(x=>x.id==id).price*q,0);
+  const noteLines = [];
+  if (qtyNotes.length) noteLines.push('【数量】' + qtyNotes.join('、'));
+  noteLines.push('【小計】¥' + total.toLocaleString() + '（送料別・後日メールにてご連絡）');
+  params.push(ENTRY_NOTE + '=' + encodeURIComponent(noteLines.join(' ')));
+
+  const url = FORM_BASE + '?usp=pp_url&' + params.join('&');
+  window.open(url, '_blank');
+  showToast('📋 フォームが開きました！チェック済みです🐾');
+}
+
+let toastT;
+function showToast(msg, ms) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastT);
+  toastT = setTimeout(() => t.classList.remove('show'), ms || 2800);
+}
+
+// ===== IMAGE MODAL =====
+function openModal(el) {
+  var img = el.querySelector('img[data-fullsrc]');
+  if (!img) return;
+  document.getElementById('modalImg').src = img.getAttribute('data-fullsrc');
+  document.getElementById('modalName').textContent = img.getAttribute('data-name');
+  document.getElementById('imgModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeImgModal() {
+  document.getElementById('imgModal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+function closeModal(e) {
+  if (e.target === document.getElementById('imgModal')) closeImgModal();
+}
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeImgModal();
+});
+
+
+// 商品の追加画像（スライドショー用）
+const productExtraImgs = {6:["images/extra6-1.jpg","images/extra6-2.jpg","images/extra6-3.jpg"],8:["images/extra8-1.jpg"],10:["images/extra10-1.jpg"],11:["images/extra11-1.jpg","images/extra11-2.jpg","images/extra11-3.jpg"],12:["images/extra12-1.jpg","images/extra12-2.jpg"],16:["images/extra16-1.jpg"],19:["images/extra19-1.jpg","images/extra19-2.jpg","images/extra19-3.jpg"],27:["images/extra27-1.jpg"],39:["images/extra39-1.webp","images/extra39-2.webp","images/extra39-3.webp"],45:["images/extra45-1.jpg","images/extra45-2.jpg"],46:["images/extra46-1.jpg","images/extra46-2.jpg"],47:["images/extra47-1.jpg","images/extra47-2.jpg","images/extra47-3.jpg"]};
+
+// ===== DETAIL PAGE =====
+let currentDetailProduct = null;
+
+function openDetail(p) {
+  currentDetailProduct = p;
+  // 現在のスクロール位置を保存
+  window._savedScrollY = window.scrollY;
+
+  // スマホ・ブラウザの「戻る」ボタンで詳細ページを閉じられるように履歴を1つ積む
+  // （すでに詳細ページが開いている状態で別商品を開いた場合は積み直さない）
+  if (!(history.state && history.state.wanwannetDetail)) {
+    history.pushState({ wanwannetDetail: true }, '');
+  }
+
+  // ヘッダータイトル
+  document.getElementById('detailHeaderTitle').textContent = dispName(p.formName);
+
+  // 画像エリア（スライドショー対応）
+  const imgArea = document.getElementById('detailImgArea');
+  const extraImgs = productExtraImgs[p.id] || [];
+  const allImgs = p.imgs ? p.imgs : (p.img ? [p.img, ...extraImgs] : extraImgs);
+  
+  if (allImgs.length > 1) {
+    // スライドショー
+    let currentSlide = 0;
+    const slides = allImgs.map(src => 
+      `<div class="detail-slide" onclick="openImgModal(this.querySelector('img').src,'')" style="cursor:zoom-in;"><img src="${src}" alt=""><span class="detail-zoom-hint">🔍 タップで拡大</span></div>`
+    ).join('');
+    const dots = allImgs.map((_, i) => 
+      `<button class="slide-dot ${i===0?'active':''}" onclick="goSlide(${i})"></button>`
+    ).join('');
+    imgArea.className = 'detail-slides';
+    imgArea.innerHTML = `
+      <div class="detail-slides-inner" id="slidesInner">${slides}</div>
+      <button class="slide-prev" onclick="prevSlide()">‹</button>
+      <button class="slide-next" onclick="nextSlide()">›</button>
+      <div class="slide-dots" id="slideDots">${dots}</div>
+    `;
+    window._slideCount = allImgs.length;
+    window._currentSlide = 0;
+  } else if (p.img) {
+    imgArea.className = 'detail-img-main';
+    imgArea.innerHTML = `<img src="${p.img}" alt="${dispName(p.formName)}" onclick="openImgModal(this.src,'')" style="cursor:zoom-in;"><span class="detail-zoom-hint">🔍 タップで拡大</span>`;
+  } else {
+    imgArea.className = 'detail-img-main';
+    imgArea.innerHTML = `<span class="detail-emoji">${p.emoji}</span>`;
+  }
+  
+  // バッジ
+  const badgeRow = document.getElementById('detailBadges');
+  badgeRow.innerHTML = '';
+  if (p.badge) {
+    const b = document.createElement('span');
+    b.className = 'badge ' + p.badge;
+    b.style.cssText = 'position:static;font-size:12px;padding:5px 12px;';
+    b.textContent = badgeMap[p.badge];
+    badgeRow.appendChild(b);
+  }
+  if (p.soldout) {
+    const s = document.createElement('span');
+    if (p.badge === 'soon') {
+      s.style.cssText = 'background:linear-gradient(135deg,#1a1a2e,#16213e);color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;letter-spacing:1.5px;';
+      s.textContent = '🔜 COMING SOON';
+    } else {
+      s.style.cssText = 'background:#e84e4e;color:#fff;font-size:12px;font-weight:800;padding:5px 12px;border-radius:20px;';
+      s.textContent = '❌ 売り切れ';
+    }
+    badgeRow.appendChild(s);
+  }
+  
+  // 商品名・価格
+  document.getElementById('detailName').textContent = dispName(p.formName);
+  document.getElementById('detailPrice').textContent = (p.badge === 'soon') ? '🔜 近日公開' : ('¥' + p.price.toLocaleString());
+  
+  // 元値
+  const origEl = document.getElementById('detailOrig');
+  if (p.origPrice) {
+    origEl.textContent = '¥' + p.origPrice.toLocaleString();
+    origEl.style.display = '';
+  } else {
+    origEl.style.display = 'none';
+  }
+  
+  // サイズ
+  const sizeEl = document.getElementById('detailSize');
+  if (p.size) {
+    document.getElementById('detailSizeText').textContent = p.size;
+    sizeEl.style.display = 'flex';
+  } else {
+    sizeEl.style.display = 'none';
+  }
+
+  // カラーバリエーション
+  const colorsEl = document.getElementById('detailColors');
+  const colorsRow = document.getElementById('detailColorsRow');
+  if (p.colors && p.colors.length) {
+    colorsRow.innerHTML = '';
+    // 初期選択：在庫ありの最初の色（未選択なら）
+    // 選べるものが1つだけのときだけ自動選択（複数あるときは、お客様に選んでいただく）
+    if (!selectedColor[p.id]) {
+      const oks = p.colors.filter(c => c.status === 'ok');
+      if (oks.length === 1) selectedColor[p.id] = oks[0].label;
+    }
+    p.colors.forEach(c => {
+      const chip = document.createElement('button');
+      chip.className = 'color-chip' + (selectedColor[p.id] === c.label ? ' selected' : '');
+      chip.dataset.label = c.label;
+      chip.dataset.status = c.status;
+      chip.onclick = () => selectColor(p.id, c.label, c.status);
+      if (c.status === 'ok') {
+        chip.innerHTML = c.label;
+        chip.style.cssText = 'padding:8px 14px;border-radius:10px;font-size:13px;font-weight:700;cursor:pointer;background:#fff;color:#3a2c1a;border:1.5px solid ' + (selectedColor[p.id]===c.label ? '#4a7a4a' : '#cfe3cf') + ';' + (selectedColor[p.id]===c.label ? 'background:#eef5ee;' : '');
+      } else if (c.status === 'soon') {
+        chip.innerHTML = c.label + '<br><span style="font-size:9px;">🔜 近日入荷</span>';
+        chip.style.cssText = 'padding:6px 14px;border-radius:10px;font-size:12px;font-weight:700;cursor:default;background:#fdf6e6;color:#b0834a;border:1.5px dashed #e8a830;text-align:center;';
+        chip.disabled = true;
+      } else {
+        chip.innerHTML = c.label + '<br><span style="font-size:9px;">❌ 売り切れ</span>';
+        chip.style.cssText = 'padding:6px 14px;border-radius:10px;font-size:12px;cursor:default;background:#f5f3ee;color:#b8b3a8;border:1.5px solid #e0ddd4;text-align:center;';
+        chip.disabled = true;
+      }
+      colorsRow.appendChild(chip);
+    });
+    colorsEl.style.display = 'block';
+    const hintEl = document.getElementById('detailColorsHint');
+    if (hintEl) hintEl.style.display = (p.colors.filter(x => x.status === 'ok').length > 1) ? 'block' : 'none';
+  } else {
+    colorsEl.style.display = 'none';
+  }
+  
+  // 説明文（商品ごとに設定）
+  const descEl = document.getElementById('detailDesc');
+  const desc = productDescs[p.id];
+  if (desc) {
+    descEl.innerHTML = desc;
+    descEl.style.display = 'block';
+  } else {
+    descEl.style.display = 'none';
+  }
+  
+  // カートボタン
+  const btn = document.getElementById('detailCartBtn');
+  const soldoutMsg = document.getElementById('detailSoldoutMsg');
+  if (p.soldout) {
+    btn.disabled = true;
+    if (p.badge === 'soon') {
+      btn.innerHTML = '🔜 COMING SOON';
+      soldoutMsg.textContent = '🔜 まもなく入荷予定です。お楽しみに！';
+    } else {
+      btn.innerHTML = '❌ 売り切れ';
+      soldoutMsg.textContent = '現在この商品は在庫切れです';
+    }
+    soldoutMsg.style.display = 'block';
+  } else if (cart[p.id]) {
+    btn.disabled = false;
+    btn.innerHTML = '✓ カートに入っています';
+    soldoutMsg.style.display = 'none';
+  } else {
+    btn.disabled = false;
+    btn.innerHTML = '🛒 カートに入れる';
+    soldoutMsg.style.display = 'none';
+  }
+  
+  // 詳細ページを開く
+  document.getElementById('detailPage').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+
+// スライドショー操作
+function goSlide(n) {
+  window._currentSlide = n;
+  const inner = document.getElementById('slidesInner');
+  if (inner) inner.style.transform = `translateX(-${n * 100}%)`;
+  document.querySelectorAll('.slide-dot').forEach((d,i) => {
+    d.classList.toggle('active', i === n);
+  });
+}
+function nextSlide() {
+  const next = (window._currentSlide + 1) % window._slideCount;
+  goSlide(next);
+}
+function prevSlide() {
+  const prev = (window._currentSlide - 1 + window._slideCount) % window._slideCount;
+  goSlide(prev);
+}
+
+// ===== SWIPE & PINCH-ZOOM =====
+function openImgModal(src, name) {
+  document.getElementById('modalImg').src = src;
+  document.getElementById('modalName').textContent = name || '';
+  document.getElementById('imgModal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+  // ピンチズーム状態リセット
+  var img = document.getElementById('modalImg');
+  img.style.transform = '';
+  img.style.transformOrigin = '50% 50%';
+  window._mzScale = 1;
+}
+// タッチスワイプでスライド切り替え
+(function() {
+  var tx = 0;
+  document.addEventListener('touchstart', function(e) {
+    var el = e.target.closest('.detail-slides');
+    if (!el) return;
+    tx = e.touches[0].clientX;
+  }, {passive:true});
+  document.addEventListener('touchend', function(e) {
+    var el = e.target.closest('.detail-slides');
+    if (!el) return;
+    var dx = e.changedTouches[0].clientX - tx;
+    if (Math.abs(dx) > 40) { dx < 0 ? nextSlide() : prevSlide(); }
+  }, {passive:true});
+})();
+// モーダル内ピンチズーム
+(function() {
+  var dist0 = 0, scale0 = 1;
+  var modal = document.getElementById('imgModal');
+  if (!modal) return;
+  modal.addEventListener('touchstart', function(e) {
+    if (e.touches.length === 2) {
+      dist0 = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      scale0 = window._mzScale || 1;
+      e.preventDefault();
+    }
+  }, {passive:false});
+  modal.addEventListener('touchmove', function(e) {
+    if (e.touches.length === 2) {
+      var dist = Math.hypot(e.touches[0].clientX - e.touches[1].clientX, e.touches[0].clientY - e.touches[1].clientY);
+      var s = Math.min(Math.max(scale0 * (dist / dist0), 1), 4);
+      window._mzScale = s;
+      var img = document.getElementById('modalImg');
+      img.style.transform = 'scale(' + s + ')';
+      e.preventDefault();
+    }
+  }, {passive:false});
+  modal.addEventListener('touchend', function(e) {
+    if ((window._mzScale || 1) < 1.05) {
+      var img = document.getElementById('modalImg');
+      img.style.transform = '';
+      window._mzScale = 1;
+    }
+  }, {passive:true});
+})();
+// 実際に詳細ページを閉じる処理（内部用：popstate経由でもボタン経由でも最終的にここを通る）
+function closeDetailUI() {
+  document.getElementById('detailPage').classList.remove('open');
+  document.body.style.overflow = '';
+  // スクロール位置を復元
+  if (window._savedScrollY !== undefined) {
+    window.scrollTo({ top: window._savedScrollY, behavior: 'instant' });
+  }
+}
+
+// 「←」ボタン用：ブラウザの履歴を1つ戻すことで、スマホの戻るボタンと同じ挙動に統一する
+function closeDetail() {
+  if (history.state && history.state.wanwannetDetail) {
+    history.back();
+  } else {
+    closeDetailUI();
+  }
+}
+
+// スマホ・ブラウザの「戻る」操作で詳細ページが開いていれば閉じる（ショップの外に出てしまうのを防ぐ）
+window.addEventListener('popstate', function () {
+  const detailEl = document.getElementById('detailPage');
+  if (detailEl && detailEl.classList.contains('open')) {
+    closeDetailUI();
+  }
+});
+
+function addToCartFromDetail() {
+  if (!currentDetailProduct) return;
+  const p = currentDetailProduct;
+  if (p.soldout) return;
+  if (cart[p.id]) {
+    showToast('⚠️ すでにカートに入っています');
+    return;
+  }
+  if (p.colors && p.colors.length && !selectedColor[p.id]) {
+    // 選ぶものがあるのに未選択のときは、先に選んでもらう
+    showToast('👆 先にほしいものを選んでください');
+    const row = document.getElementById('detailColorsRow');
+    if (row) {
+      row.classList.remove('shake'); void row.offsetWidth; row.classList.add('shake');
+      if (row.scrollIntoView) row.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+    return;
+  }
+  cart[p.id] = 1;
+  if (p.colors && selectedColor[p.id]) cartVariants[p.id] = selectedColor[p.id];
+  renderCart();
+  showToast('✅ ' + dispName(p.formName).split(' ').slice(0,2).join(' ') + ' をカートに追加🐾');
+  
+  // ボタンを更新
+  const btn = document.getElementById('detailCartBtn');
+  btn.innerHTML = '✓ カートに入っています';
+  
+  // カウント更新
+  const cnt = document.getElementById('cartCount');
+  cnt.classList.add('bump');
+  setTimeout(() => cnt.classList.remove('bump'), 300);
+  
+  // 一覧のボタンも更新
+  const listBtn = document.getElementById('btn' + p.id);
+  if (listBtn) {
+    listBtn.textContent = '✓ カート済み';
+    listBtn.classList.add('added');
+  }
+  refreshVariantUI(p.id); // 選べる商品は一覧カードの表示も同期
+}
+
+// 商品説明文（後から追加可能）
+const productDescs = {
+  1: "🐶ミラー オリジナルバージョン🐾<br>🐾 机に置いて自立するタイプ◎<br>🐾 コンパクトサイズで邪魔にならない<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ブラック<br>・ホワイト",
+  2: "🐶  巾着 🐾<br>🐾リップを入れたりオリジナルミラー入れるのに丁度よい大きさ <br>🐾 サイズ<br>・9cm<br>🐾 カラー<br>・ホワイト",
+  3: "🐶ボールペン🐾<br>🐾とても書きやすくボランティア活動で使用してます(^^♪",
+  4: "🐶収納ポーチ（中）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の収納ポーチ♪<br>🐾 小物の整理にぴったりなミドルサイズ◎<br>🐾 バッグの中で迷子になりがちなアイテムをすっきり収納♬.*ﾟ<br>🐾 サイズ<br>・縦：約21.5cm<br>・横：約12.5cm",
+  5: "🐶お出かけバック★🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のお出かけバッグ♪<br>🐾 大容量設計で日常のお買い物やイベントにも便利に使える◎<br>🐾 手洗い可能でお手入れも簡単♬.*ﾟ<br>🐾 サイズ・カラー<br>・オリジナルバージョン（ミニサイズ）1500円<br>　縦：約18cm　横：約25cm　マチ：約13cm<br>・卒業犬バージョン（ビッグサイズ）1700円<br>　縦：約25cm　横：約32cm　マチ：約11cm<br>🐾 素材<br>・ポリエステル",
+  6: "🐶 斜め掛けポーチ🐾<br>🐾 外ポケット2つ&内ポケット1つ付きで収納力◎<br>🐾 肩紐調整可能&取外しもできるので好みのショルダーに変えて自分好みのアレンジもOK♪<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい<br>🐾 とっても軽量♡<br>🐾 サイズ<br>・縦:約20cm<br>・横:約14cm<br>・マチ:約5cm<br>🐾 カラー<br>・ブラック",
+  7: "🐶ショルダーバッグ★（黒）🐾<br>🐾 超軽量なのに大容量♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 その他プリントデザインでカジュアルコーデにぴったり<br>🐾 サイズ<br>・縦30cm × 横35cm × 幅5cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・オリジナルバージョン<br>・卒業犬バージョン（🔜近日入荷）<br>・ヨークシャーテリア（🔜近日入荷）<br>🐾 素材<br>・裏地：ポリエステル<br>🐾 お手入れ方法：洗濯不可",
+  8: "🐶エプロン🐾<br>🐾 肩紐調整可能<br>🐾 前面に大きなポケットが2つついてます♪<br>🐾 WanWanNetキャラの刺繍がとっても可愛い<br>🐾 アイロン不要<br>🐾 サイズ<br>・縦:約89cm<br>・横:約67cm<br>🐾 カラー<br>・グリーン",
+  9: "🐶ウエストポーチ🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のウエストポーチ♪<br>🐾 両手が空いて身軽にお出かけできる◎<br>🐾 普段使いからお散歩まで活躍♬.*ﾟ",
+  10: "🐶トートバック🐾<br>🐾 A4サイズもすっぽり入りちょうどよいサイズ感♪<br>🐾 丈夫なキャンバス生地<br>🐾 汚れたら洗える<br>🐾 サイズ<br>・縦:約37.5cm<br>・横:約33.5cm<br>🐾 カラー<br>・ホワイト",
+  11: "🐶ボディーバック🐾<br>🐾 外ポケット1つ&内ポケット2つ付きで収納力◎<br>🐾 肩紐調整可能でボディーバックにもウエストポーチになる2Wayタイプ♪<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい<br>🐾 とっても軽量♡<br>🐾 サイズ<br>・縦:約15cm<br>・横:約22cm<br>・マチ:約5.5cm<br>🐾 カラー<br>・ブラック",
+  12: "🐶 シンプルで使いやすいトートバッグ 🐾<br>🐾 外ポケット3つ＆内ポケット1つ付きで収納力◎<br>🐾 肩掛けしやすく、普段使いにぴったり♪<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 丈夫な素材感で長く使えそうです♡<br>🐾 サイズ<br>・縦：約30cm<br>・横：約41cm<br>・マチ：約10cm<br>🐾 カラー<br>・ブラック",
+  13: "🐶おやつ入れ（円型）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のおやつ入れ♪<br>🐾 丸型でコンパクト、お散歩のお供に便利◎<br>🐾 フタ付きでおやつの持ち運びも安心♬.*ﾟ<br>🐾 サイズ<br>・直径：約8cm × 高さ：約8cm",
+  14: "🐶 おやつ入れ（長方形）700円🐾<br>🐾 ワンちゃんのおやつをいれるのに丁度いい大きさ◎<br>🐾 蓋が分離していないので便利♪<br>🐾 アルミ素材で軽量♬.*゚<br>🐾 サイズ<br>・縦6cm × 横9.5cm × 幅2.2cm<br>🐾 カラー<br>・ブラック<br>🐾 由美さんもお散歩時に使用していますよ!",
+  15: "🐶ショルダーバッグ★（白）🐾<br>🐾 超軽量なのに大容量♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 その他プリントデザインでカジュアルコーデにぴったり<br>🐾 サイズ<br>・縦30cm × 横35cm × 幅5cm<br>🐾 カラー<br>・ホワイト<br>🐾 柄<br>・チワワ（🔜近日入荷）<br>・トイプードル（🔜近日入荷）<br>・卒業犬バージョン（🔜近日入荷）<br>🐾 素材<br>・裏地：ポリエステル<br>🐾 お手入れ方法：洗濯不可",
+  16: "🐶コンパクトエコバック🐾<br>🐾 コンパクトに折り畳めて便利<br>🐾 ちょうどよいサイズ感♪<br>🐾 汚れたら洗える<br>🐾 サイズ<br>・縦:約40cm<br>・横:約38cm<br>🐾 カラー<br>・ブラック",
+  17: "🐶収納ケース★🐾<br>🐾 日常のお出かけ・通勤・普段使いに便利なコンパクトで持ち運びやすいデザイン♪<br>🐾 スマホ充電器・イヤホン・データケーブル・USBドライブ・メモリーカード用の落下防止オーガナイザー◎<br>🐾 ホリデーギフトとしても使用可能♬.*ﾟ<br>🐾 サイズ<br>・11cm×8cm×4cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・オリジナルバージョン<br>・卒業犬バージョン",
+  18: "🐶小物入れ（大）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の小物入れ♪<br>🐾 大きめサイズでいろいろなアイテムをまとめて収納◎<br>🐾 使い勝手の良いシンプルデザイン♬.*ﾟ<br>🐾 サイズ<br>・縦：約21cm<br>・横：約15cm",
+  19: "🐶ハンドバック　2Wayタイプ🐾<br>🐾 外ポケット2つ◎<br>🐾 ハンドバックとショルダーバッグにもなる2Wayタイプ♪<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 ナイロン素材で軽量♡<br>🐾 サイズ<br>・縦：約16cm<br>・横：約23cm<br>・マチ：約8cm<br>🐾 カラー<br>・ブラック",
+  20: "🐶多機能横型ショルダーバッグ（黒）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちをモチーフにした可愛いデザイン♪<br>🐾 ジッパー付きの収納が6つあり、荷物をきれいに分けて収納できる◎<br>🐾 丈夫なオックスフォード生地で毎日の通勤にも活躍♬.*ﾟ<br>🐾 ストラップは長さ調整可能で斜め掛け・肩掛け両方OK<br>🐾 サイズ<br>・縦20cm × 横25cm × 幅7cm<br>🐾 カラー<br>・ブラック<br>🐾 素材<br>・オックスフォード生地<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング",
+  21: "🐶バケットハット（黒）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のバケットハット♪<br>🐾 リバーシブル仕様で2WAYに楽しめる◎<br>🐾 紫外線対策やお出かけコーデのアクセントに♬.*ﾟ<br>🐾 サイズ<br>・58サイズ（リバーシブル）",
+  22: "🐶大容量エコバッグ（黒）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の大容量エコバッグ♪<br>🐾 たっぷり入るので毎日のお買い物に大活躍◎<br>🐾 コンパクトに折りたためて持ち運びも便利♬.*ﾟ<br>🐾 サイズ<br>・縦：約53cm<br>・横：約38cm<br>・マチ：約10cm",
+  23: "🐶スポーツウォーターボトル（黒）400ml🐾<br>🐾 開閉ワンタッチ◎<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 容量・400ml<br>🐾 サイズ<br>・縦14cm × 幅6.7cm<br>🐾 カラー<br>・ブラック",
+  24: "🐶スポーツウォーターボトル（白）600ml🐾<br>🐾 開閉ワンタッチ◎<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 容量・600ml<br>🐾 サイズ<br>・縦19cm × 幅7cm<br>🐾 カラー<br>・ホワイト",
+  25: "🐶半袖Tシャツ（白）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の半袖Tシャツ♪<br>🐾 着心地の良い素材で普段使いにぴったり◎<br>🐾 カジュアルコーデのワンポイントにも♬.*ﾟ<br>🐾 サイズ<br>・Sサイズ",
+  26: "🐶 トートバッグ&/ポーチ 2点セット🐾<br>🐾 大容量トートと小物入れのセット🐾 <br>🐾 サイズ<br>・33cm×29cm×16cm<br>🐾 カラー<br>・ブラック",
+  27: "🐶訳アリ ミニお散歩バック（黒）🐾<br>🐾 コンパクトでちょっとした買い物やお散歩に最適<br>🐾 キャンバス生地で丈夫<br>🐾 汚れたら丸洗いOK<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・縦：約22cm<br>・横：約22cm<br>・マチ：約5cm<br>🐾 カラー<br>・ブラック<br>キャラに黒斑点がある為訳あり価格となります🏷️ 通常1,300円のところ38%OFFで800円に！数量限定・早いもの勝ちのお得なチャンスです✨",
+  28: "🐶サプリメントケース🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のサプリメントケース♪<br>🐾 コンパクトサイズで持ち運びやすい◎<br>🐾 サプリやピルの分別・携帯に便利♬.*ﾟ<br>🐾 サイズ<br>・縦：約5cm<br>・横：約5cm",
+  29: "🐶小物入れ（中・黒）訳あり50%off🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の小物入れ♪<br>🐾 わけあり特価でお得にゲットできるチャンス◎<br>🐾 サイズ<br>・縦：約21.5cm<br>・横：約12.5cm",
+  30: "🐶A7サイズ ポケットノート🐾<br>🐾 手のひらサイズで持ち運びに便利♪<br>🐾 ポケットやカバンにすっきり収まる◎<br>🐾 丈夫なスパイラル製本でなめらかにめくれる<br>🐾 罫線入りの用紙で書きやすい♬.*ﾟ<br>🐾 しっかりしたクラフト紙の表紙で中のメモを保護◎<br>🐾 サイズ<br>・縦105mm × 横77mm（A7サイズ）<br>🐾 カラー<br>・クラフト（茶色）",
+  31: "🐶スライド式コンパクトケース★🐾<br>🐾 かわいい仲間たちといつも一緒に…♪<br>🐾 スライド式で開け閉めらくらく◎<br>🐾 コンパクトサイズで持ち運びにも便利♬.*ﾟ<br>🐾 サイズ<br>・約6cm × 約3.4cm（奥行き約2.36cm）<br>🐾 柄<br>・A 仲良しワンコ（🔜近日入荷）<br>・B オリジナル（🔜近日入荷）",
+  32: "🐶 サンダル（黒）🐾<br>🐾 ベランダや室内での使用に最適なサンダル・スリッパ◎<br>🐾 軽量設計で履き心地抜群♪<br>🐾 シンプルなデザインで毎日気軽に使える♬.*ﾟ<br>🐾 耐久性に優れたEVA素材を使用<br>🐾 汚れにくく、お手入れも簡単◎<br>🐾 やわらかい素材で足への負担も少なくラクラク♪<br>🐾 サイズ<br>・24cm（スタンダードフィット）<br>🐾 カラー<br>・ブラック<br>🐾 素材<br>・アッパー：EVA<br>・インソール：EVA<br>・ソール：EVA<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング<br>🐾 フラットヒール・オープントゥデザインで快適な履き心地！",
+  33: "🐶ウォーターボトル300ml🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄のウォーターボトル♪<br>🐾 コンパクトサイズで持ち運びしやすい◎<br>🐾 お散歩やお出かけの水分補給にぴったり♬.*ﾟ<br>🐾 サイズ<br>・直径：約5.4cm<br>・高さ：約17cm<br>・容量：300ml",
+  34: "🐶犬用ウォーターボトル（イエロー）🐾<br>🐾 お散歩やお出かけに便利な犬用ウォーターボトル♪<br>🐾 片手で簡単にお水をあげられる◎<br>🐾 コンパクトで持ち運びやすいサイズ♬.*ﾟ<br>🐾 サイズ<br>・直径：約7.5cm<br>・高さ：約20.5cm<br>🐾 カラー<br>・イエロー",
+  35: "🐶犬用ウォーターボトル（ブルー）🐾<br>🐾 お散歩やお出かけに便利な犬用ウォーターボトル♪<br>🐾 片手で簡単にお水をあげられる◎<br>🐾 コンパクトで持ち運びやすいサイズ♬.*ﾟ<br>🐾 サイズ<br>・直径：約7.5cm<br>・高さ：約20.5cm<br>🐾 カラー<br>・ブルー",
+  36: "🐶おやつ入れ 訳あり商品 50%off🐾<br>🐾 ワンちゃんのおやつをいれるのに丁度いい大きさ◎<br>🐾 蓋が分離していないので便利♪<br>🐾 アルミ素材で軽量♬.*゚<br>🐾 サイズ<br>・縦6cm × 横9.5cm × 幅2.2cm<br>🐾 カラー<br>・ブラック<br>🐾 由美さんもお散歩時に使用していますよ!",
+  37: "🐶半袖Tシャツ（黒）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の半袖Tシャツ♪<br>🐾 着心地の良い素材で普段使いにぴったり◎<br>🐾 カジュアルコーデのワンポイントにも♬.*ﾟ<br>🐾 サイズ<br>・Sサイズ",
+  38: "🐶大容量メッシュトート&小物入れ2点セット🐾<br>🐾 メッシュでお洒落なバックとメッシュの小物入れ◎<br>🐾プール・海・レジャーに大活躍♬.*ﾟ<br>🐾 サイズ<br>・バック縦35cm × 横45cm × 幅15cm<br>・小物入れ縦18cm × 横22.5cm × 幅8cm<br>🐾 カラー<br>・ブラック",
+  39: "スマホもお財布もこれひとつ♡ スマホを入れたまま操作OK♪<br>小物も入る便利で可愛いお財布ショルダーポーチです♪<br>お札・小銭・カード・通帳も収納できるファスナーポケット付き✧<br>ショルダーベルトは長さ調節＆取り外し可能！<br>ショルダーとしてはもちろん、お財布としてそのまま持ち歩くこともできます♡",
+  40: "🐶トイプードル アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなトイプードル柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  41: "🐶チワワ アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなチワワ柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  42: "🐶ヨークシャーテリア アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなヨークシャーテリア柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  43: "🐶マルチーズ アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなマルチーズ柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  44: "🐶ポメラニアン アクキー&クローバー 3点セット🐾<br>🐾 クローバーを咥えたキュートなポメラニアン柄のアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  45: "🐶半袖Tシャツ Sサイズ（白）🐾<br>🐾 卒業犬バージョン　チワワ<br>🐾 卒業犬をモチーフにした可愛いプリントTシャツ<br>🐾 Sサイズですが少し大きめなのでS-Mサイズくらいです♪<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ：Sサイズ（S-M）<br>🐾 カラー<br>・ホワイト",
+  46: "🐶半袖Tシャツ Sサイズ（黒）🐾<br>🐾 卒業犬バージョン　マルチーズ<br>🐾 卒業犬をモチーフにした可愛いプリントTシャツ<br>🐾 Sサイズですが少し大きめなのでS-Mサイズくらいです♪<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ：Sサイズ（S-M）<br>🐾 カラー<br>・ブラック",
+  47: "🐶キャンバストートバッグ（黒）🐾<br>🐾 シンプルだけど大容量なトートバッグです◎<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい<br>🐾 キャンバス生地♡<br>🐾 サイズ<br>・縦:約32cm<br>・横:約40cm<br>・マチ:約6cm<br>🐾 カラー<br>・ブラック",
+  48: "🐶ウエストシェイプ半袖Tシャツ（黒）🐾<br>🐾 伸縮性ありで着心地◎<br>🐾 ウエストシェイプデザインで細見え◎<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ：S<br>🐾 カラー<br>・ブラック",
+  49: "🐶ミニお散歩バック（白）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたバックです<br>🐾 ちょっとした買物やお散歩に最適◎<br>🐾 シンプルなホワイトでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・縦：約22cm<br>・横：約26cm<br>・マチ：約5cm<br>🐾 カラー<br>・ホワイト",
+  50: "🐶小物入れ（小）ブラック　卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにした小物入れです<br>🐾 鞄の中を整理するのに大活躍◎<br>🐾 サイズ<br>・縦：約11.5cm<br>・横：約10.5cm<br>🐾 カラー<br>・ブラック",
+  51: "🐶ミラー（白）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたミラーです<br>🐾 机に置いて自立するタイプ◎<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ホワイト",
+  52: "🐶トレーナー🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄♪<br>🐾 クルーネック×プルオーバーでカジュアルコーデにぴったり◎<br>🐾 わずかな伸縮性のあるニット生地♬.*ﾟ<br>🐾 洗濯機洗いOK（ドライクリーニング不可）<br>🐾 サイズ：S-M<br>🐾 カラー<br>・グレー<br>・ブラック<br>🐾 素材<br>・ポリエステル100%<br>🔜 近日入荷予定です♪",
+  53: "🐶卒業犬アクキー6匹バージョン&クローバー 3点セット🐾<br>🐾 6匹の卒業犬たちが幸せそうに並んだキュートなアクリルキーホルダー♪<br>🐾 スプリング デイジー＆クローバーのチャーム付き◎<br>🐾 メッセージカード「A LITTLE HUG TO SAY A BIG thank you」付きでプレゼントにも最適♬.*ﾟ<br>🐾 カラビナ付きでバッグやキーリングにつけてね<br>🐾 セット内容<br>・アクリルキーホルダー × 1<br>・デイジー＆クローバーチャーム × 1<br>・メッセージカード × 1",
+  54: "🐶オリジナルサンダル（ホワイト）🐾<br>🐾 かわいいオリジナルデザインがワンポイントでおしゃれ♪<br>🐾 シンプルなホワイトカラーでどんな場所にも合わせやすい◎<br>🐾 ソールの凹凸デザインで快適な履き心地♬.*ﾟ<br>🐾 通気性がよく乾きやすい設計◎<br>🐾 ベランダや玄関、庭先用として大活躍♪<br>🐾 軽量でサッと履けるので毎日の使用に便利！<br>🐾 サイズ<br>・24.0〜24.5cm<br>🐾 カラー<br>・ホワイト<br>🐾 ベランダ履きはもちろん洗濯物干しやガーデニング、ちょっとした外出にもおすすめ☆",
+  55: "🐶多機能トートバッグ★🐾<br>🐾 シンプルで使いやすい多機能トートバッグ♪<br>🐾 外ポケット3つ＆内ポケット1つ付きで収納力◎<br>🐾 肩掛けしやすく普段使いにぴったり♪<br>🐾 丈夫な素材感で長く使えそうです♡<br>🐾 サイズ<br>・縦：約30cm<br>・横：約41cm<br>・マチ：約10cm<br>🐾 カラー<br>・ホワイト<br>・ベージュ（✨新色追加）<br>🐾 柄<br>・トイプードル（❌売り切れ）<br>・ヨークシャーテリア（✨新作入荷）",
+  56: "🐶ウエストポーチ★（白）🐾<br>🐾 軽量設計で長時間のお出かけでも負担になりにくい◎<br>🐾 ジッパー開閉で中身が飛び出しにくく安心<br>🐾 ショルダーストラップは長さ調節可能♪<br>🐾 サイズ<br>・横約33cm × 高さ約14cm × マチ約9cm<br>🐾 カラー<br>・ホワイト<br>🐾 柄<br>・ポメラニアン（🔜近日入荷）<br>・ヨークシャーテリア（🔜近日入荷）<br>・卒業犬バージョン（🔜近日入荷）<br>🐾 素材<br>・裏地：ポリエステル<br>🐾 お手入れ方法：洗濯不可",
+  57: "🐶コンパクトエコバック（黒）卒業犬🐾<br>🐾 シンプルなブラックカラーで普段使いしやすい◎<br>🐾 約38cm×40cmの大容量サイズ♪<br>🐾 食材や日用品をまとめて収納できる便利なエコバッグ♬.*ﾟ<br>🐾 コンパクトに折りたためて持ち運びラクラク◎<br>🐾 耐荷重約22kgで重たい荷物もしっかり収納♪<br>🐾 サイズ<br>・縦：約40cm<br>・横：約38cm<br>・持ち手：約20cm<br>🐾 カラー<br>・ブラック<br>🐾 スーパーでのお買い物やアウトドア、レジャーなど様々なシーンで活躍☆",
+  58: "🐶保冷・保温ランチバッグ（ネイビー）外ポケット付き🐾<br>🐾 保冷・保温機能付きでお弁当や飲み物の持ち運びに便利◎<br>🐾 500mlペットボトル約6本分が入る大容量サイズ♪<br>🐾 防水仕様で汚れてもお手入れ簡単◎<br>🐾 夏は保冷、冬は保温で一年中大活躍！<br>🐾 サイズ<br>・縦：約25cm<br>・横：約25cm<br>・幅：約14cm<br>🐾 カラー<br>・ネイビー<br>🐾 お弁当バッグやピクニック、レジャーなど幅広いシーンで活躍☆",
+  59: "🐶コンパクトエコバック　チワワ卒業犬🐾<br>🐾 シンプルなグレーカラーで普段使いしやすい◎<br>🐾 約38cm×40cmの大容量サイズ♪<br>🐾 食材や日用品をまとめて収納できる便利なエコバッグ♬.*ﾟ<br>🐾 コンパクトに折りたためて持ち運びラクラク◎<br>🐾 耐荷重約22kgで重たい荷物もしっかり収納♪<br>🐾 サイズ<br>・縦：約40cm<br>・横：約38cm<br>・持ち手：約20cm<br>🐾 カラー<br>・グレー",
+  60: "🐶卒業犬半袖Tシャツ（S）ブラック　ポメラニアン🐾<br>🐾 卒業犬ポメラニアンの可愛い半袖Tシャツ<br>🐾 伸縮性あり◎<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・S-M<br>🐾 カラー<br>・ブラック",
+  61: "🐶卒業犬半袖Tシャツ（S）ピンク　ポメチワ🐾<br>🐾 可愛いチワワの卒業犬バージョン<br>🐾 伸縮性あり◎<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・S（S-M）大きめ<br>🐾 カラー<br>・ピンク",
+  62: "🐶オリジナル半袖Tシャツ（L）グレー🐾<br>🐾 オリジナルバージョンの可愛い半袖Tシャツ<br>🐾 伸縮性あり◎<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・L（大きめ）<br>🐾 カラー<br>・グレー",
+  63: "🐶卒業犬半袖Tシャツ 前後（S）ブラック　マルチーズ🐾<br>🐾 可愛いマルチーズの卒業犬バージョン<br>🐾 前は胸元に小さく、バックは真ん中に大きく描かれています<br>🐾 伸縮性あり◎<br>🐾 カジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・S-M<br>🐾 カラー<br>・ブラック",
+  64: "🐶保冷・保温ランチバッグ🐾<br>🐾 保冷・保温機能付きでお弁当の持ち運びに便利◎<br>🐾 大容量なのに軽量設計で毎日使いやすい♪<br>🐾 内側は耐水性のあるアルミ素材を使用<br>🐾 汁漏れしにくく、お手入れも簡単◎<br>🐾 やわらかい持ち手で持ち運びラクラク♪<br>🐾 サイズ<br>・縦17cm × 横20cm × 幅15cm<br>🐾 重さ：約98g<br>🐾 カラー<br>・ネイビー",
+  65: "🐶ペット用ウォーターボトル＆おやつケース（イエロー）🐾<br>🐾 お水とおやつを一緒に持ち運べる便利な2in1デザイン♪<br>🐾 お散歩や旅行、アウトドアにぴったり◎<br>🐾 上部は給水ボトル、下部にはおやつやフードを収納可能♬.*ﾟ<br>🐾 ボタンを押すだけで簡単に給水できる便利設計！<br>🐾 密閉構造で水漏れしにくく、持ち運びも安心◎<br>🐾 透明ボトルなので残量がひと目で確認できる♪<br>🐾 軽量＆ストラップ付きで持ち運びラクラク！<br>🐾 カラー<br>・イエロー<br>🐾 お散歩、公園、ドライブ、旅行、キャンプなど様々なシーンで大活躍☆",
+  66: "🐶携帯用ペット給水ボトル（グリーン）訳あり46%off🐾<br>🐾 お散歩やお出かけに便利な給水ボトル＆ウォータートレー一体型♪<br>🐾 ボタンを押すだけで簡単にお水を注げる◎<br>🐾 飲みやすいトレー付きでワンちゃん・ネコちゃんも快適♬.*ﾟ<br>🐾 コンパクトに持ち運べるので旅行やドライブにも便利！<br>🐾 ストラップ付きでバッグやリードに取り付け可能◎<br>🐾 ※訳ありの理由：ボトル部分に小さな凹みがありますが、使用には差し支えございません<br>🐾 容量：500ml<br>🐾 サイズ<br>・高さ：約19.5cm<br>・幅：約15.5cm<br>・トレー部分：約18.5cm×13.9cm<br>🐾 カラー<br>・グリーン",
+  67: "🐶バックパック★（黒）🐾<br>🐾 大容量なのに軽量設計で毎日使いやすい♪<br>🐾 シンプルなデザインで学生さんから社会人まで幅広く活躍♬.*ﾟ<br>🐾調節可能なショルダー<br>🐾 サイズ<br>・縦37cm × 横29cm × 幅11cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・卒業犬バージョン（🔜近日入荷）<br>・オリジナルバージョン（🔜近日入荷）<br>・ヨークシャーテリア（🔜近日入荷）<br>🐾 遠足・通勤・通学・アウトドアなど様々なシーンで大活躍！",
+  68: "🐶リュック★（黒）🐾<br>🐾 大容量なのに軽量設計で毎日使いやすい♪<br>🐾 シンプルなデザインで学生さんから社会人まで幅広く活躍♬.*ﾟ<br>🐾調節可能なショルダー<br>🐾 サイズ<br>・縦37cm × 横23cm × 幅12.5cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・オリジナルバージョン（🔜近日入荷）<br>・卒業犬バージョン（🔜近日入荷）<br>🐾 遠足・通勤・通学・アウトドアなど様々なシーンで大活躍！",
+  69: "🐶トラベルバック（黒）🐾<br>🐾 可愛いWanWanNet🐾オリジナルバージョンのトラベルバックです◎<br>🐾 大容量なので旅行にも使える♪<br>🐾 靴も収納できる◎<br>🐾調節可能なショルダー付<br>🐾 サイズ<br>・縦27cm × 横47cm × 幅23cm<br>🐾 カラー<br>・ブラック<br>🐾 スポーツジム・旅行・通勤・通学・アウトドアなど様々なシーンで大活躍！",
+  70: "🐶犬用ウォーターボトルワンタッチ（白）🐾<br>🐾 ワンタッチで水がでる◎<br>🐾 残った水も自動回収♪<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 容量・300ml<br>🐾 カラー<br>・ホワイト",
+  71: "🐶卒業犬コンパクト財布（茶色）🐾<br>🐾 コンパクトなのにカードがたくさん入る財布◎<br>🐾 可愛い卒業犬バージョンのデザイン♪<br>🐾 学生さんから社会人まで幅広く活躍♬.*ﾟ<br>🐾 サイズ<br>・縦8cm × 横11cm × 幅4cm<br>🐾 カラー<br>・茶色",
+  72: "🐶 超軽量折り畳みバックパック（黒）🐾<br>🐾 使わない時はコンパクトに折り畳める◎<br>🐾 折り畳み方法は簡単4STEP♪<br>🐾 超軽量素材で長時間背負っても疲れにくい♬.*゚<br>🐾 サイドポケット付きで小物収納にも便利<br>🐾 サイズ（展開時）<br>・縦43cm × 横31cm × 幅15cm<br>🐾 サイズ（収納時）<br>・縦15cm × 横20cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・オリジナルバージョン<br>・卒業犬バージョン（🔜近日入荷）",
+  73: "🐶犬用ウォーターボトル（ライトグレー）🐾<br>🐾 簡単開閉◎<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 サイズ<br>・縦20cm × 横7.5cm<br>🐾 容量・350ml<br>🐾 カラー<br>・ライトグレー",
+  74: "🐶コンパクト球体型 ウォーターボトル（ピンク）🐾<br>🐾球体型でとってもおしゃれなアイテム◎<br>🐾飲み皿も一体型♪<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 容量・285ml<br>🐾 サイズ<br>・縦9cm × 横8.7cm<br>🐾 カラー<br>・ピンク",
+  75: "🐶コンパクト球体型 ウォーターボトル（パープル）🐾<br>🐾球体型でとってもおしゃれなアイテム◎<br>🐾飲み皿も一体型♪<br>🐾 漏れ防止♬.*ﾟ<br>🐾ストラップ付<br>🐾 容量・285ml<br>🐾 サイズ<br>・縦9cm × 横8.7cm<br>🐾 カラー<br>・パープル",
+  76: "🐶斜め掛けポーチ（ポシェット）卒業犬バージョン🐾<br>🐾 ショルダーストラップは取り外し可能◎<br>🐾 自由に好きなストラップに変えられます♪<br>🐾 お財布・スマホ・リップなどがすっきり収納できる♬.*ﾟ<br>🐾 サイズ<br>・縦18.5cm × 横13.5cm × 幅4cm<br>🐾 カラー<br>・ブラック",
+  77: "🐶トートバッグ 卒業犬バージョン（黒）🐾<br>🐾 軽量でとっても丈夫◎<br>🐾どんなスタイルでもどんなシーンでも活躍できます♬.*ﾟ<br>🐾 サイズ<br>・縦40cm × 横35cm<br>🐾 カラー<br>・ブラック",
+  78: "🐶巾着軽量バック（黒）🐾<br>🐾 超軽量で巾着タイプのお洒落なバック◎<br>🐾 シンプルなデザインで学生さんから社会人まで幅広く活躍♬.*ﾟ<br>🐾調節可能なショルダー<br>🐾 サイズ<br>・縦20.5cm × 横19.5cm × 幅8cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・卒業犬バージョン<br>・マルチーズ（🔜近日入荷）<br>🐾 お散歩・買い物・通勤・通学・アウトドアなど様々なシーンで大活躍！",
+  79: "🐶保冷・保温ランチバッグ（ブラック）外ポケット付き🐾<br>🐾 保冷・保温機能付きでお弁当や飲み物の持ち運びに便利◎<br>🐾 500mlペットボトル約6本分が入る大容量サイズ♪<br>🐾 防水仕様で汚れてもお手入れ簡単◎<br>🐾 夏は保冷、冬は保温で一年中大活躍！<br>🐾 サイズ<br>・縦：約25cm × 横：約25cm × 幅：約14.5cm<br>🐾 カラー<br>・ブラック<br>🐾 お弁当バッグやピクニック、レジャーなど幅広いシーンで活躍☆",
+  80: "🐶大容量メッシュトート🐾<br>🐾 メッシュでお洒落なバック◎<br>🐾プール・海・レジャーに大活躍♬.*ﾟ<br>🐾 サイズ<br>・縦35cm × 横45cm × 幅15cm<br>🐾 カラー<br>・ブラック",
+  81: "🐶多機能トート卒業犬バージョン全面ポケット付き（白）🐾<br>🐾 ナイロンで軽量な多機能バック◎<br>🐾 外ポケット3つ　内ポケット1つ（ジッパー付き）♬.*ﾟ<br>🐾 サイズ<br>・縦29cm × 横37cm<br>🐾 カラー<br>・ホワイト",
+  82: "🐶ミニお散歩バック（黒）卒業犬🐾<br>🐾 幸せになった卒業犬をモチーフにしたバックです<br>🐾 ちょっとした買物やお散歩に最適◎<br>🐾 シンプルなブラックでカジュアルコーデにも合わせやすい♬.*ﾟ<br>🐾 サイズ<br>・縦：約22cm × 横：約26cm × マチ：約5cm<br>🐾 カラー<br>・ブラック",
+  83: "🐶サプリメントケース（ほのぼのバージョン）🐾<br>🐾 WanWanNet🐾ほのぼのバージョン<br>🐾 薬をいれて持ち運ぶのに◎<br>🐾コンパクトなので邪魔にならない♬.*ﾟ<br>🐾 サイズ<br>・縦：約5cm × 横：約5cm × マチ：約5cm<br>🐾 カラー<br>・シルバー",
+  84: "🐶 卒業犬バージョン 大容量エコバック（黒）🐾<br>🐾 たっぷり入る大容量サイズ◎<br>🐾 使わない時はコンパクトに折り畳めて持ち運び便利♪<br>🐾 軽量素材でお買い物・お散歩時にも活躍♬.*゚<br>🐾 かわいい卒業犬プリント入り🐶<br>🐾 サイズ（展開時）<br>・縦38cm × 横53cm × マチ10cm<br>🐾 サイズ（収納時）<br>・縦12.5cm × 横12.5cm<br>🐾 カラー<br>・ブラック",
+  85: "🐶携帯用ペット給水ボトル&折り畳み皿 2点セット🐾<br>🐾 お散歩やお出かけに便利な給水ボトル＆折りたたみボウルの2点セット♪<br>🐾 ボウルはコンパクトに折りたためるので、バッグやリードに取り付けて持ち運びラクラク◎<br>🐾 軽量設計で、お散歩・旅行・ドライブ・アウトドアにもぴったり！<br>🐾 給水ボトルは専用ケース付きで持ち運びしやすく、外出先でもサッと水分補給♪<br>🐾 カラビナ付きだからバッグやリュックに簡単に取り付け可能◎<br>🐾 サイズ<br>・給水ボトル：約18.5cm × 約14.5cm<br>・折りたたみボウル：約13cm × 約5.5cm（使用時）<br>🐾 カラー<br>・イエロー（❌売り切れ）<br>・グリーン（💚新色入荷）<br>🐾 毎日のお散歩はもちろん、旅行・キャンプ・ドッグラン・防災用としても大活躍！",
+  86: "🐶筒形ミニボストンバック（ブラック）👜<br>👜 シンプルでスタイリッシュな筒形デザインがおしゃれなボストンバッグ♪<br>👜 手提げ・ショルダーの2WAY仕様で、シーンに合わせて使い分け可能◎<br>👜 軽量なのに収納力抜群！衣類やタオル、シューズなどもすっきり収納♪<br>👜 普段使いはもちろん、ジム・スポーツ・旅行・通勤・通学など幅広いシーンで活躍！<br>👜 サイズ<br>・約40cm × 22cm × 22cm<br>👜 カラー<br>・ブラック<br>👜 ジムバッグ・スポーツバッグ・旅行バッグ・機内持ち込み用バッグとしてもおすすめの万能アイテムです♪",
+  87: "🐶メイクバッグ（ブラック）💄<br>💄 コスメやスキンケア用品をすっきり収納できる大容量メイクポーチ♪<br>💄 大きく開くファスナー仕様で、中身が見やすく取り出しもスムーズ◎<br>💄 ブラシ・化粧品・小物類をまとめて収納できる便利なサイズ！<br>💄 軽量で持ち運びしやすく、旅行や出張、ジムなどのお出かけにもぴったり♪<br>💄 シンプルなブラックカラーで、年齢や性別を問わず使いやすいデザイン◎<br>💄 サイズ<br>・約19cm × 12.5cm × 8cm<br>💄 カラー<br>・ブラック<br>💄 毎日のメイク用品の整理から旅行用ポーチまで、幅広いシーンで活躍する便利な収納ポーチです♪",
+  88: "🐶ハートチャーム付きバック（パープル）🐾<br>🐾 キュートなハートチャーム付きでおしゃれ感アップ♪<br>🐾 軽量ナイロン素材で毎日使いやすい◎<br>🐾 たっぷり入る大容量で、コスメ・財布・スマホもすっきり収納♪<br>🐾 シンプルなデザインで、どんなコーデにも合わせやすい◎<br>🐾 サイズ<br>・縦22cm × 横22cm × 幅10cm<br>🐾 カラー<br>・パープル<br>🐾 柄<br>・オリジナル<br>・ポメラニアン<br>・チワワ（🔜近日発売）<br>🐾 お買い物・お散歩・お出かけなど様々なシーンで大活躍！",
+  89: "🐶ハートチャーム付きバック（ブラック）🐾<br>🐾 キュートなハートチャーム付きでおしゃれ感アップ♪<br>🐾 軽量ナイロン素材で毎日使いやすい◎<br>🐾 たっぷり入る大容量で、コスメ・財布・スマホもすっきり収納♪<br>🐾 シンプルなデザインで、どんなコーデにも合わせやすい◎<br>🐾 サイズ<br>・縦22cm × 横22cm × 幅10cm<br>🐾 カラー<br>・ブラック<br>🐾 柄<br>・オリジナルバージョン<br>・卒業犬バージョン（🔜近日入荷）<br>🐾 お買い物・お散歩・お出かけなど様々なシーンで大活躍！",
+  90: "🐶長袖Tシャツ（白）🐾<br>🐾 WanWanNet🐾オリジナルキャラ＆クローバーのキュートなプリント入り♪<br>🐾 中程度の伸縮性で着心地◎<br>🐾 エレガントな幾何学模様デザインでカジュアルにも合わせやすい♬.*ﾟ<br>🐾 洗濯機洗いOK（ドライクリーニング不可）<br>🐾 サイズ：S（大きめ）<br>🐾 カラー<br>・ホワイト<br>🐾 素材<br>・ポリエステル100%",
+  91: "🐶バックプリント フード付きトレーナー🐾<br>🐾 背中に大きくWanWanNet🐾オリジナルキャラ＆クローバーのプリント入り♪<br>🐾 フード付き＆クルーネックでカジュアルコーデにぴったり◎<br>🐾 わずかな伸縮性のあるニット生地♬.*ﾟ<br>🐾 洗濯機洗いOK（ドライクリーニング不可）<br>🐾 サイズ：S<br>🐾 カラー<br>・グレー<br>・ブラック（🔜近日入荷）<br>🐾 素材<br>・ポリエステル100%",
+  92: "🐶トラベルバッグ（白）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 底部に靴やイヤホンなどを分けて収納できる別ポケット付き◎<br>🐾 大容量で旅行や1泊お出かけにも便利♬.*ﾟ<br>🐾 調節可能なショルダーストラップ付<br>🐾 サイズ<br>・縦27cm × 横46cm × 幅22cm<br>🐾 カラー<br>・ホワイト<br>🐾 素材<br>・ファブリック<br>🐾 旅行・スポーツジム・お出かけなど様々なシーンで大活躍！",
+  93: "🐶サプリメントケース（丸型）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 中は仕切り付きでサプリやピルの分別に便利◎<br>🐾 コンパクトサイズでバッグにすっぽり♬.*ﾟ<br>🐾 サイズ<br>・直径5cm<br>🐾 カラー<br>・シルバー",
+  94: "🐶サプリメントケース（長方形）★🐾<br>🐾 選べる2デザイン♪クローバーを咥えたキュートな柄のサプリメントケース<br>🐾 中は仕切り付きでサプリやピルの分別に便利◎<br>🐾 コンパクトサイズで持ち運びやすい♬.*ﾟ<br>🐾 サイズ<br>・縦4cm × 横5.5cm × 幅1.5cm<br>🐾 カラー<br>・シルバー<br>🐾 柄<br>・オリジナル<br>・ほのぼの（NEW）",
+  95: "🐶肩掛けミニショルダーバッグ（黒）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 メッセンジャータイプで斜め掛けしやすい♬.*ﾟ<br>🐾 サイズ<br>・縦18cm × 横27cm × 幅8cm<br>🐾 カラー<br>・ブラック<br>🐾 素材<br>・ポリエステル（裏地もポリエステル）",
+  96: "🐶保冷・保温ランチバッグ（黒）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちをモチーフにした可愛いデザイン♪<br>🐾 裏地はアルミホイル素材で保冷・保温効果◎<br>🐾 1年中大活躍♬.*ﾟ<br>🐾 使わない時はコンパクトに畳める<br>🐾 サイズ<br>・縦18cm × 横22.5cm × 幅16cm<br>🐾 カラー<br>・ブラック<br>🐾 お弁当バッグやピクニック、レジャーなど幅広いシーンで活躍☆",
+  97: "🐶フェルトトートバッグ★🐾<br>🐾 クローバーを咥えたキュートなトイプードル柄♪<br>🐾 フェルト素材の温かみのあるスイートスタイル◎<br>🐾 持ち手はしっかりした固定タイプ<br>🐾 サイズ<br>・縦30cm × 横40cm × マチ15cm<br>🐾 カラー<br>・グレー（🔜近日入荷）<br>・ベージュ（🔜近日入荷）<br>🐾 柄<br>・トイプードル<br>🐾 裏地：なし<br>🐾 お手入れ方法：その他",
+  98: "🐶多機能横型ショルダーバッグ（黒）🐾<br>🐾 ジッパー付きの収納が6つあり、荷物をきれいに分けて収納できる◎<br>🐾 丈夫なオックスフォード生地で毎日の通勤にも活躍♬.*ﾟ<br>🐾 ストラップは長さ調整可能で斜め掛け・肩掛け両方OK<br>🐾 サイズ<br>・縦20cm × 横25cm × 幅7cm<br>🐾 カラー<br>・ブラック<br>🐾 素材<br>・オックスフォード生地<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング",
+  99: "🐶麻トートバッグ🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄♪<br>🐾 ナチュラルな風合いの麻素材でビンテージ感のあるデザイン◎<br>🐾 固定ショルダーストラップでしっかり持ち運べる♬.*ﾟ<br>🐾 サイズ<br>・高さ26.5cm × 横37cm × 幅18cm<br>🐾 カラー<br>・ベージュ<br>🐾 素材<br>・麻<br>🐾 お手入れ方法：手洗い（ドライクリーニング不可）",
+  100: "🐶ハンドバッグ（白）卒業犬バージョン🐾<br>🐾 幸せになった卒業犬たちが集合したキュートなデザイン♪<br>🐾 ジッパー開閉で中身が飛び出しにくく安心◎<br>🐾 ストラップは調節可能で肩掛けしやすい♬.*ﾟ<br>🐾 サイズ<br>・縦28cm × 横22cm × 幅8cm<br>🐾 カラー<br>・ホワイト<br>🐾 素材<br>・ポリエステル<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング",
+  101: "🐶デニムミニトート★🐾<br>🐾 くすみカラーのデニム素材がおしゃれなミニトートバッグ♪<br>🐾 スナップボタン留めで開閉らくらく◎<br>🐾 ちょっとしたお出かけやお買い物にぴったりのサイズ感♬.*ﾟ<br>🐾 サイズ<br>・縦：約20cm<br>・横：約30cm<br>🐾 素材<br>・ナイロン、キャンバス<br>🐾 お手入れ方法：手洗いまたは専門のドライクリーニング<br>🐾 柄<br>・ヨークシャーテリア（🔜近日入荷）<br>・ポメラニアン（🔜近日入荷）",
+  102: "🐶アンブレラマーカー★🐾<br>🐾 自分の傘が一目でわかる、かわいいアンブレラマーカー♪<br>🐾 シリコンリング＆アクリルキーホルダー＆クローバーチャームの3点セット◎<br>🐾 傘の持ち手につけるだけで取り違え防止に♬.*ﾟ<br>🐾 サイズ<br>・リング直径：約2cm<br>🐾 柄<br>・卒業犬バージョン<br>・チワワ<br>・マルチーズ",
+  103: "🐶ソックス3点セット★🐾<br>🐾 KIDSサイズ 21cm<br>🐾 トイプードルの愛らしいカスタムプリント🍀<br>🐾 3足セットでお得♪<br>🐾 素材：ポリエステル（丈夫な編み地）<br>🐾 製織方法：ニット生地<br>🐾 お手入れ：手洗いのみ<br>🐾 カラー<br>・トイプードル",
+  104: "🐶フェルトトートバッグ★ヨークシャーテリア🐾<br>🐾 あたたかみのあるフェルト素材のトートバッグ♪<br>🐾 レザー風の持ち手がアクセントになっておしゃれ◎<br>🐾 大きめサイズで普段使いにも便利♬.*ﾟ<br>🐾 サイズ<br>・縦：約30cm<br>・横：約40cm<br>・マチ：約15cm<br>🐾 カラー<br>・グレー<br>・ベージュ（🔜近日出品）",
+  105: "🐶折りたたみ式スマホスタンド★🐾<br>🐾 コンパクトで持ち運びラクラクなスマホスタンド♪<br>🐾 裏側の脚を溝に引っかけてお好みの角度に調整OK◎<br>🐾 動画鑑賞やビデオ通話にも便利♬.*ﾟ<br>🐾 ※スタンド本体のカラーはランダム発送となります<br>🐾 柄<br>・チワワ<br>・マルチーズ（🔜近日入荷）<br>・ヨークシャーテリア<br>・ポメラニアン<br>・トイプードル",
+  106: "🐶バッグハンガー★🐾<br>🐾 カバンの置き場に困らない、かわいい＆便利なバッグハンガー♪<br>🐾 折りたたんでコンパクトに持ち運べるので、お出かけ先でも大活躍◎<br>🐾 360°回転＆裏面は滑りにくいラバー素材でしっかり固定できます♬.*ﾟ<br>🐾 サイズ<br>・正面直径：約4.3cm<br>・厚み：約1.1cm<br>・長さ（フック使用時）：約9cm<br>🐾 こんな方におすすめ<br>・コンパクトで持ち運びたい方<br>・バッグを傷つけたくない方<br>・おしゃれなデザインが好きな方<br>・大切な人へのプレゼントに",
+  107: "🐶ペットフード＆水ボトル★🐾<br>🐾 お散歩やお出かけに便利なペット用給水・給餌ボトル♪<br>🐾 フード150ml＋お水150mlで合計300ml入る2WAY仕様◎<br>🐾 ストラップ付きでいつでもどこでも新鮮な水とごはんをワンちゃんに♬.*ﾟ<br>🐾 サイズ<br>・高さ：約11.5cm<br>・幅：約8.6cm<br>🐾 柄<br>・オリジナルキャラバージョン<br>・卒業犬バージョン",
+  108: "🐶ランドリーバスケット★🐾<br>🐾 折りたたみ式でお洗濯がもっと楽しくなるランドリーバスケット♪<br>🐾 メッシュ素材で通気性抜群◎<br>🐾 洗濯物はもちろん、おもちゃ入れ・衣類収納・車内整理・アウトドアにも大活躍♬.*ﾟ<br>🐾 サイズ<br>・縦：約47cm<br>・横：約30cm<br>・奥行：約30cm<br>🐾 コンパクトに折りたためて収納もらくらく（🔜近日入荷）",
+  109: "🐶カラビナ付きメガネケース★🐾<br>🐾 大切なメガネをかわいく守るメガネケース♪<br>🐾 しっかりした厚みでメガネをしっかり保護◎<br>🐾 持ち運びに便利なカラビナ付き♬.*ﾟ<br>🐾 サイズ<br>・幅：約17cm<br>・高さ：約8cm<br>🐾 オリジナルデザイン（🔜近日入荷）",
+  110: "🐶給水ボトル＆マナーポーチ 2点セット★🐾<br>🐾 お散歩がもっと楽しくなる、球体型ウォーターボトル＆マナーポーチの2点セット♪<br>🐾 カラビナで装着でき、両手ラクラクお散歩◎<br>🐾 フタがそのままお皿になるので、お散歩先でもサッと給水できます♬.*ﾟ<br>🐾 マナーポーチはPUレザー製でナスカン付き、リードやバッグに取り付け可能<br>🐾 ※マナー袋（うんち袋）は付属しておりません。別途ご用意ください<br>🐾 サイズ<br>・給水ボトル：高さ約9cm × 幅約8.7cm（容量285ml・重さ約170g）<br>・マナーポーチ：高さ約11.5cm × 幅約10cm（重さ約20g）<br>🐾 カラー<br>・ピンク",
+  111: "🐶ジッパー付きフェルトバック★🐾<br>🐾 わんこと、毎日おでかけ♪ころんと可愛いフェルトトート♪<br>🐾 ジッパー付きで中身が見えにくく安心◎<br>🐾 ゆったりサイズで普段使いにも便利♬.*ﾟ<br>🐾 サイズ<br>・高さ：約30cm<br>・横：約35cm<br>・マチ：約13cm<br>（持ち手部分を除く。サイズは目安です）<br>🐾 カラー<br>・ブラウン",
+  112: "🐶ポケットたくさん軽量バック★🐾<br>🐾 わんこと、毎日おでかけ♪ポケットたっぷりで毎日使えるトート♪<br>🐾 前ポケット・サイドポケット付きで収納力抜群◎<br>🐾 軽量設計で荷物が多い日もラクラク♬.*ﾟ<br>🐾 サイズ<br>・高さ：約27cm<br>・幅：約32cm<br>（持ち手部分を除く。サイズは目安です）<br>🐾 素材<br>・オックスフォード生地<br>🐾 カラー<br>・ベージュ",
+  113: "🐶モコモコスリッパ（黒）★🐾<br>🐾 おうちでぬくぬく♪あったかボア素材のモコモコスリッパ♪<br>🐾 履き心地抜群で冬のおうち時間に最適◎<br>🐾 クローバーを咥えたキュートなオリジナル柄♬.*ﾟ<br>🐾 サイズ<br>・24～24.5cm<br>🐾 素材<br>・アッパー素材：ファブリック<br>・インナー素材：ファブリック<br>・インソール素材：ファブリック<br>・ソール素材：TPR<br>🐾 カラー<br>・ブラック",
+  114: "🐶モコモコスリッパ（白）★🐾<br>🐾 おうちでぬくぬく♪あったかボア素材のモコモコスリッパ♪<br>🐾 履き心地抜群で冬のおうち時間に最適◎<br>🐾 卒業犬バージョンのにぎやかでかわいい柄♬.*ﾟ<br>🐾 サイズ<br>・24～24.5cm<br>🐾 素材<br>・アッパー素材：ファブリック<br>・インナー素材：ファブリック<br>・インソール素材：ファブリック<br>・ソール素材：TPR<br>🐾 カラー<br>・ホワイト",
+  115: "🐶ミニ財布 オリジナル★🐾<br>🐾 カードもお札もすっきり収納できるミニ財布♪<br>🐾 透明ポケット付きで写真やIDの収納にも便利◎<br>🐾 コンパクトサイズで持ち運びやすく、ギフトにも最適♬.*ﾟ<br>🐾 サイズ<br>・縦：約11cm<br>・横：約8.3cm<br>・厚み：約1.2cm<br>🐾 素材<br>・PU<br>🐾 カラー<br>・グレー",
+  116: "🐶キーホルダー爪切り 1つで4役★🐾<br>🐾 いつでもどこでもサッと使える、1つで4役の便利アイテム♪<br>🐾 ①爪切り②爪やすり③栓抜き④キーリングの4つの機能付き◎<br>🐾 鍵やバッグにつけて持ち歩けるので出先でも安心♬.*ﾟ<br>🐾 サイズ<br>・長さ：約6cm<br>・刃の幅：約1.2cm<br>・重さ：約30g<br>🐾 素材<br>・本体：炭素鋼<br>・リング：ステンレス",
+  117: "🐶片手で開くメガネケース★🐾<br>🐾 さっと出し入れできる、片手で開くメガネケース♪<br>🐾 バネ口で片手でパカッと開けられて便利◎<br>🐾 カラビナ付きでなくさずバッグに取り付けられる♬.*ﾟ<br>🐾 ギフトにも最適です<br>🐾 サイズ<br>・縦：約18.5cm<br>・横：約9.5cm<br>🐾 素材<br>・PUレザー<br>🐾 カラー<br>・ホワイト",
+  118: "🐶ソフトレザートートバッグ★🐾<br>🐾 毎日のお出かけにぴったりなショルダートートバッグ♪<br>🐾 中はゆったり大容量でノートPCやポーチもすっきり収納◎<br>🐾 ストラップは長さ調節OK、スカーフでおしゃれにアレンジも楽しめます♬.*ﾟ<br>🐾 ギフトにも最適です<br>🐾 サイズ<br>・縦：約21cm<br>・横：約34cm<br>・底（マチ）：約8.5cm<br>🐾 素材<br>・PUレザー<br>🐾 カラー<br>・ブラック",
+  119: "🐶クレジットカードホルダー★🐾<br>🐾 毎日持ち歩きたくなる、じゃばら式のカードホルダー♪<br>🐾 カードもお札もたっぷり収納できて中が見やすい◎<br>🐾 裏面はリボン柄でおしゃれ、ファスナー付きで安心♬.*ﾟ<br>🐾 ギフトにも最適です<br>🐾 サイズ<br>・横：約11cm<br>・縦：約8cm<br>・厚さ：約2cm<br>🐾 素材<br>・PUレザー<br>🐾 柄<br>・卒業犬バージョン"
+};
+
+// Escキーで詳細を閉じる
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeDetail();
+    closeImgModal();
+  }
+});
+
+// QRコード・直リンク対応：URLに #p番号 (例: #p91) が付いていたら、その商品の詳細ページを自動で開く
+function openFromHash() {
+  const m = location.hash.match(/^#p(\d+)$/);
+  if (!m) return;
+  const targetId = parseInt(m[1], 10);
+  const p = products.find(x => x.id === targetId);
+  if (p) openDetail(p);
+}
+window.addEventListener('load', openFromHash);
+window.addEventListener('hashchange', openFromHash);
+</script>
+
+<!-- IMAGE MODAL -->
+<div class="modal-overlay" id="imgModal" onclick="closeModal(event)">
+  <div class="modal-img-wrap">
+    <button class="modal-close" onclick="closeImgModal()">✕</button>
+    <img id="modalImg" src="" alt="">
+    <div class="modal-name" id="modalName"></div>
+  </div>
+</div>
+
+<!-- DETAIL PAGE -->
+<div class="detail-overlay" id="detailPage">
+  <div class="detail-header">
+    <button class="detail-back" onclick="closeDetail()">←</button>
+    <div class="detail-title" id="detailHeaderTitle">商品詳細</div>
+  </div>
+  <div class="detail-body">
+    <div class="detail-img-main" id="detailImgArea"></div>
+    <div class="detail-info">
+      <div class="detail-badge-row" id="detailBadges"></div>
+      <div class="detail-name" id="detailName"></div>
+      <div class="detail-price-row">
+        <span class="detail-price" id="detailPrice"></span>
+        <span class="detail-price-tax">（税込）</span>
+        <span class="detail-orig" id="detailOrig"></span>
+      </div>
+      <div class="detail-size" id="detailSize" style="display:none;">
+        📐 <span id="detailSizeText"></span>
+      </div>
+      <div class="detail-colors" id="detailColors" style="display:none;">
+        <div style="font-size:13px;color:#3d6b3d;font-weight:800;margin-bottom:6px;">🎨 ほしいものをタップして選んでください</div>
+        <div id="detailColorsRow" style="display:flex;gap:8px;flex-wrap:wrap;"></div>
+        <div id="detailColorsHint" style="display:none;font-size:12px;color:#7a6a58;line-height:1.5;margin-top:6px;">※ 2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>
+      </div>
+      <div class="detail-desc" id="detailDesc" style="display:none;"></div>
+      <div class="detail-shipping">
+        📦 <strong>送料はご支援者様のご負担となります</strong><br>
+        ご注文後、送料を含めた金額をメールにてお知らせします
+      </div>
+    </div>
+  </div>
+  <div class="detail-cart-btn">
+    <button id="detailCartBtn" onclick="addToCartFromDetail()">
+      🛒 カートに入れる
+    </button>
+    <div class="detail-soldout-msg" id="detailSoldoutMsg" style="display:none;">
+      現在この商品は在庫切れです
+    </div>
+  </div>
+</div>
+</body>
+</html>
