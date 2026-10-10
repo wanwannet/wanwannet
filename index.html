@@ -287,6 +287,17 @@ footer a:hover{color:#fff;}
 .vopt.off .vlab{font-size:11.5px;font-weight:700;}
 .vopt.off .vact{font-size:10.5px;}
 .vhint{margin-top:6px;font-size:11px;line-height:1.5;color:#7a6a58;}
+
+/* 種類が3つ以上のときは、細めのボタンにして縦の長さを短くし、隣の商品との隙間を減らす */
+.vsel.compact{padding:5px;}
+.vsel.compact .vsel-ttl{font-size:11.5px;margin-bottom:4px;}
+.vsel.compact .vsel-row{display:flex;flex-direction:column;gap:3px;}
+.vsel.compact .vopt{min-height:32px;padding:3px 3px;border-radius:9px;flex-direction:row;gap:4px;word-break:keep-all;overflow-wrap:normal;}
+.vsel.compact .vopt .vlab{font-size:11px;line-height:1.25;letter-spacing:-.02em;}
+.vsel.compact .vopt.off{min-height:30px;flex-wrap:wrap;}
+.vsel.compact .vopt.off .vlab{font-size:11px;}
+.vsel.compact .vopt.off .vact{font-size:10px;}
+.vsel.compact .vhint{font-size:10.5px;margin-top:4px;line-height:1.4;}
 .shake{animation:vshake .45s;}
 @keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
 .toast{white-space:normal;max-width:88vw;text-align:center;line-height:1.5;bottom:92px;z-index:500;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(20px);transition:transform .3s cubic-bezier(.4,0,.2,1),opacity .3s,visibility .3s;}
@@ -605,7 +616,7 @@ html{scroll-behavior:smooth;}
 const CHARA = "images/header-logo.webp";
 
 const products = [
-  {id:1, formName:"No.1ミラー オリジナルバージョン★ 350円", img:"images/p1-main.jpg", imgs:["images/p1-main.jpg","images/p1-main.webp","images/p1-slide3.jpg"], size:"縦:約7cm 横:約6.2cm", price:350, emoji:"🪞", badge:null, soldout:false, colors:[{label:"ブラック",status:"ok"},{label:"ホワイト",status:"ok"}]},
+  {id:1, formName:"No.1ミラー★ 350円", img:"images/p1-main-v2.jpg", imgs:["images/p1-main-v2.jpg","images/p1-main.jpg","images/p1-main.webp","images/p1-slide3.jpg","images/p1-slide4.jpg"], size:"縦:約7cm 横:約6.3cm", price:350, emoji:"🪞", badge:null, soldout:false, colors:[{label:"オリジナルバージョン（黒）",status:"ok"},{label:"オリジナルバージョン（白）",status:"ok"},{label:"卒業犬バージョン（白）",status:"ok"},{label:"チワワ（白）",status:"ok"},{label:"ヨークシャテリア（白）",status:"ok"},{label:"トイプードル（白）",status:"ok"},{label:"ポメラニアン（白）",status:"ok"}]},
   {id:2, formName:"No.2 巾着 250円", img:"images/p2-main.webp", size:"9cm / 3.54in", price:250, emoji:"👜", badge:'last', soldout:true},
   {id:3, formName:"No.3 ボールペン 350円", img:"images/p3-main.webp", size:"", price:350, emoji:"🖊️", badge:null, soldout:false},
   {id:4, formName:"No.4 収納ポーチ（中） 650円", img:"images/p4-main.webp", size:"21.5cm×12.5cm", price:650, emoji:"💼", badge:null, soldout:false},
@@ -822,25 +833,26 @@ let cartVariants = {};   // カート内商品のカラー選択を記録 {id: '
 let selectedColor = {};  // 詳細ページ・一覧での現在選択中カラー {id: 'グレー'}
 
 // ===== 選べる商品：一覧カード上で、選択肢ごとのボタンを1回押すだけでカートへ =====
-function _vlab(s) { return _vesc(s).replace(/バージョン/g, '<wbr>バージョン'); }
+function _vlab(s) { return _vesc(s).replace(/バージョン/g, '<wbr>バージョン').replace(/（/g, '<wbr>（'); }
 function _vesc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 function variantPickerHTML(p) {
   const oks = (p.colors || []).filter(c => c.status === 'ok');
   const inCart = !!cart[p.id];
   const cur = cartVariants[p.id];
+  const compact = p.colors.length >= 3;
   const btns = p.colors.map(c => {
     if (c.status === 'ok') {
-      let cls = 'vopt', act = '🛒 カートに入れる';
-      if (inCart && cur === c.label) { cls += ' in'; act = '✓ カートに入っています'; }
-      else if (inCart) { cls += ' alt'; act = '🔄 こちらに変更する'; }
-      return `<button type="button" class="${cls}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();addVariantOption(${p.id}, this.dataset.vlabel)"><span class="vlab">${_vlab(c.label)}</span><span class="vact">${act}</span></button>`;
+      let cls = 'vopt', act = compact ? '' : '🛒 カートに入れる', pre = '';
+      if (inCart && cur === c.label) { cls += ' in'; act = compact ? '' : '✓ カートに入っています'; pre = compact ? '✓ ' : ''; }
+      else if (inCart) { cls += ' alt'; act = compact ? '' : '🔄 こちらに変更する'; }
+      return `<button type="button" class="${cls}" data-vlabel="${_vesc(c.label)}" onclick="event.stopPropagation();addVariantOption(${p.id}, this.dataset.vlabel)"><span class="vlab">${pre}${_vlab(c.label)}</span>${act ? `<span class="vact">${act}</span>` : ''}</button>`;
     }
     const note = c.status === 'soon' ? '🔜 近日入荷' : '❌ 売り切れ';
     return `<div class="vopt off"><span class="vlab">${_vlab(c.label)}</span><span class="vact">${note}</span></div>`;
   }).join('');
-  const ttl = oks.length > 1 ? '👇 ほしい方のボタンを押してください' : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
-  const hint = oks.length > 1 ? '<div class="vhint">※ 2つともほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>' : '';
-  return `<div class="vsel" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${btns}</div>${hint}</div>`;
+  const ttl = oks.length > 1 ? (compact ? '👇 ほしい種類を押すとカートに入ります' : '👇 ほしい方のボタンを押してください') : (oks.length === 1 ? '🎨 現在お選びいただけるのはこちらです' : '🎨 現在お選びいただけるものがありません');
+  const hint = oks.length > 1 ? '<div class="vhint">※ 2つ以上ほしい場合は、注文フォームの「その他ご要望」にご記入ください</div>' : '';
+  return `<div class="vsel${compact ? ' compact' : ''}" id="vsel${p.id}" onclick="event.stopPropagation()"><div class="vsel-ttl">${ttl}</div><div class="vsel-row">${btns}</div>${hint}</div>`;
 }
 function refreshVariantUI(id) {
   const p = products.find(x => x.id === id);
@@ -1380,7 +1392,7 @@ function addToCartFromDetail() {
 
 // 商品説明文（後から追加可能）
 const productDescs = {
-  1: "🐶ミラー オリジナルバージョン🐾<br>🐾 机に置いて自立するタイプ◎<br>🐾 コンパクトサイズで邪魔にならない<br>🐾 サイズ<br>・縦：約7cm<br>・横：約6.2cm<br>🐾 カラー<br>・ブラック<br>・ホワイト",
+  1: "🐾 コンパクトミラー🐾<br>🐾 机に置いて自立するタイプ◎<br>🐾 コンパクトサイズで邪魔にならない<br>🐾 サイズ（1枚あたり）<br>・縦：約7cm<br>・横：約6.3cm<br>🐾 カラー・種類<br>・ブラック：オリジナルバージョン<br>・ホワイト：全6種類からお選びいただけます<br>　（オリジナルバージョン／卒業犬バージョン／チワワ／ヨークシャテリア／トイプードル／ポメラニアン）",
   2: "🐶  巾着 🐾<br>🐾リップを入れたりオリジナルミラー入れるのに丁度よい大きさ <br>🐾 サイズ<br>・9cm<br>🐾 カラー<br>・ホワイト",
   3: "🐶ボールペン🐾<br>🐾とても書きやすくボランティア活動で使用してます(^^♪",
   4: "🐶収納ポーチ（中）🐾<br>🐾 クローバーを咥えたキュートなWanWanNet🐾オリジナル柄の収納ポーチ♪<br>🐾 小物の整理にぴったりなミドルサイズ◎<br>🐾 バッグの中で迷子になりがちなアイテムをすっきり収納♬.*ﾟ<br>🐾 サイズ<br>・縦：約21.5cm<br>・横：約12.5cm",
