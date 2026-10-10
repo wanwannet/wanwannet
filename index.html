@@ -289,14 +289,16 @@ footer a:hover{color:#fff;}
 .vhint{margin-top:6px;font-size:11px;line-height:1.5;color:#7a6a58;}
 
 /* 種類が3つ以上のときは、細めのボタンにして縦の長さを短くし、隣の商品との隙間を減らす */
-.vsel.compact{padding:5px;}
-.vsel.compact .vsel-ttl{font-size:11.5px;margin-bottom:4px;}
-.vsel.compact .vsel-row{display:flex;flex-direction:column;gap:3px;}
-.vsel.compact .vopt{min-height:32px;padding:3px 3px;border-radius:9px;flex-direction:row;gap:4px;word-break:keep-all;overflow-wrap:normal;}
-.vsel.compact .vopt .vlab{font-size:11px;line-height:1.25;letter-spacing:-.02em;}
-.vsel.compact .vopt.off{min-height:30px;flex-wrap:wrap;}
-.vsel.compact .vopt.off .vlab{font-size:11px;}
-.vsel.compact .vopt.off .vact{font-size:10px;}
+.vsel.compact{padding:5px 3px;margin-left:-8px;margin-right:-8px;}
+.vsel.compact .vsel-ttl{font-size:11.5px;margin-bottom:4px;padding:0 3px;}
+.vsel.compact .vsel-row{display:grid;grid-template-columns:1fr 1fr;gap:4px;}
+.vsel.compact .vopt{min-width:0;min-height:40px;padding:3px 1px;border-radius:9px;flex-direction:row;gap:2px;word-break:keep-all;overflow-wrap:anywhere;}
+.vsel.compact .vopt .vlab{font-size:10.5px;line-height:1.25;letter-spacing:-.04em;}
+@media (max-width:380px){.vsel.compact .vopt .vlab{font-size:9.5px;}}
+.vsel.compact .vopt:last-child:nth-child(odd){grid-column:1/-1;}
+.vsel.compact .vopt.off{min-height:36px;flex-wrap:wrap;}
+.vsel.compact .vopt.off .vlab{font-size:10.5px;}
+.vsel.compact .vopt.off .vact{font-size:9.5px;}
 .vsel.compact .vhint{font-size:10.5px;margin-top:4px;line-height:1.4;}
 .shake{animation:vshake .45s;}
 @keyframes vshake{0%,100%{transform:translateX(0)}20%{transform:translateX(-6px)}40%{transform:translateX(6px)}60%{transform:translateX(-4px)}80%{transform:translateX(4px)}}
@@ -833,7 +835,7 @@ let cartVariants = {};   // カート内商品のカラー選択を記録 {id: '
 let selectedColor = {};  // 詳細ページ・一覧での現在選択中カラー {id: 'グレー'}
 
 // ===== 選べる商品：一覧カード上で、選択肢ごとのボタンを1回押すだけでカートへ =====
-function _vlab(s) { return _vesc(s).replace(/バージョン/g, '<wbr>バージョン').replace(/（/g, '<wbr>（'); }
+function _vlab(s) { return _vesc(s).replace(/バージョン/g, '<wbr>バージョン').replace(/（/g, '<wbr>（').replace(/ヨークシャテリア/g, 'ヨークシャ<wbr>テリア'); }
 function _vesc(s) { return String(s).replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;'); }
 function variantPickerHTML(p) {
   const oks = (p.colors || []).filter(c => c.status === 'ok');
